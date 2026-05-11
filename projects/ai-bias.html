@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Bias in News Recommendation Systems · Devika Mukherjee</title>
+<title>Fairness and Bias in AI — Systematic Literature Review · Devika Mukherjee</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -16,11 +16,18 @@
     --ink: #1A1814;
     --ink-mid: #3D3930;
     --ink-light: #7A756C;
-    --sage: #4A7C59;
-    --sage-light: #EBF2EC;
+    --sage: #697254;
+    --sage-light: #EDEFE3;
+    --sage-mid: #A7AD89;
+    --sage-border: rgba(105,114,84,0.3);
     --amber: #C8803A;
     --amber-light: #FBF0E3;
+    --coral: #C0503A;
+    --coral-light: #FAEAE7;
+    --blue: #3A5F8A;
+    --blue-light: #EAF0F8;
     --divider: rgba(26,24,20,0.1);
+    --ink-border: rgba(255,255,255,0.08);
     --serif: 'Playfair Display', Georgia, serif;
     --sans: 'Manrope', system-ui, sans-serif;
   }
@@ -34,6 +41,7 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* —— BACK LINK —— */
   .back-bar {
     position: fixed; top: 0; left: 0; right: 0;
     background: rgba(248,245,239,0.92);
@@ -44,178 +52,612 @@
     z-index: 100;
     font-size: 0.78rem;
   }
-  .back-bar a { color: var(--ink-mid); text-decoration: none; transition: color 0.15s; }
+  .back-bar a {
+    color: var(--ink-mid);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
   .back-bar a:hover { color: var(--sage); }
 
+  /* —— HERO —— */
   .hero {
     background: var(--ink);
     color: var(--cream);
-    padding: 7rem 2rem 5rem;
+    padding: 0;
     position: relative;
     overflow: hidden;
   }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -80px; right: -80px;
-    width: 480px; height: 480px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(200,128,58,0.18) 0%, transparent 70%);
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(105,114,84,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(105,114,84,0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
     pointer-events: none;
   }
-  .hero-inner { max-width: 900px; margin: 0 auto; position: relative; }
-  .hero-tag {
+  .hero-accent {
+    position: absolute;
+    bottom: -100px; right: -60px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(105,114,84,0.16) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 7rem 2rem 4rem;
+    position: relative;
+  }
+  .hero-methodology {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.7rem;
+    font-family: var(--sans);
+    font-size: 0.68rem;
     font-weight: 600;
-    letter-spacing: 0.12em;
+    color: var(--sage-mid);
+    border: 1px solid var(--sage-border);
+    padding: 5px 14px;
+    border-radius: 3px;
+    margin-bottom: 2rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--amber);
-    border: 1px solid rgba(200,128,58,0.4);
-    padding: 4px 12px;
-    border-radius: 2px;
-    margin-bottom: 1.75rem;
   }
-  .hero-tag::before {
+  .hero-methodology::before {
     content: '';
     width: 6px; height: 6px;
     border-radius: 50%;
-    background: var(--amber);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+    background: var(--sage-mid);
+    flex-shrink: 0;
   }
   .hero h1 {
     font-family: var(--serif);
-    font-size: clamp(2.4rem, 5.5vw, 3.8rem);
+    font-size: clamp(2.5rem, 5.5vw, 4rem);
     font-weight: 400;
     line-height: 1.15;
-    margin-bottom: 1.25rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.75rem;
+    max-width: 720px;
   }
-  .hero h1 em { font-style: italic; color: rgba(248,245,239,0.55); }
-  .hero-sub {
-    font-size: 1.05rem;
+  .hero h1 span { color: var(--sage-mid); font-style: italic; }
+  .hero-subtitle {
+    font-size: 0.97rem;
     font-weight: 300;
     color: rgba(248,245,239,0.7);
-    max-width: 600px;
+    margin-bottom: 3rem;
+    max-width: 620px;
     line-height: 1.75;
   }
+  .hero-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    border-top: 1px solid var(--ink-border);
+    padding-top: 1.75rem;
+    margin-top: 1.75rem;
+  }
+  .hero-stat {
+    padding: 0 2.5rem 0 0;
+    margin-right: 2.5rem;
+    border-right: 1px solid var(--ink-border);
+  }
+  .hero-stat:last-child { border-right: none; margin-right: 0; }
+  .hero-stat-num {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--sage-mid);
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+  .hero-stat-label {
+    font-size: 0.7rem;
+    color: rgba(248,245,239,0.5);
+    letter-spacing: 0.04em;
+  }
 
-  .container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
-  .section { padding: 4.5rem 0; }
+  /* —— LAYOUT —— */
+  .container { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+  .section { padding: 4.5rem 0; border-bottom: 1px solid var(--divider); }
+  .section:last-of-type { border-bottom: none; }
 
+  /* —— LABELS —— */
   .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--sans);
     font-size: 0.65rem;
     font-weight: 600;
+    color: var(--sage);
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--sage);
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.75rem;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 20px; height: 1px;
+    background: var(--sage);
   }
   .section-title {
     font-family: var(--serif);
-    font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
     font-weight: 400;
     line-height: 1.25;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
+    max-width: 720px;
   }
   .section-body {
-    font-size: 0.97rem;
+    font-size: 0.95rem;
     font-weight: 300;
     color: var(--ink-mid);
-    max-width: 680px;
-    line-height: 1.8;
+    max-width: 720px;
+    line-height: 1.85;
   }
 
-  .summary-card {
-    background: var(--warm-white);
+  /* —— RQ GRID —— */
+  .rq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--divider);
     border: 1px solid var(--divider);
     border-radius: 12px;
-    padding: 2rem 2.25rem;
-    margin: 2rem 0;
+    overflow: hidden;
+    margin-top: 2.5rem;
   }
-  .summary-card h3 {
-    font-family: var(--serif);
-    font-size: 1.15rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-  }
-  .summary-card p {
-    font-size: 0.93rem;
-    color: var(--ink-mid);
-    line-height: 1.75;
-    margin-bottom: 1rem;
-  }
-  .summary-card p:last-child { margin-bottom: 0; }
-
-  .pillars {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-  .pillar {
+  .rq-card {
     background: var(--warm-white);
-    border: 1px solid var(--divider);
-    border-left: 3px solid var(--sage);
-    border-radius: 0 10px 10px 0;
-    padding: 1.25rem 1.4rem;
+    padding: 1.4rem 1.5rem;
+    transition: background 0.15s;
   }
-  .pillar-title {
-    font-size: 0.82rem;
+  .rq-card:hover { background: var(--sage-light); }
+  .rq-num {
+    font-family: var(--sans);
+    font-size: 0.65rem;
     font-weight: 600;
-    margin-bottom: 0.4rem;
+    color: var(--sage);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
   }
-  .pillar-body {
-    font-size: 0.8rem;
-    color: var(--ink-light);
+  .rq-text {
+    font-size: 0.88rem;
+    color: var(--ink-mid);
     line-height: 1.65;
   }
 
-  .coming-soon {
-    background: var(--amber-light);
-    border-left: 3px solid var(--amber);
-    border-radius: 0 8px 8px 0;
-    padding: 1.5rem 1.75rem;
+  /* —— SEARCH FUNNEL —— */
+  .prisma {
     margin: 2.5rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
   }
-  .coming-soon-eyebrow {
+  .prisma-step {
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+  }
+  .prisma-box {
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 8px;
+    padding: 1rem 1.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .prisma-box.light {
+    background: var(--warm-white);
+    color: var(--ink);
+    border: 1px solid var(--divider);
+  }
+  .prisma-label { font-size: 0.83rem; font-weight: 400; color: inherit; line-height: 1.45; flex: 1; }
+  .prisma-box.light .prisma-label { color: var(--ink-mid); }
+  .prisma-n {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--sage);
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .prisma-box.light .prisma-n { color: var(--ink); }
+  .prisma-arrow {
+    text-align: center;
+    padding: 6px 0;
+    font-size: 1rem;
+    color: var(--ink-light);
+  }
+  .prisma-excluded {
+    position: absolute;
+    right: -220px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--coral-light);
+    border: 1px solid rgba(192,80,58,0.2);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.72rem;
+    color: var(--coral);
+    max-width: 200px;
+    line-height: 1.45;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .prisma-excluded::before {
+    content: '✗';
+    flex-shrink: 0;
+    font-weight: 600;
+  }
+  .prisma-final .prisma-box {
+    background: var(--sage);
+  }
+  .prisma-final .prisma-n { color: var(--cream); }
+  .prisma-connector {
+    width: 2px;
+    height: 28px;
+    background: var(--divider);
+    margin: 0 auto;
+  }
+  @media (max-width: 720px) {
+    .prisma-excluded { display: none; }
+  }
+
+  /* —— SEARCH META (databases + keywords + criteria) —— */
+  .search-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  @media (max-width: 640px) { .search-meta { grid-template-columns: 1fr; } }
+  .meta-block {
+    background: var(--warm-white);
+    border: 1px solid var(--divider);
+    border-radius: 10px;
+    padding: 1.25rem 1.4rem;
+  }
+  .meta-block h4 {
+    font-family: var(--sans);
     font-size: 0.65rem;
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--amber);
-    margin-bottom: 0.5rem;
+    color: var(--sage);
+    margin-bottom: 0.8rem;
   }
-  .coming-soon p {
-    font-size: 0.93rem;
+  .meta-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .meta-chip {
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: var(--sage-light);
     color: var(--ink-mid);
+    padding: 4px 10px;
+    border-radius: 14px;
+  }
+  .meta-list {
+    list-style: none;
+    font-size: 0.83rem;
+    color: var(--ink-mid);
+    line-height: 1.65;
+  }
+  .meta-list li {
+    padding: 4px 0 4px 1rem;
+    position: relative;
+  }
+  .meta-list li::before {
+    content: '•';
+    position: absolute; left: 0;
+    color: var(--sage);
+  }
+  .meta-list.exclude li::before {
+    content: '×';
+    color: var(--coral);
+  }
+
+  /* —— FRAMEWORK (4 cards) —— */
+  .framework-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+  }
+  @media (max-width: 640px) { .framework-grid { grid-template-columns: 1fr; } }
+  .framework-card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--divider);
+  }
+  .framework-header {
+    padding: 1.1rem 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .framework-icon { font-size: 1.1rem; }
+  .framework-title { font-size: 0.9rem; font-weight: 600; color: var(--cream); }
+  .framework-body {
+    background: var(--warm-white);
+    padding: 1.1rem 1.4rem;
+  }
+  .framework-intro {
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    line-height: 1.65;
+    margin-bottom: 0.85rem;
+  }
+  .framework-items { list-style: none; }
+  .framework-items li {
+    font-size: 0.8rem;
+    color: var(--ink-mid);
+    padding: 0.4rem 0 0.4rem 14px;
+    border-top: 1px solid var(--divider);
+    line-height: 1.5;
+    position: relative;
+  }
+  .framework-items li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--ink-light);
+  }
+
+  /* —— FINDINGS —— */
+  .finding-block {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2.5rem;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--divider);
+    align-items: start;
+  }
+  .finding-block:last-child { border-bottom: none; }
+  @media (max-width: 640px) { .finding-block { grid-template-columns: 1fr; gap: 1rem; } }
+  .finding-category {
+    font-family: var(--sans);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 0.4rem;
+  }
+  .finding-title {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 0.6rem;
+  }
+  .finding-source {
+    font-size: 0.72rem;
+    color: var(--ink-light);
+    line-height: 1.5;
+  }
+  .finding-body {
+    font-size: 0.92rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.85;
+    margin-bottom: 1rem;
+  }
+  .finding-callout {
+    background: var(--sage-light);
+    border-left: 3px solid var(--sage);
+    border-radius: 0 6px 6px 0;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    line-height: 1.65;
+  }
+  .finding-callout strong { color: var(--ink); }
+  .finding-negative {
+    background: var(--amber-light);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 6px 6px 0;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    line-height: 1.65;
+    margin-top: 0.75rem;
+  }
+
+  /* —— RECOMMENDATIONS —— */
+  .rec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+  }
+  .rec-card {
+    background: var(--warm-white);
+    border: 1px solid var(--divider);
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .rec-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+  }
+  .rec-card.priority-high::before { background: var(--sage); }
+  .rec-card.priority-med::before  { background: var(--amber); }
+  .rec-card.priority-low::before  { background: var(--ink-light); }
+  .rec-priority {
+    font-family: var(--sans);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .priority-high .rec-priority { color: var(--sage); }
+  .priority-med  .rec-priority { color: var(--amber); }
+  .priority-low  .rec-priority { color: var(--ink-light); }
+  .rec-title { font-weight: 600; font-size: 0.92rem; color: var(--ink); margin-bottom: 0.5rem; line-height: 1.35; }
+  .rec-body  { font-size: 0.82rem; color: var(--ink-light); line-height: 1.65; }
+
+  /* —— HCI IMPLICATIONS —— */
+  .hci-list { list-style: none; margin-top: 2rem; }
+  .hci-item {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--divider);
+    align-items: start;
+  }
+  .hci-item:last-child { border-bottom: none; }
+  .hci-num {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--sage);
+    line-height: 1;
+  }
+  .hci-title {
+    font-weight: 600;
+    font-size: 0.98rem;
+    margin-bottom: 0.4rem;
+    line-height: 1.35;
+  }
+  .hci-body {
+    font-size: 0.87rem;
+    color: var(--ink-light);
     line-height: 1.7;
   }
 
+  /* —— LIMITATIONS —— */
+  .limit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  @media (max-width: 600px) { .limit-grid { grid-template-columns: 1fr; } }
+  .limit-col h3 {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--divider);
+  }
+  .limit-list { list-style: none; }
+  .limit-list li {
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--divider);
+    line-height: 1.65;
+    display: grid;
+    grid-template-columns: 1.25rem 1fr;
+    gap: 6px;
+  }
+  .limit-list li:last-child { border-bottom: none; }
+  .limit-list li span { color: var(--sage); font-size: 0.8rem; }
+
+  /* —— DISTINCTION BOX —— */
+  .distinction-box {
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 14px;
+    padding: 2.5rem;
+    margin: 3rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .distinction-box::after {
+    content: 'SLR';
+    position: absolute;
+    right: 2rem; top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--serif);
+    font-size: 8rem;
+    font-weight: 600;
+    color: rgba(248,245,239,0.04);
+    user-select: none;
+    line-height: 1;
+  }
+  .distinction-title {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--sage-mid);
+  }
+  .distinction-body {
+    font-size: 0.92rem;
+    font-weight: 300;
+    color: rgba(248,245,239,0.78);
+    line-height: 1.8;
+    max-width: 620px;
+  }
+  .distinction-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--ink-border);
+    margin-top: 2rem;
+    border-top: 1px solid var(--ink-border);
+    padding-top: 1.5rem;
+  }
+  @media (max-width: 640px) { .distinction-grid { grid-template-columns: 1fr; gap: 1rem; } }
+  .distinction-item { padding: 0 1.25rem 0 0; }
+  .distinction-item:first-child { padding-left: 0; }
+  .di-label { font-family: var(--sans); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(248,245,239,0.4); margin-bottom: 4px; }
+  .di-value { font-size: 0.85rem; color: rgba(248,245,239,0.78); line-height: 1.5; }
+
+  /* —— PULL QUOTE —— */
+  .pull-quote {
+    font-family: var(--serif);
+    font-size: clamp(1.1rem, 2.3vw, 1.45rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink-mid);
+    border-left: 3px solid var(--sage);
+    padding: 1rem 0 1rem 1.75rem;
+    margin: 2.5rem 0;
+    line-height: 1.55;
+  }
+
+  /* —— FOOTER —— */
   .footer {
     background: var(--ink);
-    color: rgba(248,245,239,0.5);
-    text-align: center;
     padding: 3rem 2rem;
+    text-align: center;
     font-size: 0.78rem;
+    color: rgba(248,245,239,0.4);
   }
-  .footer strong { color: var(--cream); font-weight: 500; }
-  .footer a { color: var(--sage); text-decoration: none; }
-  .footer a:hover { text-decoration: underline; }
+  .footer strong { color: rgba(248,245,239,0.78); font-weight: 500; }
+  .footer a { color: var(--sage-mid); text-decoration: none; }
+  .footer a:hover { color: var(--sage-mid); text-decoration: underline; }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
+  hr { border: none; border-top: 1px solid var(--divider); margin: 2rem 0; }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-16px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  .hero-inner > * { animation: fadeUp 0.7s ease both; }
-  .hero-inner > *:nth-child(1) { animation-delay: 0.05s; }
-  .hero-inner > *:nth-child(2) { animation-delay: 0.15s; }
-  .hero-inner > *:nth-child(3) { animation-delay: 0.25s; }
+  .hero-inner > * { animation: slideDown 0.6s ease both; }
+  .hero-inner > *:nth-child(1) { animation-delay: 0.0s; }
+  .hero-inner > *:nth-child(2) { animation-delay: 0.1s; }
+  .hero-inner > *:nth-child(3) { animation-delay: 0.2s; }
+  .hero-inner > *:nth-child(4) { animation-delay: 0.3s; }
 </style>
 </head>
 <body>
@@ -223,51 +665,429 @@
 <div class="back-bar"><a href="../index.html">← Back to portfolio</a></div>
 
 <header class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-accent"></div>
   <div class="hero-inner">
-    <div class="hero-tag">Case study in progress</div>
-    <h1>AI Bias in <em>News Recommendation Systems</em></h1>
-    <p class="hero-sub">A systematic literature review and critical analysis of algorithmic bias in AI-driven news platforms — proposing design guidelines for transparency, fairness auditing, and user-centred bias mitigation in intelligent interactive systems.</p>
+    <div class="hero-methodology">Systematic Literature Review · Fairness in AI</div>
+    <h1>Fairness and Bias in AI-driven <span>News Curation</span> and Public Discourse</h1>
+    <p class="hero-subtitle">A systematic review of how bias enters AI-driven news platforms — from training data to algorithmic design to user feedback loops — and what mitigation strategies the field has converged on. Synthesised across 17 peer-reviewed articles published between 2022 and 2024.</p>
+    <div class="hero-bottom">
+      <div class="hero-stat"><div class="hero-stat-num">17</div><div class="hero-stat-label">Articles reviewed</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">3</div><div class="hero-stat-label">Databases searched</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">4</div><div class="hero-stat-label">Sources of bias</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">3</div><div class="hero-stat-label">Research questions</div></div>
+    </div>
   </div>
 </header>
 
+<!-- —— DISTINCTION —— -->
+<div class="container">
+  <div class="distinction-box">
+    <div class="distinction-title">Why an SLR for AI bias?</div>
+    <div class="distinction-body">AI-driven news curation is a fast-moving and contested field — the oldest paper in this review is from 2022, the bulk from 2023–2024. A single empirical study captures one slice of one platform at one moment in time; a systematic review synthesises convergent evidence across studies, identifies where the field agrees and where it doesn't, and surfaces the gaps that should shape future research. For a domain whose downstream effects include political polarisation and the erosion of shared discourse, that synthesis is the responsible methodology.</div>
+    <div class="distinction-grid">
+      <div class="distinction-item">
+        <div class="di-label">Methodology type</div>
+        <div class="di-value">Secondary research · structured search with explicit inclusion and exclusion criteria</div>
+      </div>
+      <div class="distinction-item">
+        <div class="di-label">Evidence base</div>
+        <div class="di-value">Peer-reviewed papers and high-trust grey literature, 2022 to 2024</div>
+      </div>
+      <div class="distinction-item">
+        <div class="di-label">My contribution</div>
+        <div class="di-value">Search design, critical synthesis, framework derivation, mitigation prioritisation</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- —— 01 RESEARCH CONTEXT —— -->
 <div class="container">
   <section class="section">
-    <div class="section-label">Project overview</div>
-    <h2 class="section-title">When the news you see is curated by an algorithm, who decides what's worth seeing?</h2>
-    <p class="section-body">News recommendation systems shape political discourse, public attention, and shared understanding at scale — yet they are designed and audited primarily for engagement, not for fairness or representational balance. This project investigates how algorithmic bias enters AI-driven news platforms, what its downstream effects on users are, and what HCI design patterns can mitigate it without compromising the value of personalisation.</p>
+    <div class="section-label">01 — Research Context</div>
+    <h2 class="section-title">The way most people receive news has changed — quietly, structurally, and at scale</h2>
+    <p class="section-body">News dissemination today is driven by AI algorithms that search, curate, and distribute content across social media platforms. A growing number of people also rely on large language models (LLMs) to stay informed about current events. This represents a fundamental shift in how public discourse is shaped: not by editors making explicit choices, but by recommendation systems optimised primarily for engagement.</p>
+    <br>
+    <p class="section-body">When algorithms learn that polarising content drives interaction, they surface more of it. When they pick up societal biases from their training data, they amplify them through mass distribution. The downstream effects — echo chambers, filter bubbles, the misclassification of underreported stories as non-factual, and the spread of opinion disguised as fact — are no longer hypothetical. They are documented and measurable.</p>
+    <div class="pull-quote">When unchecked, algorithmic bias does not stay an engineering problem — it becomes a problem of democratic legitimacy.</div>
+    <p class="section-body">This review asks how that bias enters the system, where it does the most damage, and what design and policy levers are emerging to push back.</p>
+  </section>
+</div>
 
-    <div class="summary-card">
-      <h3>Approach</h3>
-      <p>I conducted a systematic literature review across recent research on recommender system bias, surfacing recurring failure modes — popularity bias, demographic filter bubbles, and the under-representation of minority viewpoints — and mapping them to the interaction points where users encounter their effects.</p>
-      <p>From that synthesis I derived a set of design guidelines targeting three concerns: transparency in how recommendations are produced, mechanisms for ongoing fairness auditing, and user-facing controls that let people steer their own information diet rather than simply consume what the system serves.</p>
-    </div>
-
-    <div class="pillars">
-      <div class="pillar">
-        <div class="pillar-title">Transparency</div>
-        <div class="pillar-body">Surfacing why an article was recommended — not just that it was — so users can reason about the system's choices.</div>
+<!-- —— 02 RESEARCH QUESTIONS —— -->
+<div class="container">
+  <section class="section">
+    <div class="section-label">02 — Research Questions</div>
+    <h2 class="section-title">Three questions that structured the search</h2>
+    <p class="section-body">These were defined before the corpus was assembled — a methodological requirement of systematic reviews that prevents confirmation bias and ensures coverage of the full evidence space.</p>
+    <div class="rq-grid">
+      <div class="rq-card">
+        <div class="rq-num">RQ01</div>
+        <div class="rq-text">How are biases generated and perpetuated in AI systems used for news curation and distribution?</div>
       </div>
-      <div class="pillar">
-        <div class="pillar-title">Fairness auditing</div>
-        <div class="pillar-body">Continuous monitoring of representational balance across viewpoints and demographics, with intervention thresholds.</div>
+      <div class="rq-card">
+        <div class="rq-num">RQ02</div>
+        <div class="rq-text">What ethical considerations should be kept in mind while designing AI algorithms to ensure fair and balanced news curation and distribution?</div>
       </div>
-      <div class="pillar">
-        <div class="pillar-title">User-centred mitigation</div>
-        <div class="pillar-body">Putting controls in the user's hands — preference resets, diversity sliders, and visible filter state.</div>
+      <div class="rq-card">
+        <div class="rq-num">RQ03</div>
+        <div class="rq-text">How do AI-curated news feeds impact people — and how much damage can these biases cause to public discourse and democratic life?</div>
       </div>
-    </div>
-
-    <div class="coming-soon">
-      <div class="coming-soon-eyebrow">Full case study in progress</div>
-      <p>The complete write-up — including the review methodology, the corpus of analysed studies, and the full design-guideline rationale — will be published on this page shortly. In the meantime, the project summary is captured in my <a href="../assets/resume.pdf" style="color: var(--amber); text-decoration: underline;">CV</a>.</p>
     </div>
   </section>
 </div>
 
+<!-- —— 03 SEARCH STRATEGY —— -->
+<div class="container">
+  <section class="section">
+    <div class="section-label">03 — Search Strategy & Selection</div>
+    <h2 class="section-title">A focused search across three databases and a three-year window</h2>
+    <p class="section-body">Because this is a recent socio-technical concern, the search targeted papers from 2022 onward — when AI-driven news distribution and LLM-based news consumption began to dominate the academic conversation. The strategy was deliberately narrow rather than encyclopaedic: the priority was depth of evidence on the specific intersection of AI platforms, news dissemination, and political discourse.</p>
+
+    <div class="prisma" style="margin-top: 2.5rem;">
+
+      <div class="prisma-step">
+        <div class="prisma-box light">
+          <div class="prisma-label"><strong style="color:var(--ink)">Stage 1</strong><br>Broad search across AI ethics, algorithmic fairness, and media studies databases</div>
+          <div class="prisma-n" style="color:var(--ink-light); font-size: 1.3rem;">200+</div>
+        </div>
+      </div>
+
+      <div class="prisma-connector"></div>
+      <div class="prisma-arrow">↓ filtered to: peer-reviewed, 2022 onward</div>
+      <div class="prisma-connector"></div>
+
+      <div class="prisma-step">
+        <div class="prisma-box light">
+          <div class="prisma-label"><strong style="color:var(--ink)">Stage 2</strong><br>Filtered to peer-reviewed articles, time window 2022–2024, English language</div>
+          <div class="prisma-n">~80</div>
+        </div>
+      </div>
+
+      <div class="prisma-connector"></div>
+      <div class="prisma-arrow">↓ screened for AI news curation + public discourse relevance</div>
+      <div class="prisma-connector"></div>
+
+      <div class="prisma-step" style="position: relative;">
+        <div class="prisma-box light">
+          <div class="prisma-label"><strong style="color:var(--ink)">Stage 3</strong><br>Title and abstract screening for direct relevance to AI-driven news curation, LLM-generated media, or socio-political impact of biased AI</div>
+          <div class="prisma-n">35 → 17</div>
+        </div>
+        <div class="prisma-excluded">Excluded: non-peer-reviewed pieces, studies unrelated to news/public opinion</div>
+      </div>
+
+      <div class="prisma-connector" style="background: var(--sage); opacity: 0.4;"></div>
+
+      <div class="prisma-step prisma-final">
+        <div class="prisma-box">
+          <div class="prisma-label" style="font-weight: 500; color: var(--cream);">Final corpus — included for full review</div>
+          <div class="prisma-n">17</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="search-meta">
+      <div class="meta-block">
+        <h4>Databases searched</h4>
+        <div class="meta-chips">
+          <span class="meta-chip">Google Scholar</span>
+          <span class="meta-chip">ACM Digital Library</span>
+          <span class="meta-chip">ScienceDirect</span>
+        </div>
+      </div>
+      <div class="meta-block">
+        <h4>Key search phrases</h4>
+        <div class="meta-chips">
+          <span class="meta-chip">AI-driven news curation</span>
+          <span class="meta-chip">Algorithmic bias in news</span>
+          <span class="meta-chip">LLMs and media bias</span>
+          <span class="meta-chip">Political polarization and AI</span>
+          <span class="meta-chip">AI in social media feeds</span>
+        </div>
+      </div>
+      <div class="meta-block">
+        <h4>Inclusion criteria</h4>
+        <ul class="meta-list">
+          <li>Peer-reviewed articles published 2022–2024</li>
+          <li>Studies on AI algorithms or LLMs in news curation</li>
+          <li>Papers discussing socio-political impact of biased AI in media</li>
+        </ul>
+      </div>
+      <div class="meta-block">
+        <h4>Exclusion criteria</h4>
+        <ul class="meta-list exclude">
+          <li>Non-peer-reviewed articles and opinion pieces</li>
+          <li>Studies unrelated to news dissemination or public opinion</li>
+          <li>Work predating 2022 (when AI news curation matured at scale)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- —— 04 SOURCES OF BIAS FRAMEWORK —— -->
+<div class="container">
+  <section class="section">
+    <div class="section-label">04 — Analysis Framework</div>
+    <h2 class="section-title">Four sources of bias — where the problem actually enters the system</h2>
+    <p class="section-body">Across the corpus, a consistent four-part taxonomy emerges. Bias is not a single failure mode at a single point in the pipeline — it enters at the human, data, algorithmic, and interaction levels, and these layers compound. Naming each source precisely is the precondition for designing mitigations that actually work.</p>
+
+    <div class="framework-grid">
+      <div class="framework-card">
+        <div class="framework-header" style="background: var(--ink);">
+          <span class="framework-icon">👤</span>
+          <div class="framework-title">Human bias</div>
+        </div>
+        <div class="framework-body">
+          <p class="framework-intro">The people who design, train, and maintain AI systems carry conscious and unconscious beliefs that influence data selection, label choices, and architectural decisions — embedding societal prejudices directly into the system before it ever sees an end user.</p>
+          <ul class="framework-items">
+            <li>Developer assumptions about what is "newsworthy"</li>
+            <li>Choices in training-data sourcing and curation</li>
+            <li>Subjective decisions during data cleaning</li>
+          </ul>
+        </div>
+      </div>
+      <div class="framework-card">
+        <div class="framework-header" style="background: var(--blue);">
+          <span class="framework-icon">📊</span>
+          <div class="framework-title">Data bias</div>
+        </div>
+        <div class="framework-body">
+          <p class="framework-intro">AI systems learn from vast historical corpora. When that data reflects existing inequalities, stereotypes, or under-representation of certain groups or viewpoints, the model does not correct for it — it replicates and often amplifies it.</p>
+          <ul class="framework-items">
+            <li>Historical inequalities baked into training corpora</li>
+            <li>Underrepresentation of minority viewpoints</li>
+            <li>Cleaning choices that quietly skew what's "valid"</li>
+          </ul>
+        </div>
+      </div>
+      <div class="framework-card">
+        <div class="framework-header" style="background: var(--sage);">
+          <span class="framework-icon">⚙️</span>
+          <div class="framework-title">Algorithmic bias</div>
+        </div>
+        <div class="framework-body">
+          <p class="framework-intro">Bias also emerges from the algorithm itself. Recommendation engines optimised for engagement push content that aligns with users' pre-existing beliefs, producing filter bubbles and echo chambers as a structural consequence — not as an accident.</p>
+          <ul class="framework-items">
+            <li>Engagement-driven ranking favours reinforcement over diversity</li>
+            <li>Feedback loops compound exposure to a narrowing slice of views</li>
+            <li>Optimisation targets that reward extremity over nuance</li>
+          </ul>
+        </div>
+      </div>
+      <div class="framework-card">
+        <div class="framework-header" style="background: var(--amber);">
+          <span class="framework-icon">🔄</span>
+          <div class="framework-title">User-interaction bias</div>
+        </div>
+        <div class="framework-body">
+          <p class="framework-intro">Systems learn from what users do. When users engage primarily with biased content — for any reason — the system reads that as preference and serves more of the same. The user's interaction is not free of context; it is shaped by what the algorithm already chose to show them.</p>
+          <ul class="framework-items">
+            <li>Engagement signals interpreted as endorsement</li>
+            <li>Polarised content begets polarised recommendations</li>
+            <li>The "preference" the system learns is partly its own creation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- —— 05 KEY FINDINGS —— -->
+<div class="container">
+  <section class="section">
+    <div class="section-label">05 — Key Findings</div>
+    <h2 class="section-title">What the evidence reveals about real-world impact</h2>
+
+    <div class="finding-block">
+      <div class="finding-meta">
+        <div class="finding-category">Algorithmic</div>
+        <div class="finding-title">Engagement-optimised curation is structurally biased — not incidentally so</div>
+        <div class="finding-source">Recurring across 8+ reviewed studies on recommendation systems</div>
+      </div>
+      <div class="finding-content">
+        <div class="finding-body">Most major platforms prioritise engagement metrics — likes, shares, comments, dwell time — as the primary signal for ranking content. The evidence is consistent: this design choice makes algorithms structurally vulnerable to reinforcing existing user beliefs, because engagement is highest when content confirms what a user already thinks. The result is not a neutral feed with occasional bias; it is a feed whose architecture is biased toward whatever the user has already engaged with.</div>
+        <div class="finding-callout"><strong>Design implication:</strong> Engagement is a useful metric but a poor sole optimisation target. Systems that include explicit diversity or novelty signals in their ranking function show measurable reductions in filter-bubble formation in the studies reviewed.</div>
+      </div>
+    </div>
+
+    <div class="finding-block">
+      <div class="finding-meta">
+        <div class="finding-category">Sociopolitical</div>
+        <div class="finding-title">Polarisation effects are measurable, not abstract — including along gender lines</div>
+        <div class="finding-source">Reveilhac & Eisner (2022) — Twitter discourse during the Swiss Women's Strike</div>
+      </div>
+      <div class="finding-content">
+        <div class="finding-body">An empirical analysis of Twitter discourse around the Swiss Women's Strike found a statistically significant growing gender-based polarisation in political beliefs, with men and women increasingly divided in their stated worldviews on gender equality. The polarisation correlated with platform usage patterns and was not present at the same magnitude in offline survey data — pointing to the role of algorithmic amplification, not just self-selection.</div>
+        <div class="finding-callout"><strong>Why it matters:</strong> The downstream consequences extend beyond opinion. The same study links these divergences to voting behaviour, interpersonal relationships, and broader social cohesion — making the algorithmic layer a public-interest concern, not a UX one.</div>
+      </div>
+    </div>
+
+    <div class="finding-block">
+      <div class="finding-meta">
+        <div class="finding-category">LLMs</div>
+        <div class="finding-title">Large language models amplify hidden biases at scale when generating news content</div>
+        <div class="finding-source">Fang et al. (2023) — examination of news produced by LLMs</div>
+      </div>
+      <div class="finding-content">
+        <div class="finding-body">Fang and colleagues examined the bias profile of news articles produced by leading LLMs and found systematic skew in framing, source selection, and entity portrayal — biases that mirrored those in the underlying training corpora but were now being introduced into fluent, authoritative-sounding output at scale. Related work (Venkit et al. 2023) showed measurable nationality bias in how AI-generated articles characterised people from different countries, with consistent patterns across multiple models.</div>
+        <div class="finding-callout"><strong>The new attack surface:</strong> LLMs do not invent bias — they package it. The output looks neutral, journalistic, and confident, which makes the bias harder to detect than in legacy news. This is the most novel risk surfaced in the corpus.</div>
+      </div>
+    </div>
+
+    <div class="finding-block">
+      <div class="finding-meta">
+        <div class="finding-category">Discourse</div>
+        <div class="finding-title">Underreported narratives can be mis-flagged as non-factual — silencing them further</div>
+        <div class="finding-source">Synthesis across multiple studies on AI moderation and credibility scoring</div>
+      </div>
+      <div class="finding-content">
+        <div class="finding-body">A more subtle finding: when a story has limited prior coverage — common for stories from marginalised communities or regions with thinner media presence — credibility-scoring algorithms have less corroborating evidence to draw on and are more likely to flag the story as unreliable. The mechanism is not malicious, but the effect is. Underreported narratives become further underreported.</div>
+        <div class="finding-negative"><strong>Counterpoint:</strong> The same mechanism has legitimate protective uses against fabricated content and coordinated misinformation. The challenge is calibration, not removal — distinguishing "no prior coverage because the story is fake" from "no prior coverage because the story is from a community the mainstream press undercovers."</div>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<!-- —— 06 MITIGATION —— -->
+<div class="container">
+  <section class="section">
+    <div class="section-label">06 — Mitigation Strategies</div>
+    <h2 class="section-title">What the field has converged on — prioritised by strength of evidence</h2>
+    <p class="section-body">These strategies are drawn from the conclusions of the reviewed papers and from the practices of organisations actively working on bias mitigation. They cluster naturally into three tiers — by strength of evidence, by demographic impact, and by how mature the implementation is across major platforms.</p>
+
+    <div class="rec-grid">
+      <div class="rec-card priority-high">
+        <div class="rec-priority">High priority · strong evidence</div>
+        <div class="rec-title">Algorithmic transparency — make the decision visible to the people affected by it</div>
+        <div class="rec-body">Surfacing how recommendations are produced — why a particular article reached a particular user — consistently emerges as the single most foundational mitigation. It is the precondition for user trust, regulatory accountability, and meaningful research access.</div>
+      </div>
+      <div class="rec-card priority-high">
+        <div class="rec-priority">High priority · strong evidence</div>
+        <div class="rec-title">Bias-detection frameworks at the curation phase</div>
+        <div class="rec-body">Techniques like word-embedding analysis are used to identify underlying biases in the news-selection phase — catching skew at the moment content enters the recommendation pipeline rather than after it has already reached users.</div>
+      </div>
+      <div class="rec-card priority-high">
+        <div class="rec-priority">High priority · LLM-specific</div>
+        <div class="rec-title">Continuous re-evaluation of LLM outputs</div>
+        <div class="rec-body">Because LLMs absorb biases from user feedback and from new training data, a one-time audit is insufficient. The literature converges on ongoing, automated evaluation cycles — particularly for systems generating news-style content at scale.</div>
+      </div>
+      <div class="rec-card priority-med">
+        <div class="rec-priority">Medium priority · user-facing</div>
+        <div class="rec-title">Source flagging for political leaning and reliability</div>
+        <div class="rec-body">Surfacing the political position and reliability of a news source on the article itself empowers users to read in context. The evidence on behaviour change is mixed, but the floor effect — labelling provides information regardless of whether the user acts on it — is well established.</div>
+      </div>
+      <div class="rec-card priority-med">
+        <div class="rec-priority">Medium priority · long-term</div>
+        <div class="rec-title">Media-literacy education for end users</div>
+        <div class="rec-body">No amount of technical mitigation removes the user's responsibility for critical evaluation. Studies highlight that media literacy — particularly understanding how recommendation algorithms work and how biases manifest — meaningfully improves users' resistance to misinformation.</div>
+      </div>
+      <div class="rec-card priority-med">
+        <div class="rec-priority">Medium priority · governance</div>
+        <div class="rec-title">Multi-stakeholder accountability for bias mitigation</div>
+        <div class="rec-body">Lancaster et al. (2024) found that AI professionals view accountability for bias mitigation as collectively distributed yet often unowned in practice. Effective mitigation requires clear ownership across product, research, legal, and policy roles — not just an ethics review at launch.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- —— 07 HCI IMPLICATIONS —— -->
+<div class="container">
+  <section class="section">
+    <div class="section-label">07 — HCI Design Implications</div>
+    <h2 class="section-title">Translating the evidence into specific interaction patterns</h2>
+    <p class="section-body">Systematic reviews are valuable in proportion to what they let designers actually do. These are the concrete interaction patterns the corpus points toward — moves that bring transparency and user agency into the everyday news-reading surface, rather than leaving them as policy abstractions.</p>
+
+    <ul class="hci-list">
+      <li class="hci-item">
+        <div class="hci-num">01</div>
+        <div class="hci-content">
+          <div class="hci-title">"Why am I seeing this?" — surface the recommendation rationale</div>
+          <div class="hci-body">A short, plain-language explanation attached to every recommended item — surfaced on demand, not buried in settings. Tells the user which signals contributed (topics followed, recent engagement, demographic priors) and lets them mute any of them. This is the single most direct application of the transparency principle to a UI surface.</div>
+        </div>
+      </li>
+      <li class="hci-item">
+        <div class="hci-num">02</div>
+        <div class="hci-content">
+          <div class="hci-title">User-facing diversity controls — let people steer their information diet</div>
+          <div class="hci-body">A simple control — a slider, a toggle, a "show me more from outside my usual sources" affordance — gives users explicit agency over the diversity-versus-personalisation trade-off. Importantly, defaults matter more than the controls themselves. The control's job is to expose the trade-off; the default's job is to be honest about what the system is doing.</div>
+        </div>
+      </li>
+      <li class="hci-item">
+        <div class="hci-num">03</div>
+        <div class="hci-content">
+          <div class="hci-title">Cross-viewpoint exposure — design the surface, not just the recommendation</div>
+          <div class="hci-body">Rather than relying on the ranker alone to introduce diversity, dedicate UI real estate to cross-viewpoint content: a sidebar of "stories from outside your usual sources," a counter-perspective surfaced alongside a contested article. The design lever is separating exposure from engagement-derived ranking.</div>
+        </div>
+      </li>
+      <li class="hci-item">
+        <div class="hci-num">04</div>
+        <div class="hci-content">
+          <div class="hci-title">Fairness-audit dashboards — make the bias detection legible to non-engineers</div>
+          <div class="hci-body">Internal dashboards that surface bias metrics in terms product teams, policy staff, and regulators can read — not just data scientists. Translating a word-embedding analysis result into "this topic is over-represented for this demographic by N%" is itself an HCI problem, and the literature is thin on solutions.</div>
+        </div>
+      </li>
+      <li class="hci-item">
+        <div class="hci-num">05</div>
+        <div class="hci-content">
+          <div class="hci-title">Trust calibration cues for LLM-generated content</div>
+          <div class="hci-body">When news content is partly or fully generated by an LLM, the user needs an honest signal — not a single binary label, but a layered indication of provenance, source verification, and model confidence. This is the youngest of the recommendations and the one where convergent design patterns have not yet emerged.</div>
+        </div>
+      </li>
+    </ul>
+  </section>
+</div>
+
+<!-- —— 08 LIMITATIONS —— -->
+<div class="container">
+  <section class="section">
+    <div class="section-label">08 — Limitations & Reflection</div>
+    <h2 class="section-title">What this review can and cannot conclude</h2>
+    <p class="section-body">Acknowledging the boundaries of an SLR is not a weakness — it is methodological honesty. These limitations also point to where future primary research and review work should focus.</p>
+
+    <div class="limit-grid">
+      <div class="limit-col">
+        <h3>Study limitations</h3>
+        <ul class="limit-list">
+          <li><span>01</span>A corpus of 17 articles, while systematically selected, is small — sufficient to identify convergent themes but limited for fine-grained meta-analytic claims.</li>
+          <li><span>02</span>The field moves faster than peer review. Significant LLM-bias developments in 2024–2025 are under-represented in the academic literature and were captured here partly through grey-literature sources.</li>
+          <li><span>03</span>Geographic and linguistic coverage skews toward English-language, Western platforms. Bias dynamics on Chinese, Russian, or African platforms may differ meaningfully and are underrepresented.</li>
+          <li><span>04</span>No standardised bias-measurement framework exists across the reviewed studies — different papers operationalise "bias" differently, which limits direct comparability.</li>
+        </ul>
+      </div>
+      <div class="limit-col">
+        <h3>What I would do differently</h3>
+        <ul class="limit-list">
+          <li><span>→</span>Apply a formal quality-assessment tool (CASP, MMAT) to each study, so evidence strength is rated rather than treated uniformly across sources.</li>
+          <li><span>→</span>Expand the grey-literature inclusion to capture industry transparency reports, regulator filings, and recent legal settlements (e.g. the AP News class-action settlement on AI-related discrimination) as primary sources.</li>
+          <li><span>→</span>Supplement the SLR with primary user studies on transparency interventions — the design recommendations are well-supported theoretically but empirically thin on behavioural impact.</li>
+          <li><span>→</span>Conduct a longitudinal pass — revisiting the same questions 12 and 24 months later — to track how mitigation strategies hold up as platforms iterate.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- —— 09 FUTURE —— -->
+<div class="container">
+  <section class="section">
+    <div class="section-label">09 — Future Directions</div>
+    <h2 class="section-title">Where the evidence base points next</h2>
+    <p class="section-body">Three trajectories stand out across the corpus. First, <strong>LLM-specific bias mitigation</strong> — because the failure modes of generative models differ from those of ranking systems, the methods that work on one do not straightforwardly transfer to the other. Bias-detection at the curation phase needs an LLM-equivalent at the generation phase, and the literature is only beginning to develop one.</p>
+    <br>
+    <p class="section-body">Second, <strong>empirical work on transparency interventions</strong>. Most of the design recommendations in this review — "why am I seeing this?" labels, diversity controls, fairness dashboards — are well-motivated but under-tested behaviourally. We need user studies that measure whether these interventions actually change consumption patterns and trust calibration, or whether they primarily serve a legitimating function.</p>
+    <br>
+    <p class="section-body">Third, <strong>emerging legal and regulatory frameworks</strong>. The AP News-reported settlement on AI-related discrimination and the Amnesty International report on predictive policing both signal that bias in algorithmic systems is moving from a research concern to a regulated one. Future reviews should integrate the policy literature alongside the academic and industry sources — the design space for mitigation is shaped by all three.</p>
+  </section>
+</div>
+
 <footer class="footer">
-  <strong>AI Bias in News Recommendation Systems</strong><br>
+  <strong>Fairness and Bias in AI: A Systematic Review of Bias in News Curation, Dissemination and Public Discourse</strong><br>
   Devika Mukherjee · HCI Portfolio<br><br>
-  <a href="../index.html">← Back to portfolio</a>
+  Based on 17 peer-reviewed articles · 2022–2024 · <a href="../index.html">Back to portfolio</a>
 </footer>
 
 </body>
