@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glucometer Usability — Systematic Literature Review · Devika Mukherjee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F8F5EF;
+    --warm-white: #FDFCF9;
+    --ink: #1A1814;
+    --ink-mid: #3D3930;
+    --ink-light: #7A756C;
+    --sage: #4A7C59;
+    --sage-light: #EBF2EC;
+    --sage-mid: #D0E6D4;
+    --sage-border: rgba(74,124,89,0.3);
+    --amber: #C8803A;
+    --amber-light: #FBF0E3;
+    --coral: #C0503A;
+    --coral-light: #FAEAE7;
+    --blue: #3A5F8A;
+    --blue-light: #EAF0F8;
+    --divider: rgba(26,24,20,0.1);
+    --ink-border: rgba(255,255,255,0.08);
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'Manrope', system-ui, sans-serif;
+  }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* —— BACK LINK —— */
+  .back-bar {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: rgba(248,245,239,0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--divider);
+    padding: 0.75rem 1.5rem;
+    z-index: 100;
+    font-size: 0.78rem;
+  }
+  .back-bar a {
+    color: var(--ink-mid);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .back-bar a:hover { color: var(--sage); }
+
+  /* —— HERO —— */
+  .hero {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(74,124,89,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(74,124,89,0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+  .hero-accent {
+    position: absolute;
+    bottom: -100px; right: -60px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(74,124,89,0.16) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 7rem 2rem 4rem;
+    position: relative;
+  }
+  .hero-methodology {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--sage);
+    border: 1px solid var(--sage-border);
+    padding: 5px 14px;
+    border-radius: 3px;
+    margin-bottom: 2rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .hero-methodology::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--sage);
+    flex-shrink: 0;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 5.5vw, 4rem);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.75rem;
+    max-width: 700px;
+  }
+  .hero h1 span { color: var(--sage); font-style: italic; }
+  .hero-subtitle {
+    font-size: 0.97rem;
+    font-weight: 300;
+    color: rgba(248,245,239,0.6);
+    margin-bottom: 3rem;
+    max-width: 520px;
+    line-height: 1.75;
+  }
+  .hero-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    border-top: 1px solid var(--ink-border);
+    padding-top: 1.75rem;
+    margin-top: 1.75rem;
+  }
+  .hero-stat {
+    padding: 0 2.5rem 0 0;
+    margin-right: 2.5rem;
+    border-right: 1px solid var(--ink-border);
+  }
+  .hero-stat:last-child { border-right: none; margin-right: 0; }
+  .hero-stat-num {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--sage);
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+  .hero-stat-label {
+    font-size: 0.7rem;
+    color: rgba(248,245,239,0.45);
+    letter-spacing: 0.05em;
+  }
+
+  /* —— LAYOUT —— */
+  .container { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+  .section { padding: 4.5rem 0; border-bottom: 1px solid var(--divider); }
+  .section:last-of-type { border-bottom: none; }
+
+  /* —— LABELS —— */
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--sage);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 20px; height: 1px;
+    background: var(--sage);
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 400;
+    line-height: 1.25;
+    margin-bottom: 1.25rem;
+    max-width: 680px;
+  }
+  .section-body {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    max-width: 680px;
+    line-height: 1.85;
+  }
+
+  /* —— RQ GRID —— */
+  .rq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--divider);
+    border: 1px solid var(--divider);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 2.5rem;
+  }
+  .rq-card {
+    background: var(--warm-white);
+    padding: 1.4rem 1.5rem;
+    transition: background 0.15s;
+  }
+  .rq-card:hover { background: var(--sage-light); }
+  .rq-num {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--sage);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .rq-text {
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    line-height: 1.65;
+  }
+
+  /* —— PRISMA FUNNEL —— */
+  .prisma {
+    margin: 2.5rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .prisma-step {
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+  }
+  .prisma-box {
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 8px;
+    padding: 1rem 1.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .prisma-box.light {
+    background: var(--warm-white);
+    color: var(--ink);
+    border: 1px solid var(--divider);
+  }
+  .prisma-label { font-size: 0.83rem; font-weight: 400; color: inherit; line-height: 1.45; flex: 1; }
+  .prisma-box.light .prisma-label { color: var(--ink-mid); }
+  .prisma-n {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--sage);
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .prisma-box.light .prisma-n { color: var(--ink); }
+  .prisma-arrow {
+    text-align: center;
+    padding: 6px 0;
+    font-size: 1rem;
+    color: var(--ink-light);
+  }
+  .prisma-excluded {
+    position: absolute;
+    right: -220px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--coral-light);
+    border: 1px solid rgba(192,80,58,0.2);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.72rem;
+    color: var(--coral);
+    max-width: 200px;
+    line-height: 1.45;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .prisma-excluded::before {
+    content: '✗';
+    flex-shrink: 0;
+    font-weight: 600;
+  }
+  .prisma-final .prisma-box {
+    background: var(--sage);
+  }
+  .prisma-final .prisma-n { color: var(--ink); }
+  .prisma-connector {
+    width: 2px;
+    height: 28px;
+    background: var(--divider);
+    margin: 0 auto;
+  }
+  @media (max-width: 720px) {
+    .prisma-excluded { display: none; }
+  }
+
+  /* —— FRAMEWORK —— */
+  .framework-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+  }
+  @media (max-width: 640px) { .framework-grid { grid-template-columns: 1fr; } }
+  .framework-card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--divider);
+  }
+  .framework-header {
+    padding: 1.1rem 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .framework-icon { font-size: 1.1rem; }
+  .framework-title { font-size: 0.9rem; font-weight: 600; color: var(--cream); }
+  .framework-body {
+    background: var(--warm-white);
+    padding: 1.1rem 1.4rem;
+  }
+  .framework-items { list-style: none; }
+  .framework-items li {
+    font-size: 0.8rem;
+    color: var(--ink-mid);
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--divider);
+    line-height: 1.5;
+    display: flex;
+    gap: 8px;
+  }
+  .framework-items li:last-child { border-bottom: none; }
+  .framework-items li::before { content: '•'; color: var(--ink-light); flex-shrink: 0; }
+
+  /* —— FINDINGS —— */
+  .finding-block {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2.5rem;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--divider);
+    align-items: start;
+  }
+  .finding-block:last-child { border-bottom: none; }
+  @media (max-width: 640px) { .finding-block { grid-template-columns: 1fr; gap: 1rem; } }
+  .finding-category {
+    font-family: var(--sans);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 0.4rem;
+  }
+  .finding-title {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 0.6rem;
+  }
+  .finding-source {
+    font-size: 0.72rem;
+    color: var(--ink-light);
+    line-height: 1.5;
+  }
+  .finding-body {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.85;
+    margin-bottom: 1rem;
+  }
+  .finding-callout {
+    background: var(--sage-light);
+    border-left: 3px solid var(--sage);
+    border-radius: 0 6px 6px 0;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.83rem;
+    color: var(--ink-mid);
+    line-height: 1.65;
+  }
+  .finding-callout strong { color: var(--ink); }
+  .finding-negative {
+    background: var(--amber-light);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 6px 6px 0;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.83rem;
+    color: var(--ink-mid);
+    line-height: 1.65;
+    margin-top: 0.75rem;
+  }
+
+  /* —— TABLE —— */
+  .table-wrap {
+    overflow-x: auto;
+    margin-top: 2.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--divider);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    background: var(--warm-white);
+  }
+  thead { background: var(--ink); }
+  thead th {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(248,245,239,0.75);
+    padding: 1rem 1.2rem;
+    text-align: left;
+    border-right: 1px solid var(--ink-border);
+    white-space: nowrap;
+  }
+  thead th:last-child { border-right: none; }
+  tbody tr { border-bottom: 1px solid var(--divider); transition: background 0.15s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--cream); }
+  tbody td {
+    padding: 1rem 1.2rem;
+    color: var(--ink-mid);
+    vertical-align: top;
+    border-right: 1px solid var(--divider);
+    line-height: 1.55;
+  }
+  tbody td:last-child { border-right: none; }
+  .td-model {
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  .td-year {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    color: var(--ink-light);
+    white-space: nowrap;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    margin-top: 4px;
+  }
+  .badge-yes { background: var(--sage-light); color: var(--sage); }
+  .badge-no  { background: var(--coral-light); color: var(--coral); }
+  .badge-color { background: var(--blue-light); color: var(--blue); }
+  .badge-audio { background: var(--amber-light); color: var(--amber); }
+  .star-feature {
+    font-size: 0.8rem;
+    color: var(--ink-mid);
+    line-height: 1.5;
+  }
+  .star-feature strong { color: var(--ink); display: block; margin-bottom: 2px; font-size: 0.78rem; }
+
+  /* —— RECOMMENDATIONS —— */
+  .rec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+  }
+  .rec-card {
+    background: var(--warm-white);
+    border: 1px solid var(--divider);
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .rec-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+  }
+  .rec-card.priority-high::before { background: var(--sage); }
+  .rec-card.priority-med::before  { background: var(--amber); }
+  .rec-card.priority-low::before  { background: var(--ink-light); }
+  .rec-priority {
+    font-family: var(--sans);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .priority-high .rec-priority { color: var(--sage); }
+  .priority-med  .rec-priority { color: var(--amber); }
+  .priority-low  .rec-priority { color: var(--ink-light); }
+  .rec-title { font-weight: 600; font-size: 0.9rem; color: var(--ink); margin-bottom: 0.5rem; line-height: 1.35; }
+  .rec-body  { font-size: 0.8rem; color: var(--ink-light); line-height: 1.65; }
+
+  /* —— LIMITATIONS —— */
+  .limit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  @media (max-width: 600px) { .limit-grid { grid-template-columns: 1fr; } }
+  .limit-col h3 {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--divider);
+  }
+  .limit-list { list-style: none; }
+  .limit-list li {
+    font-size: 0.83rem;
+    color: var(--ink-mid);
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--divider);
+    line-height: 1.6;
+    display: grid;
+    grid-template-columns: 1.25rem 1fr;
+    gap: 6px;
+  }
+  .limit-list li:last-child { border-bottom: none; }
+  .limit-list li span { color: var(--sage); font-size: 0.8rem; }
+
+  /* —— KEY DISTINCTION BOX —— */
+  .distinction-box {
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 14px;
+    padding: 2.5rem;
+    margin: 3rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .distinction-box::after {
+    content: 'SLR';
+    position: absolute;
+    right: 2rem; top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--serif);
+    font-size: 8rem;
+    font-weight: 600;
+    color: rgba(248,245,239,0.04);
+    user-select: none;
+    line-height: 1;
+  }
+  .distinction-title {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--sage);
+  }
+  .distinction-body {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: rgba(248,245,239,0.75);
+    line-height: 1.8;
+    max-width: 600px;
+  }
+  .distinction-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--ink-border);
+    margin-top: 2rem;
+    border-top: 1px solid var(--ink-border);
+    padding-top: 1.5rem;
+  }
+  @media (max-width: 640px) { .distinction-grid { grid-template-columns: 1fr; gap: 1rem; } }
+  .distinction-item { padding: 0 1.25rem 0 0; }
+  .distinction-item:first-child { padding-left: 0; }
+  .di-label { font-family: var(--sans); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(248,245,239,0.4); margin-bottom: 4px; }
+  .di-value { font-size: 0.85rem; color: rgba(248,245,239,0.78); line-height: 1.5; }
+
+  /* —— FOOTER —— */
+  .footer {
+    background: var(--ink);
+    padding: 3rem 2rem;
+    text-align: center;
+    font-size: 0.78rem;
+    color: rgba(248,245,239,0.4);
+  }
+  .footer strong { color: rgba(248,245,239,0.78); font-weight: 500; }
+
+  hr { border: none; border-top: 1px solid var(--divider); margin: 2rem 0; }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-inner > * { animation: slideDown 0.6s ease both; }
+  .hero-inner > *:nth-child(1) { animation-delay: 0.0s; }
+  .hero-inner > *:nth-child(2) { animation-delay: 0.1s; }
+  .hero-inner > *:nth-child(3) { animation-delay: 0.2s; }
+  .hero-inner > *:nth-child(4) { animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<div class="back-bar"><a href="../index.html">← Back to portfolio</a></div>
+
+<header class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-accent"></div>
+  <div class="hero-inner">
+    <div class="hero-methodology">Systematic Literature Review · HCI in health technology</div>
+    <h1>Usability of <span>Glucometers</span> in Self-Monitoring of Type 2 Diabetes</h1>
+    <p class="hero-subtitle">A secondary research study synthesising existing evidence on glucometer usability across diverse patient demographics — examining procedural, interpretive, and digital integration dimensions of the user experience.</p>
+    <div class="hero-bottom">
+      <div class="hero-stat"><div class="hero-stat-num">15</div><div class="hero-stat-label">Articles reviewed</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">3</div><div class="hero-stat-label">Analysis dimensions</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">5</div><div class="hero-stat-label">Devices compared</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">6</div><div class="hero-stat-label">Research questions</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="distinction-box">
+    <div class="distinction-title">Why a systematic literature review?</div>
+    <div class="distinction-body">Unlike primary research — where data is collected directly from participants — a systematic literature review synthesises what is already known across published studies, identifies patterns, and surfaces gaps in the evidence base. This methodology is particularly valuable in health technology contexts, where clinical stakes demand evidence grounded in multiple studies rather than a single experiment.</div>
+    <div class="distinction-grid">
+      <div class="distinction-item">
+        <div class="di-label">Methodology type</div>
+        <div class="di-value">Secondary / desk research with defined inclusion and exclusion criteria</div>
+      </div>
+      <div class="distinction-item">
+        <div class="di-label">Evidence base</div>
+        <div class="di-value">Peer-reviewed journals, open-access studies, 2008 or later</div>
+      </div>
+      <div class="distinction-item">
+        <div class="di-label">My contribution</div>
+        <div class="di-value">Synthesis framework design, critical analysis, design recommendation derivation</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">01 — Research Context</div>
+    <h2 class="section-title">Managing T2DM demands consistent daily self-monitoring — yet usability failures break that consistency</h2>
+    <p class="section-body">Type 2 Diabetes Mellitus (T2DM) is a chronic condition requiring daily blood glucose monitoring. Glucometers are the primary self-management tool — but their real-world efficacy depends not on clinical accuracy alone, but on whether patients can actually use them consistently. For older adults, those with lower digital literacy, and users from diverse socioeconomic backgrounds, even minor usability failures translate directly into missed readings and worse health outcomes.</p>
+    <br>
+    <p class="section-body">This review asks a precise question: <strong>what usability properties determine whether a glucometer becomes a reliable part of a patient's daily routine — or gets abandoned in a drawer?</strong></p>
+  </section>
+</div>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">02 — Research Questions</div>
+    <h2 class="section-title">Six questions that structured the review</h2>
+    <p class="section-body">These questions were defined before any literature was assessed — a methodological requirement of systematic reviews that prevents confirmation bias and ensures comprehensive coverage of the evidence space.</p>
+    <div class="rq-grid">
+      <div class="rq-card"><div class="rq-num">RQ01</div><div class="rq-text">What are the most commonly used self-management devices among T2DM patients in current clinical and home contexts?</div></div>
+      <div class="rq-card"><div class="rq-num">RQ02</div><div class="rq-text">How do glucometers facilitate holistic diabetes management beyond blood glucose measurement alone?</div></div>
+      <div class="rq-card"><div class="rq-num">RQ03</div><div class="rq-text">What are the most and least compelling features that encourage or discourage continued device usage?</div></div>
+      <div class="rq-card"><div class="rq-num">RQ04</div><div class="rq-text">How does usability — including ease of learning and time to operate — vary across age groups and experience levels?</div></div>
+      <div class="rq-card"><div class="rq-num">RQ05</div><div class="rq-text">To what extent are these devices integrated with mHealth platforms, and how does this affect data consistency and engagement?</div></div>
+      <div class="rq-card"><div class="rq-num">RQ06</div><div class="rq-text">Do age, experience, or user errors affect overall usability, and what design measures can mitigate common procedural failures?</div></div>
+    </div>
+  </section>
+</div>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">03 — Search Strategy & Selection</div>
+    <h2 class="section-title">A structured filtering process from broad evidence to targeted literature</h2>
+    <p class="section-body">The search was conducted in three progressively narrowed stages, with explicit inclusion criteria applied at each stage. The goal was to maximise relevance while minimising the risk of excluding significant evidence.</p>
+
+    <div class="prisma" style="margin-top: 2.5rem;">
+      <div class="prisma-step">
+        <div class="prisma-box light">
+          <div class="prisma-label"><strong style="color:var(--ink)">Stage 1</strong><br>Broad search: "Usability and HCI in healthcare technology or devices"</div>
+          <div class="prisma-n" style="color:var(--ink-light); font-size: 1.3rem;">27–37</div>
+        </div>
+      </div>
+
+      <div class="prisma-connector"></div>
+      <div class="prisma-arrow">↓ filtered to: Type 2 Diabetes</div>
+      <div class="prisma-connector"></div>
+
+      <div class="prisma-step">
+        <div class="prisma-box light">
+          <div class="prisma-label"><strong style="color:var(--ink)">Stage 2</strong><br>"Usability of devices in management of T2DM" — filters: Open Access only, published 2008 or later</div>
+          <div class="prisma-n">123</div>
+        </div>
+      </div>
+
+      <div class="prisma-connector"></div>
+      <div class="prisma-arrow">↓ screened by abstract relevance</div>
+      <div class="prisma-connector"></div>
+
+      <div class="prisma-step" style="position: relative;">
+        <div class="prisma-box light">
+          <div class="prisma-label"><strong style="color:var(--ink)">Stage 3</strong><br>"Usability of Glucometers" — keywords: Instant Glucometers, mHealth, T2DM, Self-Management</div>
+          <div class="prisma-n">61 → 12</div>
+        </div>
+        <div class="prisma-excluded">Excluded: Continuous glucose monitors, laboratory tests, special needs populations</div>
+      </div>
+
+      <div class="prisma-connector" style="background: var(--sage); opacity: 0.4;"></div>
+
+      <div class="prisma-step prisma-final">
+        <div class="prisma-box">
+          <div class="prisma-label" style="font-weight: 500; color: var(--ink);">Final corpus — articles included for full review</div>
+          <div class="prisma-n">15</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="section-body" style="margin-top: 1.5rem;">The final corpus of 15 articles focuses exclusively on standard instant glucometers used in home settings by T2DM patients without cognitive, severe motor, or neuropathic impairments — ensuring the findings are specific enough to be actionable for the target user group.</p>
+  </section>
+</div>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">04 — Analysis Framework</div>
+    <h2 class="section-title">A three-tier framework for evaluating glucometer usability</h2>
+    <p class="section-body">Rather than applying a generic usability heuristic to health devices, I constructed a domain-specific framework that maps the actual patient journey — from physically handling the device to interpreting its output and integrating it into broader health management behaviours.</p>
+
+    <div class="framework-grid">
+      <div class="framework-card">
+        <div class="framework-header" style="background: var(--ink);">
+          <span class="framework-icon">🛠️</span>
+          <div class="framework-title">Procedural</div>
+        </div>
+        <div class="framework-body">
+          <ul class="framework-items">
+            <li>Setup complexity — steps required out of the box</li>
+            <li>First-use independence — can users operate without instruction?</li>
+            <li>Test strip handling — width, insertion ease, error margin</li>
+            <li>Lancing experience — needle sharpness, pain level for older skin</li>
+            <li>Procedural error rate — how easy is it to do it wrong?</li>
+          </ul>
+        </div>
+      </div>
+      <div class="framework-card">
+        <div class="framework-header" style="background: var(--blue);">
+          <span class="framework-icon">👁️</span>
+          <div class="framework-title">Interpretation</div>
+        </div>
+        <div class="framework-body">
+          <ul class="framework-items">
+            <li>Display legibility — font size, contrast, backlight presence</li>
+            <li>Colour coding — high/normal/low visual encoding of results</li>
+            <li>Result speed — 4–6 second window; effect on satisfaction</li>
+            <li>Scale availability — is the glucose range visible on the device?</li>
+            <li>Audio output — verbal result cues for low-vision users</li>
+          </ul>
+        </div>
+      </div>
+      <div class="framework-card">
+        <div class="framework-header" style="background: var(--sage);">
+          <span class="framework-icon">📱</span>
+          <div class="framework-title">Digital Integration</div>
+        </div>
+        <div class="framework-body">
+          <ul class="framework-items">
+            <li>Bluetooth / wireless connectivity — automatic data logging</li>
+            <li>mHealth app compatibility — diet, exercise, and glucose integration</li>
+            <li>Reminder systems — push notifications for testing consistency</li>
+            <li>Portability — size, weight, carrying case, power flexibility</li>
+            <li>Demographic appeal — tech-savvy vs. older user adoption rates</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">05 — Key Findings</div>
+    <h2 class="section-title">What the evidence reveals — across all three dimensions</h2>
+
+    <div class="finding-block">
+      <div class="finding-meta">
+        <div class="finding-category">Procedural</div>
+        <div class="finding-title">Wider test strips reduce the most common user error</div>
+        <div class="finding-source">Supported by 7 of 15 reviewed studies</div>
+      </div>
+      <div class="finding-content">
+        <div class="finding-body">The physical act of transferring a small blood droplet to a test strip is the most frequent failure point in glucometer use — particularly for older users with reduced fine motor control or age-related skin changes. Studies consistently identify wider test strips as a high-impact, low-cost design improvement. The <em>second-chance sampling</em> feature (allowing blood to be added to a partially-filled strip) addresses this directly, and was rated as among the most valued features in user satisfaction research.</div>
+        <div class="finding-callout"><strong>Design implication:</strong> Wider test strips and error-tolerant sampling mechanisms have measurable impact on adherence. They're not cosmetic features — they directly determine whether a patient can reliably use the device unassisted.</div>
+      </div>
+    </div>
+
+    <div class="finding-block">
+      <div class="finding-meta">
+        <div class="finding-category">Interpretation</div>
+        <div class="finding-title">Colour-coded results are underused despite clear evidence of benefit</div>
+        <div class="finding-source">Recurring finding across multiple usability studies</div>
+      </div>
+      <div class="finding-content">
+        <div class="finding-body">Colour-coded result displays — where the screen changes colour to indicate high, normal, or low glucose (e.g. red/green/amber) — significantly improve comprehension speed, particularly for users with low health literacy or those who are new to self-monitoring. The evidence is consistent: this feature reduces the cognitive load of interpreting a numerical result in the context of what it means for the user's health.</div>
+        <div class="finding-callout"><strong>Critical gap found:</strong> Despite the clear benefit, multiple studies report that users are often entirely unaware the feature exists on their device. This is a discoverability failure — a design and onboarding problem, not a feature problem.</div>
+        <div class="finding-negative"><strong>Counterpoint:</strong> Some users, particularly those monitoring specific diet-glucose relationships, reported preferring precise numerical readouts over categorical colour signals, suggesting a configurable display would serve all segments better.</div>
+      </div>
+    </div>
+
+    <div class="finding-block">
+      <div class="finding-meta">
+        <div class="finding-category">Interpretation</div>
+        <div class="finding-title">Result speed does not drive user satisfaction — within the 4–6 second window</div>
+        <div class="finding-source">Consistent across reviewed quantitative studies</div>
+      </div>
+      <div class="finding-content">
+        <div class="finding-body">Almost all current instant glucometers return HbA1c readings within 4–6 seconds — and studies have found no statistically meaningful relationship between a device returning results in 4 seconds versus 6 seconds and user satisfaction scores. This is a notable finding because result speed is frequently used as a marketing differentiator by manufacturers.</div>
+        <div class="finding-callout"><strong>Evidence-based takeaway:</strong> Competing on result speed within the current 4–6 second range is an investment with near-zero returns on user satisfaction. Engineering resources are better directed at display clarity, strip usability, and connectivity.</div>
+      </div>
+    </div>
+
+    <div class="finding-block">
+      <div class="finding-meta">
+        <div class="finding-category">Digital Integration</div>
+        <div class="finding-title">mHealth integration improves consistency — but has a clear demographic cliff</div>
+        <div class="finding-source">Supported by 5+ studies, including mySugr and Glucose Buddy efficacy reviews</div>
+      </div>
+      <div class="finding-content">
+        <div class="finding-body">Bluetooth-enabled glucometers that automatically sync readings to a mobile app remove the manual transcription step — a known failure point for data consistency. mHealth applications like mySugr and Glucose Buddy go further, integrating glucose data with diet tracking, exercise logs, and medication adherence — enabling pattern recognition that individual readings alone cannot provide. Studies report measurably better health outcomes and patient engagement for users of integrated mHealth platforms.</div>
+        <div class="finding-callout"><strong>The demographic constraint:</strong> This benefit is concentrated among younger, tech-literate users. For adults over 65 — who represent a disproportionate share of T2DM patients — Bluetooth connectivity is often unused or actively avoided. A device optimised only for mHealth integration risks excluding the population with the greatest clinical need.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">06 — Device Comparison</div>
+    <h2 class="section-title">Top 5 glucometers — evaluated against the usability framework</h2>
+    <p class="section-body">The five devices below represent the most widely adopted glucometers as of 2024, each evaluated across the three dimensions of the analysis framework. Each makes a distinct set of design trade-offs that reflects a different implicit user model.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Device</th>
+            <th>Year</th>
+            <th>Ease of use</th>
+            <th>Display</th>
+            <th>Result encoding</th>
+            <th>Bluetooth</th>
+            <th>Star feature</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-model">Contour Next One</td>
+            <td class="td-year">2023</td>
+            <td>High — second-chance sampling prevents strip wastage from under-filled samples</td>
+            <td>Large font, backlit<br><span class="badge badge-yes">backlit ✓</span></td>
+            <td>Colour-coded indicators (high / normal / low)<br><span class="badge badge-color">colour coded</span></td>
+            <td><span class="badge badge-yes">Yes</span></td>
+            <td><div class="star-feature"><strong>Second-chance sampling</strong>Most forgiving of procedural errors — highest usability for new users</div></td>
+          </tr>
+          <tr>
+            <td class="td-model">AUVON Blood Glucose Monitor</td>
+            <td class="td-year">2022</td>
+            <td>Straightforward — fast 6-second reading</td>
+            <td>Readable font, no backlight<br><span class="badge badge-no">no backlight</span></td>
+            <td>Numerical only — no colour or audio encoding</td>
+            <td><span class="badge badge-no">No</span></td>
+            <td><div class="star-feature"><strong>Budget accessibility</strong>Highly accurate strips at a lower price point — best value for cost-sensitive users</div></td>
+          </tr>
+          <tr>
+            <td class="td-model">iHealth Gluco+ Wireless</td>
+            <td class="td-year">2023</td>
+            <td>High — wireless syncing, lightweight, intuitive physical operation</td>
+            <td>Large font, backlit<br><span class="badge badge-yes">backlit ✓</span></td>
+            <td>App-based "high" / "low" alerts with contextual guidance<br><span class="badge badge-color">app alerts</span></td>
+            <td><span class="badge badge-yes">Yes</span></td>
+            <td><div class="star-feature"><strong>Real-time tracking</strong>Best-in-class mHealth integration — optimal for tech-literate, younger users</div></td>
+          </tr>
+          <tr>
+            <td class="td-model">Accu-Chek Guide Me</td>
+            <td class="td-year">2021</td>
+            <td>Simple operation — affordable strip ecosystem</td>
+            <td>Clear, readable, backlit<br><span class="badge badge-yes">backlit ✓</span></td>
+            <td>Traffic-light colour system — most intuitive for health-literacy challenged users<br><span class="badge badge-color">traffic light</span></td>
+            <td><span class="badge badge-yes">Yes</span></td>
+            <td><div class="star-feature"><strong>Cost + connectivity</strong>Budget strips with Bluetooth — rare combination that serves both cost and digital goals</div></td>
+          </tr>
+          <tr>
+            <td class="td-model">Prodigy Voice</td>
+            <td class="td-year">2020</td>
+            <td>Very high for visually impaired — audio feedback eliminates screen dependency</td>
+            <td>No backlight — audio replaces visual display entirely<br><span class="badge badge-audio">audio output</span></td>
+            <td>Spoken results: "normal," "high," or "low" — multilingual<br><span class="badge badge-audio">verbal cues</span></td>
+            <td><span class="badge badge-no">No</span></td>
+            <td><div class="star-feature"><strong>Multilingual accessibility</strong>Only device designed for visually impaired and non-English speaking users — underserved segment</div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">07 — Synthesis & Design Recommendations</div>
+    <h2 class="section-title">What this evidence base tells device designers</h2>
+    <p class="section-body">Systematic reviews do not simply describe what is — they extract what <em>should</em> be. These recommendations are derived from the convergent evidence across the 15 articles, prioritised by strength of evidence and demographic impact.</p>
+
+    <div class="rec-grid">
+      <div class="rec-card priority-high">
+        <div class="rec-priority">High priority · strong evidence</div>
+        <div class="rec-title">Make error-tolerant sampling the standard, not a premium feature</div>
+        <div class="rec-body">Second-chance sampling and wider test strips reduce the most common failure mode across all demographics. These should be considered baseline requirements for any new glucometer, not differentiating features.</div>
+      </div>
+      <div class="rec-card priority-high">
+        <div class="rec-priority">High priority · strong evidence</div>
+        <div class="rec-title">Surface colour-coded results through better onboarding — not just design</div>
+        <div class="rec-body">The feature exists; users don't know about it. A short, mandatory first-use tutorial demonstrating what the colour states mean would unlock a benefit that is currently going unrealised for most patients.</div>
+      </div>
+      <div class="rec-card priority-high">
+        <div class="rec-priority">High priority · gap in market</div>
+        <div class="rec-title">Design a simultaneous mode: numeric + colour + audio</div>
+        <div class="rec-body">No current device offers all three simultaneously. A configurable display serving numerically-oriented, health-literacy-challenged, and visually impaired users in one product would represent a genuine advancement in inclusive design.</div>
+      </div>
+      <div class="rec-card priority-med">
+        <div class="rec-priority">Medium priority · demographic-specific</div>
+        <div class="rec-title">Build mHealth integration with an explicit opt-out pathway for older users</div>
+        <div class="rec-body">The evidence shows clear benefits for younger users and near-zero uptake among older adults. A well-designed opt-out (not opt-in) would preserve clinical benefit for those who want it without burdening those who don't.</div>
+      </div>
+      <div class="rec-card priority-med">
+        <div class="rec-priority">Medium priority · behavioural</div>
+        <div class="rec-title">Print the glucose scale directly on the device casing</div>
+        <div class="rec-body">All devices include a scale in the instruction manual — which is rarely consulted after first use. A physical reference scale printed on the device would reduce result misinterpretation without any digital investment.</div>
+      </div>
+      <div class="rec-card priority-low">
+        <div class="rec-priority">Low priority · marketing vs. evidence</div>
+        <div class="rec-title">Stop competing on result speed within the 4–6 second range</div>
+        <div class="rec-body">No evidence supports user satisfaction benefits from marginal speed improvements within this window. Resources spent on 1-second result-time improvements would generate greater returns if redirected to physical ergonomics or display improvements.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">08 — Limitations & Reflection</div>
+    <h2 class="section-title">What this review can and cannot conclude</h2>
+    <p class="section-body">Acknowledging the boundaries of an SLR's evidence is not a weakness — it's methodological honesty. These limitations point to where future primary research should focus.</p>
+
+    <div class="limit-grid">
+      <div class="limit-col">
+        <h3>Study limitations</h3>
+        <ul class="limit-list">
+          <li><span>01</span>The 15-article corpus, while systematically selected, is relatively small — limiting statistical generalisability across the full range of T2DM demographics.</li>
+          <li><span>02</span>Self-reported user satisfaction data (common across the reviewed studies) is susceptible to social desirability bias — patients may overrate usability to avoid appearing non-compliant.</li>
+          <li><span>03</span>Evidence on usability for adults over 65 is thinner than for younger demographics, despite this group representing a disproportionate share of T2DM patients.</li>
+          <li><span>04</span>The review did not assess cost-effectiveness, which is a critical dimension of real-world adoption but falls outside the usability scope.</li>
+        </ul>
+      </div>
+      <div class="limit-col">
+        <h3>What I would do differently</h3>
+        <ul class="limit-list">
+          <li><span>→</span>Include grey literature (manufacturer usability reports, patient advocacy group publications) to capture evidence not captured by academic databases.</li>
+          <li><span>→</span>Supplement the SLR with primary observational data — specifically a think-aloud usability study with older adult participants, where the literature is weakest.</li>
+          <li><span>→</span>Apply a formal quality assessment tool (e.g. the MMAT or CASP checklist) to each reviewed study to formally rate evidence strength rather than treating all sources equally.</li>
+          <li><span>→</span>Extend the comparison table to include continuous glucose monitors (CGMs), even outside the review scope, as a contrast point for the future-facing recommendations.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">09 — Future Directions</div>
+    <h2 class="section-title">Where the evidence base points next</h2>
+    <p class="section-body">The literature converges on two near-term trajectories that will reshape what a "glucometer" even means: the move toward non-invasive or minimally invasive sensing, and the deepening integration of glucose data into whole-health mHealth ecosystems.</p>
+    <br>
+    <p class="section-body">Non-invasive glucose monitoring — currently experimental — would eliminate the procedural barriers identified throughout this review entirely. The usability challenge would shift from physical interaction design to data interpretation and trust calibration. Meanwhile, mHealth platforms that aggregate glucose, diet, activity, and medication data are already demonstrating measurable improvements in patient engagement and health outcomes. The implication for HCI research is clear: the design of the physical glucometer is increasingly inseparable from the design of the digital ecosystem it sits within.</p>
+  </section>
+</div>
+
+<footer class="footer">
+  <strong>Usability of Glucometers in Self-Monitoring and Management of Type 2 Diabetes</strong><br>
+  Systematic Literature Review · HCI Portfolio<br><br>
+  Based on 15 peer-reviewed articles · Open access sources · Published 2008–2024
+</footer>
+
+</body>
+</html>

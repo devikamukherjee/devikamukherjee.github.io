@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Better Diet — UX Research Case Study · Devika Mukherjee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F8F5EF;
+    --warm-white: #FDFCF9;
+    --ink: #1A1814;
+    --ink-mid: #3D3930;
+    --ink-light: #7A756C;
+    --sage: #4A7C59;
+    --sage-light: #EBF2EC;
+    --sage-mid: #D0E6D4;
+    --amber: #C8803A;
+    --amber-light: #FBF0E3;
+    --coral: #C0503A;
+    --coral-light: #FAEAE7;
+    --blue: #3A5F8A;
+    --blue-light: #EAF0F8;
+    --divider: rgba(26,24,20,0.1);
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'Manrope', system-ui, sans-serif;
+  }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* —— BACK LINK —— */
+  .back-bar {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: rgba(248,245,239,0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--divider);
+    padding: 0.75rem 1.5rem;
+    z-index: 100;
+    font-size: 0.78rem;
+  }
+  .back-bar a {
+    color: var(--ink-mid);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .back-bar a:hover { color: var(--sage); }
+
+  /* —— HERO —— */
+  .hero {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 7rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 480px; height: 480px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(74,124,89,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 900px; margin: 0 auto; position: relative; }
+  .hero-tag {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sage);
+    border: 1px solid rgba(74,124,89,0.4);
+    padding: 4px 12px;
+    border-radius: 2px;
+    margin-bottom: 1.75rem;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 em { font-style: italic; color: rgba(248,245,239,0.55); }
+  .hero-sub {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: rgba(248,245,239,0.7);
+    max-width: 560px;
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .meta-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(248,245,239,0.4);
+    margin-bottom: 4px;
+  }
+  .meta-value {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: rgba(248,245,239,0.85);
+  }
+
+  /* —— LAYOUT —— */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+  .section { padding: 4.5rem 0; border-bottom: 1px solid var(--divider); }
+  .section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+    font-weight: 400;
+    line-height: 1.25;
+    margin-bottom: 1.5rem;
+  }
+  .section-body {
+    font-size: 0.97rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    max-width: 680px;
+    line-height: 1.8;
+  }
+
+  /* —— TL;DR —— */
+  .tldr {
+    background: var(--sage-light);
+    border-left: 3px solid var(--sage);
+    padding: 2rem 2.5rem;
+    border-radius: 0 8px 8px 0;
+    margin: 3rem 0;
+  }
+  .tldr-title {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 0.75rem;
+  }
+  .tldr p {
+    font-size: 0.97rem;
+    color: var(--ink-mid);
+    line-height: 1.75;
+  }
+
+  /* —— METHODS GRID —— */
+  .methods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--divider);
+    border: 1px solid var(--divider);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 2.5rem;
+  }
+  .method-card {
+    background: var(--warm-white);
+    padding: 1.5rem 1.4rem;
+    transition: background 0.2s;
+  }
+  .method-card:hover { background: var(--sage-light); }
+  .method-phase {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 0.5rem;
+  }
+  .method-name {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+  }
+  .method-detail {
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    line-height: 1.6;
+  }
+  .method-n {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--sage);
+    background: var(--sage-light);
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-top: 0.6rem;
+  }
+
+  /* —— STAT STRIP —— */
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+  .stat-box {
+    background: var(--warm-white);
+    border: 1px solid var(--divider);
+    border-radius: 10px;
+    padding: 1.25rem 1.25rem 1rem;
+  }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--ink-light);
+    line-height: 1.4;
+  }
+  .stat-box.green .stat-num { color: var(--sage); }
+  .stat-box.amber .stat-num { color: var(--amber); }
+  .stat-box.coral .stat-num { color: var(--coral); }
+  .stat-box.blue .stat-num { color: var(--blue); }
+
+  /* —— INSIGHT CARDS —— */
+  .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+  .insight-card {
+    background: var(--warm-white);
+    border: 1px solid var(--divider);
+    border-radius: 12px;
+    padding: 1.5rem 1.5rem 1.25rem;
+    position: relative;
+  }
+  .insight-num {
+    position: absolute;
+    top: 1.25rem; right: 1.25rem;
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: rgba(26,24,20,0.05);
+    line-height: 1;
+    user-select: none;
+  }
+  .insight-tag {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 0.75rem;
+    display: inline-block;
+  }
+  .tag-green { background: var(--sage-light); color: var(--sage); }
+  .tag-amber { background: var(--amber-light); color: var(--amber); }
+  .tag-coral { background: var(--coral-light); color: var(--coral); }
+  .tag-blue  { background: var(--blue-light); color: var(--blue); }
+  .insight-title {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 0.6rem;
+  }
+  .insight-body {
+    font-size: 0.83rem;
+    color: var(--ink-light);
+    line-height: 1.65;
+  }
+  .insight-quote {
+    font-style: italic;
+    font-size: 0.82rem;
+    color: var(--ink-mid);
+    border-left: 2px solid var(--divider);
+    padding-left: 0.75rem;
+    margin-top: 0.75rem;
+    line-height: 1.6;
+  }
+
+  /* —— BARRIER CHART —— */
+  .bar-chart { margin: 1.5rem 0; }
+  .bar-row {
+    display: grid;
+    grid-template-columns: 160px 1fr 44px;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .bar-label { font-size: 0.78rem; color: var(--ink-mid); text-align: right; }
+  .bar-track {
+    background: rgba(26,24,20,0.06);
+    border-radius: 4px;
+    height: 10px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: var(--sage);
+    transition: width 0.6s ease;
+  }
+  .bar-fill.amber { background: var(--amber); }
+  .bar-fill.coral { background: var(--coral); }
+  .bar-pct { font-size: 0.78rem; font-weight: 600; color: var(--ink-mid); }
+
+  /* —— DESIGN IMPLICATIONS —— */
+  .implication-list { list-style: none; margin-top: 1.5rem; }
+  .implication-item {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--divider);
+    align-items: start;
+  }
+  .implication-item:last-child { border-bottom: none; }
+  .impl-icon {
+    width: 2.5rem; height: 2.5rem;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .impl-finding {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 2px;
+  }
+  .impl-title {
+    font-weight: 500;
+    font-size: 0.93rem;
+    margin-bottom: 3px;
+  }
+  .impl-desc { font-size: 0.82rem; color: var(--ink-light); line-height: 1.6; }
+
+  /* —— PROTOTYPE FEEDBACK —— */
+  .feedback-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+  @media (max-width: 600px) { .feedback-grid { grid-template-columns: 1fr; } }
+  .feedback-card {
+    border-radius: 10px;
+    padding: 1.25rem 1.4rem;
+    border: 1px solid var(--divider);
+  }
+  .feedback-card.positive { background: var(--sage-light); border-color: var(--sage-mid); }
+  .feedback-card.tension  { background: var(--amber-light); border-color: rgba(200,128,58,0.2); }
+  .feedback-eyebrow {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .feedback-card.positive .feedback-eyebrow { color: var(--sage); }
+  .feedback-card.tension  .feedback-eyebrow { color: var(--amber); }
+  .feedback-quote {
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    line-height: 1.65;
+    margin-bottom: 0.6rem;
+  }
+  .feedback-response {
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    line-height: 1.6;
+  }
+
+  /* —— HEART STRIP —— */
+  .heart-strip {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--divider);
+    border: 1px solid var(--divider);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 2rem;
+  }
+  @media (max-width: 600px) { .heart-strip { grid-template-columns: 1fr 1fr; } }
+  .heart-cell {
+    background: var(--warm-white);
+    padding: 1.1rem 1rem;
+    text-align: center;
+  }
+  .heart-letter {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--sage);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .heart-word { font-size: 0.72rem; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .heart-metric { font-size: 0.68rem; color: var(--ink-light); line-height: 1.4; }
+
+  /* —— ETHICS —— */
+  .ethics-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .ethics-card {
+    background: var(--warm-white);
+    border: 1px solid var(--divider);
+    border-radius: 10px;
+    padding: 1.25rem;
+  }
+  .ethics-title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+  .ethics-body { font-size: 0.78rem; color: var(--ink-light); line-height: 1.65; }
+
+  /* —— REFLECTION —— */
+  .reflection-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  @media (max-width: 600px) { .reflection-grid { grid-template-columns: 1fr; } }
+  .reflection-col h3 {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  .reflection-items { list-style: none; }
+  .reflection-items li {
+    font-size: 0.83rem;
+    color: var(--ink-light);
+    line-height: 1.65;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--divider);
+    padding-left: 1rem;
+    position: relative;
+  }
+  .reflection-items li::before {
+    content: '→';
+    position: absolute; left: 0;
+    color: var(--sage);
+    font-size: 0.8rem;
+  }
+  .reflection-items li:last-child { border-bottom: none; }
+
+  /* —— FOOTER —— */
+  .footer {
+    background: var(--ink);
+    color: rgba(248,245,239,0.5);
+    text-align: center;
+    padding: 3rem 2rem;
+    font-size: 0.78rem;
+  }
+  .footer strong { color: var(--cream); font-weight: 500; }
+
+  /* —— PULL QUOTE —— */
+  .pull-quote {
+    font-family: var(--serif);
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink-mid);
+    border-left: 3px solid var(--sage);
+    padding: 1rem 0 1rem 1.75rem;
+    margin: 2.5rem 0;
+    line-height: 1.55;
+  }
+
+  hr { border: none; border-top: 1px solid var(--divider); margin: 2.5rem 0; }
+
+  /* —— PHASE TIMELINE —— */
+  .timeline {
+    display: flex;
+    gap: 0;
+    margin: 2rem 0;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--divider);
+  }
+  .timeline-step {
+    flex: 1;
+    background: var(--warm-white);
+    padding: 1rem 0.9rem;
+    border-right: 1px solid var(--divider);
+    text-align: center;
+    position: relative;
+  }
+  .timeline-step:last-child { border-right: none; }
+  .timeline-step.active { background: var(--sage); }
+  .timeline-num {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--ink-light);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .timeline-step.active .timeline-num { color: rgba(255,255,255,0.7); }
+  .timeline-name {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .timeline-step.active .timeline-name { color: #fff; }
+  @media (max-width: 600px) {
+    .timeline { flex-direction: column; }
+    .timeline-step { border-right: none; border-bottom: 1px solid var(--divider); }
+    .timeline-step:last-child { border-bottom: none; }
+    .bar-row { grid-template-columns: 110px 1fr 40px; }
+    .bar-label { font-size: 0.72rem; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-inner > * { animation: fadeUp 0.7s ease both; }
+  .hero-inner > *:nth-child(1) { animation-delay: 0.05s; }
+  .hero-inner > *:nth-child(2) { animation-delay: 0.15s; }
+  .hero-inner > *:nth-child(3) { animation-delay: 0.25s; }
+  .hero-inner > *:nth-child(4) { animation-delay: 0.35s; }
+</style>
+</head>
+<body>
+
+<div class="back-bar"><a href="../index.html">← Back to portfolio</a></div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">UX Research · Portfolio Case Study</div>
+    <h1>Better Diet<br><em>Designing for behaviour change</em></h1>
+    <p class="hero-sub">A mixed-methods research study exploring the barriers people face when trying to improve their diet — culminating in an AI-powered nutrition tracking system and smart tableware.</p>
+    <div class="meta-row">
+      <div class="meta-item"><div class="meta-label">My Role</div><div class="meta-value">UX Researcher · Interaction Designer</div></div>
+      <div class="meta-item"><div class="meta-label">Methods</div><div class="meta-value">Survey · Semi-structured Interviews · Usability Testing · Prototyping</div></div>
+      <div class="meta-item"><div class="meta-label">Team</div><div class="meta-value">5 researchers</div></div>
+      <div class="meta-item"><div class="meta-label">Domain</div><div class="meta-value">Health & Behaviour Change</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="tldr">
+    <div class="tldr-title">Summary</div>
+    <p>We ran a multi-phase research programme — survey (n=50+), semi-structured interviews, competitive analysis, and two rounds of prototype testing — to understand why people struggle to eat well, even when they want to. The core finding: <strong>the barrier isn't knowledge, it's cognitive load and motivation</strong>. People know what they should eat; they're too tired to act on it. We translated five research-backed insights directly into product decisions, designing the Better Diet App and smart tableware to reduce friction at every step of the dieting journey.</p>
+  </div>
+</div>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">01 — Problem Space</div>
+    <h2 class="section-title">Why do people fail at dieting, even when they genuinely want to change?</h2>
+    <p class="section-body">Poor diet is one of the most addressable causes of preventable illness, yet consumer behaviour persistently lags behind intention. Existing tools either overwhelm users with data or require time and discipline that real life rarely accommodates. Our design challenge was to move beyond awareness and actually reduce the friction between intention and action.</p>
+
+    <div class="timeline">
+      <div class="timeline-step active"><div class="timeline-num">Phase 01</div><div class="timeline-name">Empathise</div></div>
+      <div class="timeline-step active"><div class="timeline-num">Phase 02</div><div class="timeline-name">Define</div></div>
+      <div class="timeline-step active"><div class="timeline-num">Phase 03</div><div class="timeline-name">Develop</div></div>
+      <div class="timeline-step active"><div class="timeline-num">Phase 04</div><div class="timeline-name">Deliver</div></div>
+      <div class="timeline-step"><div class="timeline-num">Next</div><div class="timeline-name">Future work</div></div>
+    </div>
+    <p class="section-body">We structured our work using a hybrid Double Diamond / UCD model — broad, exploratory research in the first two phases, then convergent prototyping and validation in the second two. This ensured every design decision was traceable back to a research finding.</p>
+  </section>
+</div>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">02 — Research Design</div>
+    <h2 class="section-title">A mixed-methods approach — understanding both the what and the why</h2>
+    <p class="section-body">We deliberately combined quantitative and qualitative methods, using each to compensate for the other's blind spots. Survey data revealed patterns and scale; interviews revealed the lived experience and emotion behind those patterns. Prototype testing closed the loop between insight and design.</p>
+
+    <div class="methods-grid">
+      <div class="method-card">
+        <div class="method-phase">Discovery</div>
+        <div class="method-name">Brainstorm & Lateral Thinking</div>
+        <div class="method-detail">Structured ideation across three target demographics (students, elderly, children) to surface the most addressable problem spaces before committing to a direction.</div>
+        <span class="method-n">Team of 5</span>
+      </div>
+      <div class="method-card">
+        <div class="method-phase">Quantitative</div>
+        <div class="method-name">Survey (Google Forms)</div>
+        <div class="method-detail">Attitudinal + behavioural questionnaire covering exercise habits, diet self-perception, goals, barriers, and current tool usage. Open-ended responses allowed for emergent themes.</div>
+        <span class="method-n">n = 50+ responses</span>
+      </div>
+      <div class="method-card">
+        <div class="method-phase">Qualitative</div>
+        <div class="method-name">Semi-structured Interviews</div>
+        <div class="method-detail">Two-part interview: baseline demographics, then probing real dietary behaviours and knowledge gaps. Follow-up questions allowed us to pursue unexpected threads in real time.</div>
+        <span class="method-n">n = 3+ participants</span>
+      </div>
+      <div class="method-card">
+        <div class="method-phase">Secondary</div>
+        <div class="method-name">Competitive Analysis</div>
+        <div class="method-detail">Reviewed existing solutions (MyFitnessPal, Fitbit, calorie-counting apps, smart scales) to identify gaps, feature overlaps, and UX patterns that have proven effective at scale.</div>
+        <span class="method-n">Market landscape</span>
+      </div>
+      <div class="method-card">
+        <div class="method-phase">Evaluative</div>
+        <div class="method-name">LoFi Prototype Testing</div>
+        <div class="method-detail">Paper-based concept testing of the app and tableware to validate core interaction models before investing in high-fidelity design. Feedback shaped the HiFi iteration.</div>
+        <span class="method-n">Concept validation</span>
+      </div>
+      <div class="method-card">
+        <div class="method-phase">Evaluative</div>
+        <div class="method-name">HiFi Usability Testing</div>
+        <div class="method-detail">Showed Figma prototypes and 3D tableware models to 10 participants, followed by structured post-task interviews to surface usability issues and value perception.</div>
+        <span class="method-n">n = 10 participants</span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">03 — Discovery Findings</div>
+    <h2 class="section-title">The data: intention is high, action is blocked</h2>
+    <p class="section-body">The survey revealed a consistent pattern across respondents: most people want to improve their diet, most have clear goals, and most are already failing to meet them. The gap is not informational — it's structural.</p>
+
+    <div class="stat-strip">
+      <div class="stat-box green"><div class="stat-num">72%</div><div class="stat-label">of respondents aged 18–24 — skewed sample, but directly relevant to the core market</div></div>
+      <div class="stat-box amber"><div class="stat-num">44%</div><div class="stat-label">cited losing body fat as their primary goal — the most common driver by far</div></div>
+      <div class="stat-box coral"><div class="stat-num">31%</div><div class="stat-label">were using no app or device to support their diet at the time of the survey</div></div>
+      <div class="stat-box blue"><div class="stat-num">60%</div><div class="stat-label">exercise 1–5 hrs/week, showing health-conscious intent that doesn't extend to diet</div></div>
+    </div>
+
+    <hr>
+
+    <h3 style="font-family: var(--serif); font-size: 1.1rem; font-weight: 600; margin-bottom: 1.25rem;">Top barriers to better diet — survey results</h3>
+    <div class="bar-chart">
+      <div class="bar-row"><div class="bar-label">Tiredness / fatigue</div><div class="bar-track"><div class="bar-fill" style="width:74%"></div></div><div class="bar-pct">28.9%</div></div>
+      <div class="bar-row"><div class="bar-label">Don't like planning food</div><div class="bar-track"><div class="bar-fill amber" style="width:54%"></div></div><div class="bar-pct">21.1%</div></div>
+      <div class="bar-row"><div class="bar-label">Hard to track intake</div><div class="bar-track"><div class="bar-fill amber" style="width:48%"></div></div><div class="bar-pct">18.9%</div></div>
+      <div class="bar-row"><div class="bar-label">Too busy</div><div class="bar-track"><div class="bar-fill coral" style="width:43%"></div></div><div class="bar-pct">16.7%</div></div>
+      <div class="bar-row"><div class="bar-label">Other</div><div class="bar-track"><div class="bar-fill" style="width:37%; background: var(--ink-light)"></div></div><div class="bar-pct">14.4%</div></div>
+    </div>
+
+    <div class="pull-quote">"I always mean to have more vegetables, but I never get around to it." — Samantha, 18, interview participant</div>
+
+    <p class="section-body">The interviews deepened this picture. Participants weren't unaware of what healthy eating looks like — they found that processing food packaging labels, planning meals, and consistently logging intake all demanded cognitive resources they didn't have at the end of a long day. The tool adoption data reinforced this: no single app commanded meaningful loyalty, suggesting existing tools don't solve the real problem.</p>
+
+    <hr>
+    <h3 style="font-family: var(--serif); font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">Key observation on the competitive landscape</h3>
+    <p class="section-body" style="margin-top: 0.75rem;">Of survey respondents who did use a diet tool, usage was split roughly equally across smartwatches (19%), phone apps (14%), and Fitbit (14%). No tool dominated — confirming a genuine market gap rather than a preference for any single solution.</p>
+  </section>
+</div>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">04 — Insight Synthesis</div>
+    <h2 class="section-title">Five insights that drove every design decision</h2>
+    <p class="section-body">These aren't summaries of data — they're the reframed, actionable insights that shaped the product direction. Each is grounded in multiple data points across survey, interview, and secondary research.</p>
+
+    <div class="insights-grid">
+      <div class="insight-card">
+        <span class="insight-num">01</span>
+        <span class="insight-tag tag-coral">Cognitive load</span>
+        <div class="insight-title">Fatigue is the #1 enemy of dietary intent</div>
+        <div class="insight-body">The biggest barrier isn't willpower — it's decision fatigue. By evening, people lack the mental energy to research meals, count macros, or plan ahead. Any solution must minimise the number of decisions required.</div>
+        <div class="insight-quote">"I don't want to spend time reading packaging when I'm already tired." — Interview participant</div>
+      </div>
+
+      <div class="insight-card">
+        <span class="insight-num">02</span>
+        <span class="insight-tag tag-amber">Motivation</span>
+        <div class="insight-title">Progress visibility sustains behaviour change</div>
+        <div class="insight-body">Survey respondents who had stuck to dietary changes cited visible progress as a key driver. Streaks, social validation, and seeing nutritional gaps all function as external motivators when intrinsic motivation dips.</div>
+        <div class="insight-quote">"I always end up procrastinating on my diet. It's a motivation thing." — Zak, 22, interview participant</div>
+      </div>
+
+      <div class="insight-card">
+        <span class="insight-num">03</span>
+        <span class="insight-tag tag-green">Friction</span>
+        <div class="insight-title">Manual tracking is a known failure point</div>
+        <div class="insight-body">The most common reason users abandon calorie-tracking tools is the effort of manual logging. Food scanning via AI removes this entirely — users photograph a meal and the system does the rest.</div>
+        <div class="insight-body" style="margin-top: 0.5rem;">This was the central innovation unlocked by our research.</div>
+      </div>
+
+      <div class="insight-card">
+        <span class="insight-num">04</span>
+        <span class="insight-tag tag-blue">Social</span>
+        <div class="insight-title">Social accountability amplifies personal commitment</div>
+        <div class="insight-body">Participants noted that knowing others were watching their progress made them more consistent. Shared recipe discovery and streak visibility create a lightweight accountability layer without requiring explicit coaching.</div>
+      </div>
+
+      <div class="insight-card">
+        <span class="insight-num">05</span>
+        <span class="insight-tag tag-green">Discovery</span>
+        <div class="insight-title">People want to enjoy food, not just manage it</div>
+        <div class="insight-body">A recurring theme in both the survey and interviews was that healthy eating shouldn't feel like a restriction. Respondents were drawn to the idea of discovering recipes they'd actually enjoy, not just foods that met a calorie target.</div>
+        <div class="insight-quote">"If I could find something healthy that I actually like, I'd be less tempted by junk food." — Interview participant</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">05 — Research → Design</div>
+    <h2 class="section-title">How each insight became a feature</h2>
+    <p class="section-body">This traceability — from a research observation to a concrete product decision — is the core value of embedded UX research. Each feature below exists because the data demanded it, not because it sounded appealing.</p>
+
+    <ul class="implication-list">
+      <li class="implication-item">
+        <div class="impl-icon" style="background: var(--coral-light);">📷</div>
+        <div class="impl-content">
+          <div class="impl-finding">From: Insight 01 & 03 — fatigue + manual tracking</div>
+          <div class="impl-title">AI food scanner eliminates manual calorie logging</div>
+          <div class="impl-desc">Users photograph food on the smart plate; the AI identifies ingredients and logs nutritional data automatically. The plate's weight sensor provides precision without any user input. Zero effort, accurate data.</div>
+        </div>
+      </li>
+      <li class="implication-item">
+        <div class="impl-icon" style="background: var(--sage-light);">🍽️</div>
+        <div class="impl-content">
+          <div class="impl-finding">From: Insight 05 — enjoyment over restriction</div>
+          <div class="impl-title">Personalised recipe engine fills nutritional gaps with food users like</div>
+          <div class="impl-desc">Rather than presenting a list of "healthy" foods, the ML recommendation engine surfaces recipes tailored to taste preferences and dietary goals — prioritising gap-filling nutrients while matching cooking skill level.</div>
+        </div>
+      </li>
+      <li class="implication-item">
+        <div class="impl-icon" style="background: var(--amber-light);">🔥</div>
+        <div class="impl-content">
+          <div class="impl-finding">From: Insight 02 — progress visibility</div>
+          <div class="impl-title">Streak system and dashboard provide real-time feedback on progress</div>
+          <div class="impl-desc">The dashboard surfaces macro/micronutrient breakdowns, hydration levels, and activity data at a glance. Streak counters and friend activity create low-stakes accountability that doesn't require active participation.</div>
+        </div>
+      </li>
+      <li class="implication-item">
+        <div class="impl-icon" style="background: var(--blue-light);">👥</div>
+        <div class="impl-content">
+          <div class="impl-finding">From: Insight 04 — social accountability</div>
+          <div class="impl-title">Social layer enables opt-in accountability without pressure</div>
+          <div class="impl-desc">Friends can see each other's streaks and share recipes. Importantly, social features are entirely opt-in — a direct response to HiFi testing feedback where some users did not want social elements in a health context.</div>
+        </div>
+      </li>
+      <li class="implication-item">
+        <div class="impl-icon" style="background: var(--sage-light);">⚙️</div>
+        <div class="impl-content">
+          <div class="impl-finding">From: Insight 03 — friction in tracking</div>
+          <div class="impl-title">Smart tableware removes the "before meal" decision point entirely</div>
+          <div class="impl-desc">The plate's weight sensor and darker measurement zone guide the user passively — no buttons, no configuration. Wireless charging makes maintenance invisible. The IoT system works in the background while the user eats normally.</div>
+        </div>
+      </li>
+    </ul>
+  </section>
+</div>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">06 — Prototype Testing</div>
+    <h2 class="section-title">Two rounds of testing — what validated, what needed rethinking</h2>
+    <p class="section-body">LoFi testing shaped the HiFi prototype (notably, water tracking was added after multiple participants raised it unprompted). HiFi testing with 10 participants then exposed real tensions between our design assumptions and user reality.</p>
+
+    <div class="feedback-grid">
+      <div class="feedback-card positive">
+        <div class="feedback-eyebrow">✓ Validated</div>
+        <div class="feedback-quote">"The recipe recommendations are really useful — I always struggle to figure out what to cook that's actually healthy."</div>
+        <div class="feedback-response">The core value proposition — contextual, personalised recipes — resonated strongly. This confirmed that our Insight 05 reading was correct and worth investing further in.</div>
+      </div>
+      <div class="feedback-card positive">
+        <div class="feedback-eyebrow">✓ Validated</div>
+        <div class="feedback-quote">"I like that I can see my friends' streaks. It makes me feel like we're doing this together."</div>
+        <div class="feedback-response">Social layer passed the test for users who opted in. The framing as "shared progress" rather than "comparison" was key to positive reception.</div>
+      </div>
+      <div class="feedback-card tension">
+        <div class="feedback-eyebrow">⚠ Tension identified</div>
+        <div class="feedback-quote">"When I've just cooked dinner I'm too tired to wait a second to eat — taking a photo feels like one more thing."</div>
+        <div class="feedback-response">The act of scanning food before eating introduced friction at the highest-fatigue moment of the day — precisely the context our research identified as the core problem. Future exploration: under-cupboard cameras or passive RFID scanning.</div>
+      </div>
+      <div class="feedback-card tension">
+        <div class="feedback-eyebrow">⚠ Tension identified</div>
+        <div class="feedback-quote">"The app feels cluttered — there's too much going on at once."</div>
+        <div class="feedback-response">Designing for a wide user base meant we tried to serve too many needs simultaneously. Proposed resolution: modular onboarding where users select which features to enable, keeping the default view minimal.</div>
+      </div>
+      <div class="feedback-card tension">
+        <div class="feedback-eyebrow">⚠ Tension identified</div>
+        <div class="feedback-quote">"I don't want social functions in my health apps — it feels too personal."</div>
+        <div class="feedback-response">Privacy in health contexts is non-negotiable for a significant portion of users. This shaped our decision to make all social features fully opt-in, with an entirely viable solo experience.</div>
+      </div>
+      <div class="feedback-card positive">
+        <div class="feedback-eyebrow">✓ Validated</div>
+        <div class="feedback-quote">"I like that there's no button on the plate — it just works."</div>
+        <div class="feedback-response">The zero-input tableware concept was well received. Passive, invisible technology that fits existing behaviour (placing food on a plate) is the right UX direction for this context.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">07 — Measurement Framework</div>
+    <h2 class="section-title">How we would measure success post-launch</h2>
+    <p class="section-body">Applying Google's HEART framework to map the user experience metrics we'd track in production — connecting UX outcomes to the behaviour change goals identified in research.</p>
+
+    <div class="heart-strip">
+      <div class="heart-cell"><div class="heart-letter">H</div><div class="heart-word">Happiness</div><div class="heart-metric">App store rating, post-meal NPS, satisfaction surveys after 30 days</div></div>
+      <div class="heart-cell"><div class="heart-letter">E</div><div class="heart-word">Engagement</div><div class="heart-metric">Daily active scans, recipe saves per week, streak length distribution</div></div>
+      <div class="heart-cell"><div class="heart-letter">A</div><div class="heart-word">Adoption</div><div class="heart-metric">Onboarding completion rate, first scan within 24h of signup</div></div>
+      <div class="heart-cell"><div class="heart-letter">R</div><div class="heart-word">Retention</div><div class="heart-metric">Day 7 / Day 30 return rate, streak restart rate after a missed day</div></div>
+      <div class="heart-cell"><div class="heart-letter">T</div><div class="heart-word">Task success</div><div class="heart-metric">Scan-to-log time, recipe completion rate, manual input fallback rate</div></div>
+    </div>
+
+    <p class="section-body" style="margin-top: 1.5rem;">The most important leading indicator would be <strong>scan-to-log time</strong> — if AI food recognition reduces the friction of logging to under 10 seconds, we've solved the core problem identified in research. All other metrics are downstream of that.</p>
+  </section>
+</div>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">08 — Ethical Considerations</div>
+    <h2 class="section-title">Research surfaced vulnerable use cases — and we designed for them</h2>
+    <p class="section-body">Health applications carry particular ethical weight. An app that gamifies food and tracks calories can cause real harm to users with eating disorders or restricted medical needs. We identified these risks proactively and built in structural mitigations.</p>
+
+    <div class="ethics-list">
+      <div class="ethics-card">
+        <div class="ethics-title">Eating disorders & body image</div>
+        <div class="ethics-body">Calorie goals are treated symmetrically — undereating and overeating trigger the same neutral nudge. The app avoids "deficit" language and frames progress in terms of nutritional balance rather than restriction. An 18+ age rating is recommended for launch.</div>
+      </div>
+      <div class="ethics-card">
+        <div class="ethics-title">AI recommendation accuracy</div>
+        <div class="ethics-body">ML-generated meal suggestions carry a risk of allergen errors at scale. We proposed an algorithmic allergen filter as a safety layer, plus a persistent disclaimer that professional dietary advice takes precedence over AI recommendations.</div>
+      </div>
+      <div class="ethics-card">
+        <div class="ethics-title">Privacy & health data</div>
+        <div class="ethics-body">Nutritional data is sensitive. Default design stores data locally; social features (which require server-side data) are fully opt-in. Users are recommended not to include medical conditions or other sensitive identifiers in their profiles.</div>
+      </div>
+      <div class="ethics-card">
+        <div class="ethics-title">Future: clinical expert review</div>
+        <div class="ethics-body">We flagged the need for formal consultation with a dietitian or eating disorder specialist before any commercial launch, to validate that the app's design patterns don't inadvertently enable harmful behaviours.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">09 — Reflection</div>
+    <h2 class="section-title">What the research taught us — including about the research itself</h2>
+
+    <div class="reflection-grid">
+      <div class="reflection-col">
+        <h3>What worked well</h3>
+        <ul class="reflection-items">
+          <li>Using interviews to follow up on survey responses bridged the qual/quant gap effectively — the barrier data from the survey became emotionally textured in interviews.</li>
+          <li>Running LoFi testing before HiFi prototyping prevented us from building the wrong thing at high fidelity. Water tracking was added because participants raised it unprompted.</li>
+          <li>Grounding the tableware design in the zero-input principle (no buttons, no configuration) was validated by testing — passive technology in high-fatigue contexts is the right call.</li>
+          <li>The Double Diamond / UCD hybrid gave us permission to diverge broadly in Empathise/Define before converging, which prevented premature lock-in to the wrong problem.</li>
+        </ul>
+      </div>
+      <div class="reflection-col">
+        <h3>What we'd do differently</h3>
+        <ul class="reflection-items">
+          <li>Our survey skewed heavily toward 18–24-year-old males. A larger, stratified sample would have strengthened generalisability — especially for older demographics with more complex dietary needs.</li>
+          <li>We would use screened strangers rather than friends and family for interviews, to reduce social desirability bias in responses.</li>
+          <li>The smart device question in the survey should have used checkboxes rather than free text — post-processing open-ended answers introduced noise and reduced comparability.</li>
+          <li>We would conduct expert interviews (a dietitian, a behavioural psychologist) early in the Define phase to pressure-test our problem framing before ideating solutions.</li>
+          <li>A diary study over 1–2 weeks would have revealed actual eating patterns rather than self-reported estimates, giving us richer behavioural data.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="footer">
+  <strong>Better Diet — UX Research Case Study</strong><br>
+  Devika Mukherjee · Muhammad Ismaiel Tahir · Samuel Burchell · Viktor Eriksson · Oladapo Adeyanju<br><br>
+  HCI Design Challenge · Portfolio presentation
+</footer>
+
+</body>
+</html>

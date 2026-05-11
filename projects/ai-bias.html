@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Bias in News Recommendation Systems · Devika Mukherjee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F8F5EF;
+    --warm-white: #FDFCF9;
+    --ink: #1A1814;
+    --ink-mid: #3D3930;
+    --ink-light: #7A756C;
+    --sage: #4A7C59;
+    --sage-light: #EBF2EC;
+    --amber: #C8803A;
+    --amber-light: #FBF0E3;
+    --divider: rgba(26,24,20,0.1);
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'Manrope', system-ui, sans-serif;
+  }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .back-bar {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: rgba(248,245,239,0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--divider);
+    padding: 0.75rem 1.5rem;
+    z-index: 100;
+    font-size: 0.78rem;
+  }
+  .back-bar a { color: var(--ink-mid); text-decoration: none; transition: color 0.15s; }
+  .back-bar a:hover { color: var(--sage); }
+
+  .hero {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 7rem 2rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 480px; height: 480px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,128,58,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 900px; margin: 0 auto; position: relative; }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: 1px solid rgba(200,128,58,0.4);
+    padding: 4px 12px;
+    border-radius: 2px;
+    margin-bottom: 1.75rem;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--amber);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.4rem, 5.5vw, 3.8rem);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 em { font-style: italic; color: rgba(248,245,239,0.55); }
+  .hero-sub {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: rgba(248,245,239,0.7);
+    max-width: 600px;
+    line-height: 1.75;
+  }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+  .section { padding: 4.5rem 0; }
+
+  .section-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+    font-weight: 400;
+    line-height: 1.25;
+    margin-bottom: 1.5rem;
+  }
+  .section-body {
+    font-size: 0.97rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    max-width: 680px;
+    line-height: 1.8;
+  }
+
+  .summary-card {
+    background: var(--warm-white);
+    border: 1px solid var(--divider);
+    border-radius: 12px;
+    padding: 2rem 2.25rem;
+    margin: 2rem 0;
+  }
+  .summary-card h3 {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  .summary-card p {
+    font-size: 0.93rem;
+    color: var(--ink-mid);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+  .summary-card p:last-child { margin-bottom: 0; }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .pillar {
+    background: var(--warm-white);
+    border: 1px solid var(--divider);
+    border-left: 3px solid var(--sage);
+    border-radius: 0 10px 10px 0;
+    padding: 1.25rem 1.4rem;
+  }
+  .pillar-title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+  .pillar-body {
+    font-size: 0.8rem;
+    color: var(--ink-light);
+    line-height: 1.65;
+  }
+
+  .coming-soon {
+    background: var(--amber-light);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 8px 8px 0;
+    padding: 1.5rem 1.75rem;
+    margin: 2.5rem 0;
+  }
+  .coming-soon-eyebrow {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 0.5rem;
+  }
+  .coming-soon p {
+    font-size: 0.93rem;
+    color: var(--ink-mid);
+    line-height: 1.7;
+  }
+
+  .footer {
+    background: var(--ink);
+    color: rgba(248,245,239,0.5);
+    text-align: center;
+    padding: 3rem 2rem;
+    font-size: 0.78rem;
+  }
+  .footer strong { color: var(--cream); font-weight: 500; }
+  .footer a { color: var(--sage); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-inner > * { animation: fadeUp 0.7s ease both; }
+  .hero-inner > *:nth-child(1) { animation-delay: 0.05s; }
+  .hero-inner > *:nth-child(2) { animation-delay: 0.15s; }
+  .hero-inner > *:nth-child(3) { animation-delay: 0.25s; }
+</style>
+</head>
+<body>
+
+<div class="back-bar"><a href="../index.html">← Back to portfolio</a></div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Case study in progress</div>
+    <h1>AI Bias in <em>News Recommendation Systems</em></h1>
+    <p class="hero-sub">A systematic literature review and critical analysis of algorithmic bias in AI-driven news platforms — proposing design guidelines for transparency, fairness auditing, and user-centred bias mitigation in intelligent interactive systems.</p>
+  </div>
+</header>
+
+<div class="container">
+  <section class="section">
+    <div class="section-label">Project overview</div>
+    <h2 class="section-title">When the news you see is curated by an algorithm, who decides what's worth seeing?</h2>
+    <p class="section-body">News recommendation systems shape political discourse, public attention, and shared understanding at scale — yet they are designed and audited primarily for engagement, not for fairness or representational balance. This project investigates how algorithmic bias enters AI-driven news platforms, what its downstream effects on users are, and what HCI design patterns can mitigate it without compromising the value of personalisation.</p>
+
+    <div class="summary-card">
+      <h3>Approach</h3>
+      <p>I conducted a systematic literature review across recent research on recommender system bias, surfacing recurring failure modes — popularity bias, demographic filter bubbles, and the under-representation of minority viewpoints — and mapping them to the interaction points where users encounter their effects.</p>
+      <p>From that synthesis I derived a set of design guidelines targeting three concerns: transparency in how recommendations are produced, mechanisms for ongoing fairness auditing, and user-facing controls that let people steer their own information diet rather than simply consume what the system serves.</p>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-title">Transparency</div>
+        <div class="pillar-body">Surfacing why an article was recommended — not just that it was — so users can reason about the system's choices.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-title">Fairness auditing</div>
+        <div class="pillar-body">Continuous monitoring of representational balance across viewpoints and demographics, with intervention thresholds.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-title">User-centred mitigation</div>
+        <div class="pillar-body">Putting controls in the user's hands — preference resets, diversity sliders, and visible filter state.</div>
+      </div>
+    </div>
+
+    <div class="coming-soon">
+      <div class="coming-soon-eyebrow">Full case study in progress</div>
+      <p>The complete write-up — including the review methodology, the corpus of analysed studies, and the full design-guideline rationale — will be published on this page shortly. In the meantime, the project summary is captured in my <a href="../assets/resume.pdf" style="color: var(--amber); text-decoration: underline;">CV</a>.</p>
+    </div>
+  </section>
+</div>
+
+<footer class="footer">
+  <strong>AI Bias in News Recommendation Systems</strong><br>
+  Devika Mukherjee · HCI Portfolio<br><br>
+  <a href="../index.html">← Back to portfolio</a>
+</footer>
+
+</body>
+</html>
