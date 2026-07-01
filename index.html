@@ -177,10 +177,10 @@
   }
   .hero-info-row {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    gap: 1rem;
+    margin-top: 0.25rem;
   }
   .hero-info-row .chi-chip { margin-bottom: 0; }
   .hero-meta-inline {
@@ -194,7 +194,6 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-    margin-bottom: 2.5rem;
     justify-content: center;
   }
   .btn {
@@ -640,8 +639,10 @@
     <p class="hero-role">Human-Computer Interaction Researcher · <em style="font-style: italic; color: var(--ink-light);">VR · Haptics · Human-AI Interaction</em></p>
     <div class="hero-info-row">
       <span class="chi-chip">CHI 2026 · Barcelona · First-author publication</span>
-      <a href="https://dl.acm.org/doi/10.1145/3772318.3793143" target="_blank" rel="noopener" class="btn btn-primary">Read the CHI paper →</a>
-      <a href="assets/resume.pdf" download="Devika_Mukherjee_CV.pdf" class="btn btn-ghost">Download CV</a>
+      <div class="hero-cta-row">
+        <a href="https://dl.acm.org/doi/10.1145/3772318.3793143" target="_blank" rel="noopener" class="btn btn-primary">Read the CHI paper →</a>
+        <a href="assets/resume.pdf" download="Devika_Mukherjee_CV.pdf" class="btn btn-ghost">Download CV</a>
+      </div>
       <span class="hero-meta-inline">Research Associate, University of Birmingham &nbsp;·&nbsp; Birmingham, UK &nbsp;·&nbsp; <a href="mailto:mukherjee.devika07@gmail.com">mukherjee.devika07@gmail.com</a> &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/devika-mukherjee-3bb5b020a" target="_blank" rel="noopener">LinkedIn</a></span>
     </div>
   </div>
