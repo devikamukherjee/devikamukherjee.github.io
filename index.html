@@ -299,45 +299,89 @@
     border-radius: 20px;
   }
 
-  /* ——— RESEARCH INTERESTS ——— */
-  .interests-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-    gap: 1rem;
-    margin-top: 2.5rem;
+  /* ——— RESEARCH INTERESTS — orbiting system ——— */
+  .research-layout {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    margin-top: 0.5rem;
   }
-  .interest-card {
-    background: #fff;
-    border: 1px solid var(--divider);
-    border-radius: 10px;
-    padding: 1.25rem 1.4rem;
-    transition: all 0.2s;
+  .research-text { flex: 1 1 380px; min-width: 0; }
+  .thread-list { list-style: none; margin-top: 2rem; }
+  .thread-item { border-top: 1px solid var(--divider); padding: 0.9rem 0; }
+  .thread-item:last-child { border-bottom: 1px solid var(--divider); }
+  .thread-title {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
   }
-  .interest-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(26,24,20,0.07);
+  .thread-body { font-size: 0.8rem; color: var(--ink-light); line-height: 1.55; }
+
+  .research-orbit { flex: 0 0 260px; width: 260px; }
+  .orbit-wrap { position: relative; width: 100%; aspect-ratio: 1; margin: 0 auto; }
+  .orbit-ring {
+    position: absolute;
+    inset: 14%;
+    border: 1px dashed var(--accent-border);
+    border-radius: 50%;
+    animation: orbitSpin 90s linear infinite;
   }
-  .interest-icon {
-    width: 32px; height: 32px;
+  .orbit-core {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 34%; height: 34%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
     background: var(--accent-soft);
-    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 0.75rem;
-    color: var(--accent);
+    text-align: center;
   }
-  .interest-icon svg { width: 18px; height: 18px; }
-  .interest-title {
-    font-family: var(--serif);
-    font-size: 1rem;
+  .orbit-core span {
+    font-family: var(--sans);
+    font-size: 0.56rem;
     font-weight: 600;
-    margin-bottom: 0.35rem;
-    line-height: 1.3;
-    color: var(--ink);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--accent);
+    line-height: 1.4;
   }
-  .interest-body { font-size: 0.8rem; color: var(--ink-light); line-height: 1.55; }
+  .orbit-rotor { position: absolute; inset: 0; animation: orbitSpin 90s linear infinite; }
+  .orbit-node { position: absolute; transform: translate(-50%, -50%); }
+  .orbit-node-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    animation: orbitSpinRev 90s linear infinite;
+  }
+  .orbit-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--panel-bg);
+    border: 2px solid var(--accent);
+  }
+  .orbit-label {
+    font-size: 0.62rem;
+    font-weight: 600;
+    color: var(--ink);
+    text-align: center;
+    max-width: 92px;
+    line-height: 1.25;
+    background: var(--panel-bg);
+    padding: 3px 7px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(26,24,20,0.08);
+  }
+  @keyframes orbitSpin { to { transform: rotate(360deg); } }
+  @keyframes orbitSpinRev { to { transform: rotate(-360deg); } }
+  @media (max-width: 760px) {
+    .research-layout { flex-direction: column; }
+    .research-orbit { width: 220px; flex: 0 0 auto; margin: 0 auto 0.5rem; }
+  }
 
   /* ——— FEATURED PUBLICATION ——— */
   .pub-feature {
@@ -594,7 +638,7 @@
   .cursor-dot.active, .cursor-ring.active { opacity: 1; }
   @media (hover: hover) and (pointer: fine) {
     body, a, button, summary, .btn, .skill-chip, details summary,
-    .project-card, .interest-card { cursor: none; }
+    .project-card, .thread-item { cursor: none; }
   }
 
   /* ——— RESPONSIVE ——— */
@@ -609,6 +653,7 @@
   @media (prefers-reduced-motion: reduce) {
     .reveal, .panel-spin, .panel-rise { opacity: 1 !important; transform: none !important; transition: none !important; animation: none !important; }
     .cursor-dot, .cursor-ring { transition: opacity 0.3s ease; }
+    .orbit-ring, .orbit-rotor, .orbit-node-inner { animation: none !important; }
   }
 </style>
 </head>
@@ -672,33 +717,55 @@
 <section class="section" id="research">
   <div class="container-narrow">
     <div class="section-label">Research interests</div>
-    <h2 class="section-title">Five threads that run through my work</h2>
-    <p class="section-body">My research sits at the meeting point of immersive technologies, embodied feedback, and human-centred AI — anchored throughout in a concern for safety, accessibility, and lived user experience.</p>
-    <div class="interests-grid">
-      <div class="interest-card">
-        <div class="interest-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="8" cy="12" r="2"></circle><circle cx="16" cy="12" r="2"></circle></svg></div>
-        <div class="interest-title">VR / XR</div>
-        <div class="interest-body">Designing experimental VR environments to study embodiment, perception, and behaviour in mixed reality.</div>
+    <div class="research-layout">
+      <div class="research-text">
+        <h2 class="section-title">Five threads that run through my work</h2>
+        <p class="section-body">My research sits at the meeting point of immersive technologies, embodied feedback, and human-centred AI — anchored throughout in a concern for safety, accessibility, and lived user experience.</p>
+        <ul class="thread-list">
+          <li class="thread-item">
+            <div class="thread-title">VR / XR</div>
+            <div class="thread-body">Designing experimental VR environments to study embodiment, perception, and behaviour in mixed reality.</div>
+          </li>
+          <li class="thread-item">
+            <div class="thread-title">Wearable Haptics</div>
+            <div class="thread-body">Investigating how on-body feedback shapes user performance, safety, and presence — including the lower-body collision system at CHI 2026.</div>
+          </li>
+          <li class="thread-item">
+            <div class="thread-title">Human-AI Interaction</div>
+            <div class="thread-body">Studying how people understand, calibrate trust in, and remain in control of intelligent interactive systems.</div>
+          </li>
+          <li class="thread-item">
+            <div class="thread-title">Wearable Technologies</div>
+            <div class="thread-body">From prototype to user study — designing wearable systems that integrate into daily life without disrupting it.</div>
+          </li>
+          <li class="thread-item">
+            <div class="thread-title">Healthcare HCI</div>
+            <div class="thread-body">Designing for vulnerable users — usability of medical devices, inclusive health technology, and behaviour-change interventions.</div>
+          </li>
+        </ul>
       </div>
-      <div class="interest-card">
-        <div class="interest-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 0-4 4v6a4 4 0 0 0 8 0V6a4 4 0 0 0-4-4z"></path><path d="M5 12v2a7 7 0 0 0 14 0v-2"></path><path d="M12 21v-2"></path></svg></div>
-        <div class="interest-title">Wearable Haptics</div>
-        <div class="interest-body">Investigating how on-body feedback shapes user performance, safety, and presence — including the lower-body collision system at CHI 2026.</div>
-      </div>
-      <div class="interest-card">
-        <div class="interest-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path></svg></div>
-        <div class="interest-title">Human-AI Interaction</div>
-        <div class="interest-body">Studying how people understand, calibrate trust in, and remain in control of intelligent interactive systems.</div>
-      </div>
-      <div class="interest-card">
-        <div class="interest-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l3-3h12l3 3v3a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V7z"></path><path d="M6 13v7M18 13v7M9 17h6"></path></svg></div>
-        <div class="interest-title">Wearable Technologies</div>
-        <div class="interest-body">From prototype to user study — designing wearable systems that integrate into daily life without disrupting it.</div>
-      </div>
-      <div class="interest-card">
-        <div class="interest-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"></path></svg></div>
-        <div class="interest-title">Healthcare HCI</div>
-        <div class="interest-body">Designing for vulnerable users — usability of medical devices, inclusive health technology, and behaviour-change interventions.</div>
+      <div class="research-orbit" aria-hidden="true">
+        <div class="orbit-wrap">
+          <div class="orbit-ring"></div>
+          <div class="orbit-core"><span>Human-<br>Centred<br>Research</span></div>
+          <div class="orbit-rotor">
+            <div class="orbit-node" style="left:50%;top:12%;">
+              <div class="orbit-node-inner"><span class="orbit-dot"></span><span class="orbit-label">VR / XR</span></div>
+            </div>
+            <div class="orbit-node" style="left:86.1%;top:38.3%;">
+              <div class="orbit-node-inner"><span class="orbit-dot"></span><span class="orbit-label">Wearable Haptics</span></div>
+            </div>
+            <div class="orbit-node" style="left:72.3%;top:80.7%;">
+              <div class="orbit-node-inner"><span class="orbit-dot"></span><span class="orbit-label">Human-AI Interaction</span></div>
+            </div>
+            <div class="orbit-node" style="left:27.7%;top:80.7%;">
+              <div class="orbit-node-inner"><span class="orbit-dot"></span><span class="orbit-label">Wearable Technologies</span></div>
+            </div>
+            <div class="orbit-node" style="left:13.9%;top:38.3%;">
+              <div class="orbit-node-inner"><span class="orbit-dot"></span><span class="orbit-label">Healthcare HCI</span></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1074,7 +1141,7 @@
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const selectors = [
       '.section-label', '.section-title', '.section-body', '.about-body',
-      '.about-skills', '.interest-card', '.pub-feature', '.timeline-item',
+      '.about-skills', '.thread-item', '.pub-feature', '.timeline-item',
       '.project-card', '.edu-card', '.contact-eyebrow', '.contact-title',
       '.contact-body', '.contact-cta', '.contact-links'
     ];
@@ -1088,7 +1155,7 @@
       el.classList.add('reveal');
       const parent = el.parentElement;
       const n = groupCount.get(parent) || 0;
-      if (el.matches('.interest-card, .project-card, .edu-card, .timeline-item')) {
+      if (el.matches('.thread-item, .project-card, .edu-card, .timeline-item')) {
         el.setAttribute('data-delay', String(Math.min(n + 1, 5)));
         groupCount.set(parent, n + 1);
       }
@@ -1156,7 +1223,7 @@
       requestAnimationFrame(tick);
     }
 
-    const interactive = 'a, button, summary, .btn, .project-card, .interest-card, .skill-chip';
+    const interactive = 'a, button, summary, .btn, .project-card, .thread-item, .skill-chip';
     document.addEventListener('mouseover', (e) => { if (e.target.closest(interactive)) ring.classList.add('hover'); });
     document.addEventListener('mouseout',  (e) => { if (e.target.closest(interactive)) ring.classList.remove('hover'); });
   })();
