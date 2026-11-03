@@ -4,796 +4,143 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Devika Mukherjee — HCI Researcher · CHI 2026</title>
-<meta name="description" content="Devika Mukherjee — Human-Computer Interaction Researcher and Research Associate at the University of Birmingham, first-author at CHI 2026. Working at the intersection of HCI, VR, wearable haptics, fabrication, and Human-AI Interaction.">
+<meta name="description" content="Devika Mukherjee — Human-Computer Interaction researcher at the University of Birmingham. Wearable haptics, VR/XR, agentic XR, fabrication and human-AI interaction. First author at CHI 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Manrope:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --white: #ffffff;
-    --ink: #1A1814;
-    --ink-mid: #3D3930;
-    --ink-light: #7A756C;
-    --accent: #2C2C2C;
-    --accent-soft: rgba(44,44,44,0.07);
-    --accent-border: rgba(44,44,44,0.18);
-    --divider: rgba(26,24,20,0.09);
-    --ink-border: rgba(255,255,255,0.1);
-    --panel-bg: rgba(255,255,255,0.97);
-    --panel-shadow: 0 4px 40px rgba(0,0,0,0.07);
-    --panel-radius: 28px;
-    --serif: 'Playfair Display', Georgia, serif;
-    --sans: 'Manrope', system-ui, sans-serif;
-  }
-
-  html { font-size: 16px; scroll-behavior: smooth; }
-  body {
-    font-family: var(--sans);
-    background: transparent;
-    color: var(--ink);
-    line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
-    position: relative;
-    z-index: 1;
-    /* Side padding exposes canvas on left and right of floating panels */
-    padding: 0 1.25rem;
-  }
-
-  a { color: var(--ink-mid); text-decoration: none; }
-  a:hover { color: var(--ink); }
-
-  /* ——— SUMINAGASHI CANVAS ——— */
-  #suminagashi-canvas {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  /* ——— NAV — always frosted glass ——— */
-  .nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 0.9rem 2rem;
-    background: rgba(255,255,255,0.88);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(0,0,0,0.07);
-  }
-  .nav-inner {
-    max-width: 900px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2rem;
-  }
-  .nav-brand {
-    font-family: var(--serif);
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--ink);
-  }
-  .nav-links {
-    display: flex;
-    gap: 1.75rem;
-    list-style: none;
-    align-items: center;
-  }
-  .nav-links a {
-    font-size: 0.82rem;
-    font-weight: 500;
-    color: var(--ink-mid);
-    transition: color 0.2s;
-    position: relative;
-  }
-  .nav-links a:hover { color: var(--ink); }
-  .nav-links a:not(.nav-cv)::after {
-    content: '';
-    position: absolute;
-    left: 0; bottom: -3px;
-    width: 100%; height: 1.5px;
-    background: var(--ink);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.32s cubic-bezier(.16,1,.3,1);
-  }
-  .nav-links a:not(.nav-cv):hover::after { transform: scaleX(1); }
-  .nav-cv {
-    padding: 5px 13px;
-    border: 1px solid var(--accent-border);
-    border-radius: 4px;
-    color: var(--accent) !important;
-    transition: all 0.2s;
-  }
-  .nav-cv:hover { background: var(--accent); color: #fff !important; border-color: var(--accent); }
-  @media (max-width: 760px) {
-    .nav-links { gap: 1rem; }
-    .nav-links li:not(.nav-cv-li) { display: none; }
-  }
-
-  /* ——— HERO — transparent, canvas shows through ——— */
-  .hero {
-    max-width: none;
-    margin: 4.5rem 0 0;
-    padding: 4rem 0 2.5rem;
-    background: none;
-    box-shadow: none;
-    border-radius: 0;
-    position: relative;
-  }
-  .hero-grid {
-    max-width: none;
-    margin: 0;
-    text-align: center;
-  }
-
-  .chi-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    border: 1px solid var(--accent-border);
-    padding: 6px 14px;
-    border-radius: 4px;
-    margin-bottom: 1.75rem;
-    background: var(--accent-soft);
-  }
-  .chi-chip::before {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    flex-shrink: 0;
-  }
-
-  .hero h1 {
-    font-family: 'Montserrat', var(--sans);
-    font-size: clamp(2.8rem, 9.4vw, 13rem);
-    font-weight: 900;
-    text-transform: uppercase;
-    line-height: 1;
-    letter-spacing: -0.03em;
-    margin-bottom: 0.75rem;
-    color: var(--ink);
-  }
-  .hero-role {
-    font-size: 1.05rem;
-    font-weight: 300;
-    color: var(--ink-mid);
-    margin-bottom: 1.5rem;
-    max-width: 620px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.65;
-  }
-  .hero-info-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 0.25rem;
-  }
-  .hero-info-row .chi-chip { margin-bottom: 0; }
-  .hero-meta-inline {
-    font-size: 0.82rem;
-    color: var(--ink-mid);
-    line-height: 1.5;
-  }
-  .hero-meta-inline a { color: var(--ink-mid); }
-  .hero-meta-inline a:hover { color: var(--ink); }
-  .hero-cta-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    justify-content: center;
-  }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--sans);
-    font-size: 0.85rem;
-    font-weight: 500;
-    padding: 0.7rem 1.2rem;
-    border-radius: 6px;
-    transition: all 0.2s;
-    border: 1px solid transparent;
-    cursor: pointer;
-  }
-  .btn-primary { background: var(--accent); color: #fff; }
-  .btn-primary:hover { background: var(--ink); color: #fff; transform: translateY(-1px); }
-  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--accent-border); }
-  .btn-ghost:hover { background: var(--accent-soft); color: var(--ink); border-color: var(--accent); }
-
-  .hero-meta {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 1.25rem 2rem;
-    padding-top: 1.75rem;
-    border-top: 1px solid var(--divider);
-    text-align: left;
-    max-width: 580px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .meta-label {
-    font-size: 0.63rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-light);
-    margin-bottom: 4px;
-  }
-  .meta-value { font-size: 0.86rem; color: var(--ink-mid); line-height: 1.4; }
-  .meta-value a { color: var(--ink-mid); }
-  .meta-value a:hover { color: var(--ink); }
-
-  /* ——— SECTION PANELS — floating white cards ——— */
-  .container { max-width: none; margin: 0; padding: 0; }
-  .container-narrow { max-width: none; margin: 0; padding: 0; }
-
-  .section {
-    max-width: 900px;
-    margin: 0 auto 1.75rem;
-    border-radius: var(--panel-radius);
-    padding: 3.5rem;
-    background: var(--panel-bg);
-    box-shadow: var(--panel-shadow);
-    border-bottom: none;
-  }
-  /* Projects section gets a bit more width for the grid */
-  #projects { max-width: 1060px; }
-
-  .section-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.63rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.6rem;
-  }
-  .section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
-  .section-title {
-    font-family: var(--serif);
-    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-    font-weight: 400;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    margin-bottom: 1.5rem;
-    color: var(--ink);
-  }
-  .section-title em { font-style: italic; color: var(--ink); }
-  .section-body { font-size: 1rem; font-weight: 300; color: var(--ink-mid); line-height: 1.85; }
-
-  /* ——— ABOUT ——— */
-  .about-body {
-    font-family: var(--serif);
-    font-size: clamp(1.1rem, 2vw, 1.38rem);
-    font-weight: 400;
-    line-height: 1.6;
-    color: var(--ink);
-    margin-bottom: 1.75rem;
-  }
-  .about-body strong { font-weight: 600; font-style: italic; }
-  .about-body em { font-style: italic; }
-  .about-skills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
-  .skill-chip {
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--ink-mid);
-    background: #fff;
-    border: 1px solid var(--accent-border);
-    padding: 5px 11px;
-    border-radius: 20px;
-  }
-
-  /* ——— RESEARCH INTERESTS — orbiting system ——— */
-  .research-layout {
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-    margin-top: 0.5rem;
-  }
-  .research-text { flex: 1 1 380px; min-width: 0; }
-  .thread-list { list-style: none; margin-top: 2rem; }
-  .thread-item { border-top: 1px solid var(--divider); padding: 0.9rem 0; }
-  .thread-item:last-child { border-bottom: 1px solid var(--divider); }
-  .thread-title {
-    font-family: var(--serif);
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 0.25rem;
-  }
-  .thread-body { font-size: 0.8rem; color: var(--ink-light); line-height: 1.55; }
-
-  .research-orbit { flex: 0 0 260px; width: 260px; }
-  .orbit-wrap { position: relative; width: 100%; aspect-ratio: 1; margin: 0 auto; }
-  .orbit-ring {
-    position: absolute;
-    inset: 14%;
-    border: 1px dashed var(--accent-border);
-    border-radius: 50%;
-    animation: orbitSpin 90s linear infinite;
-  }
-  .orbit-core {
-    position: absolute;
-    left: 50%; top: 50%;
-    width: 34%; height: 34%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background: var(--accent-soft);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
-  .orbit-core span {
-    font-family: var(--sans);
-    font-size: 0.56rem;
-    font-weight: 600;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: var(--accent);
-    line-height: 1.4;
-  }
-  .orbit-rotor { position: absolute; inset: 0; animation: orbitSpin 90s linear infinite; }
-  .orbit-node { position: absolute; transform: translate(-50%, -50%); }
-  .orbit-node-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.35rem;
-    animation: orbitSpinRev 90s linear infinite;
-  }
-  .orbit-dot {
-    width: 9px; height: 9px;
-    border-radius: 50%;
-    background: var(--panel-bg);
-    border: 2px solid var(--accent);
-  }
-  .orbit-label {
-    font-size: 0.62rem;
-    font-weight: 600;
-    color: var(--ink);
-    text-align: center;
-    max-width: 92px;
-    line-height: 1.25;
-    background: var(--panel-bg);
-    padding: 3px 7px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(26,24,20,0.08);
-  }
-  @keyframes orbitSpin { to { transform: rotate(360deg); } }
-  @keyframes orbitSpinRev { to { transform: rotate(-360deg); } }
-  @media (max-width: 760px) {
-    .research-layout { flex-direction: column; }
-    .research-orbit { width: 220px; flex: 0 0 auto; margin: 0 auto 0.5rem; }
-  }
-
-  /* ——— FEATURED PUBLICATION ——— */
-  .pub-feature {
-    background: var(--ink);
-    color: #F8F5EF;
-    border-radius: 16px;
-    padding: clamp(2rem, 4vw, 3rem);
-    margin-top: 2.5rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .pub-feature::before {
-    content: '';
-    position: absolute;
-    top: -50px; right: -80px;
-    width: 360px; height: 360px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .pub-feature-inner { position: relative; z-index: 1; }
-  .pub-badge-row { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.75rem; align-items: center; }
-  .pub-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 7px 14px;
-    border-radius: 4px;
-    background: #C4FAF8;
-    color: var(--ink);
-  }
-  .pub-badge.outline { background: #C4FAF8; border: none; color: var(--ink); }
-  .pub-badge.first-author { background: #AFCBFF; color: var(--ink); }
-  .pub-feature h3 {
-    font-family: var(--serif);
-    font-size: clamp(1.5rem, 3vw, 2.2rem);
-    font-weight: 600;
-    line-height: 1.2;
-    margin-bottom: 1rem;
-    color: #F8F5EF;
-  }
-  .pub-authors { font-size: 0.93rem; color: rgba(248,245,239,0.78); line-height: 1.7; margin-bottom: 0.5rem; }
-  .pub-authors strong { color: #F8F5EF; border-bottom: 1px solid rgba(255,255,255,0.4); padding-bottom: 1px; font-weight: 600; }
-  .pub-venue { font-size: 0.86rem; color: rgba(248,245,239,0.55); font-style: italic; margin-bottom: 1.75rem; line-height: 1.6; }
-  .pub-abstract {
-    font-size: 0.95rem;
-    color: rgba(248,245,239,0.82);
-    line-height: 1.8;
-    margin-bottom: 2rem;
-    padding-left: 1.25rem;
-    border-left: 2px solid rgba(255,255,255,0.3);
-  }
-  .pub-cta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.75rem; }
-  .pub-feature .btn-primary { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #F8F5EF; }
-  .pub-feature .btn-primary:hover { background: rgba(255,255,255,0.25); color: #F8F5EF; }
-  .pub-feature .btn-ghost { color: rgba(248,245,239,0.75); border-color: rgba(248,245,239,0.25); }
-  .pub-feature .btn-ghost:hover { background: rgba(255,255,255,0.08); color: #F8F5EF; border-color: rgba(248,245,239,0.5); }
-  .pub-affiliation { font-size: 0.76rem; color: rgba(248,245,239,0.45); letter-spacing: 0.04em; padding-top: 1.5rem; border-top: 1px solid var(--ink-border); }
-  details.bibtex { margin-top: 1rem; }
-  details.bibtex summary {
-    cursor: pointer; font-size: 0.8rem; color: rgba(248,245,239,0.55); transition: color 0.15s;
-    list-style: none; display: inline-flex; align-items: center; gap: 6px;
-  }
-  details.bibtex summary::-webkit-details-marker { display: none; }
-  details.bibtex summary::before { content: '▸'; font-size: 0.7rem; transition: transform 0.2s; }
-  details.bibtex[open] summary::before { transform: rotate(90deg); }
-  details.bibtex summary:hover { color: rgba(248,245,239,0.9); }
-  details.bibtex pre {
-    margin-top: 0.75rem; padding: 1rem 1.25rem;
-    background: rgba(255,255,255,0.04); border: 1px solid var(--ink-border); border-radius: 8px;
-    font-family: 'Courier New', monospace; font-size: 0.74rem; color: rgba(248,245,239,0.75);
-    line-height: 1.6; overflow-x: auto; white-space: pre-wrap;
-  }
-
-  /* ——— WORK / TIMELINE ——— */
-  .timeline { margin-top: 2.5rem; position: relative; background: #fff; border-radius: 16px; padding: 0.5rem 1.5rem; }
-  .timeline::before {
-    content: ''; position: absolute; left: 11px; top: 12px; bottom: 12px;
-    width: 1px; background: var(--divider);
-  }
-  @media (min-width: 720px) { .timeline::before { left: 154px; } }
-  .timeline-item {
-    display: grid; grid-template-columns: 1fr; gap: 0.5rem;
-    padding: 1.5rem 0; border-bottom: 1px solid var(--divider);
-    position: relative; padding-left: 2.5rem;
-  }
-  @media (min-width: 720px) {
-    .timeline-item { grid-template-columns: 145px 1fr; gap: 2.5rem; padding-left: 0; }
-  }
-  .timeline-item:last-child { border-bottom: none; }
-  .timeline-item::before {
-    content: ''; position: absolute; left: 6px; top: 1.85rem;
-    width: 11px; height: 11px; border-radius: 50%;
-    background: var(--white); border: 2px solid var(--accent);
-  }
-  @media (min-width: 720px) { .timeline-item::before { left: 149px; } }
-  .timeline-item.highlight::before { background: var(--accent); }
-  .timeline-date { font-size: 0.76rem; font-weight: 600; color: var(--ink-light); letter-spacing: 0.02em; padding-top: 1.5rem; }
-  @media (max-width: 719px) { .timeline-date { padding-top: 0; } }
-  .timeline-content { padding-top: 1.4rem; }
-  @media (max-width: 719px) { .timeline-content { padding-top: 0; } }
-  .timeline-role { font-family: var(--serif); font-size: 1.12rem; font-weight: 600; margin-bottom: 0.2rem; line-height: 1.3; color: var(--ink); }
-  .timeline-org { font-size: 0.86rem; color: var(--ink-mid); font-weight: 500; margin-bottom: 0.85rem; }
-  .timeline-org em { font-style: italic; color: var(--ink-light); font-weight: 400; }
-  .timeline-bullets { list-style: none; margin-bottom: 0.5rem; }
-  .timeline-bullets li { font-size: 0.86rem; color: var(--ink-mid); line-height: 1.65; padding: 0.25rem 0 0.25rem 1rem; position: relative; }
-  .timeline-bullets li::before { content: '–'; position: absolute; left: 0; color: var(--ink-light); }
-  .timeline-callout {
-    display: inline-flex; align-items: center; gap: 6px; font-size: 0.76rem; font-weight: 500;
-    color: var(--accent); background: var(--accent-soft); padding: 5px 11px; border-radius: 4px;
-    margin-top: 0.6rem; border: 1px solid var(--accent-border);
-  }
-  .timeline-callout::before { content: '→'; font-weight: 600; }
-  .timeline-callout a { color: var(--accent); border-bottom: 1px solid currentColor; }
-  .timeline-supervisors { font-size: 0.78rem; color: var(--ink-light); font-style: italic; margin-bottom: 0.7rem; }
-
-  /* ——— PROJECTS ——— */
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
-    gap: 1.5rem; margin-top: 2.5rem;
-  }
-  .project-card {
-    background: #fff; border: 1px solid var(--divider); border-radius: 14px;
-    padding: 1.75rem; transition: all 0.25s; position: relative;
-    display: flex; flex-direction: column; text-decoration: none; color: inherit; overflow: hidden;
-  }
-  .project-card::before {
-    content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
-    background: var(--accent); transform: scaleY(0); transform-origin: top; transition: transform 0.3s;
-  }
-  .project-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(26,24,20,0.09); border-color: var(--accent); color: inherit; }
-  .project-card:hover::before { transform: scaleY(1); }
-  .project-tag { font-size: 0.63rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.85rem; }
-  .project-title { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; line-height: 1.25; margin-bottom: 0.65rem; color: var(--ink); }
-  .project-desc { font-size: 0.84rem; color: var(--ink-light); line-height: 1.65; margin-bottom: 1.25rem; flex: 1; }
-  .project-tech { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
-  .tech-chip { font-size: 0.68rem; font-weight: 500; color: var(--ink-mid); background: var(--accent-soft); padding: 3px 9px; border-radius: 12px; }
-  .project-cta { font-size: 0.8rem; font-weight: 600; color: var(--accent); display: inline-flex; align-items: center; gap: 6px; margin-top: auto; }
-  .project-cta::after { content: '→'; transition: transform 0.2s; }
-  .project-card:hover .project-cta::after { transform: translateX(3px); }
-  details.project-card { cursor: pointer; }
-  details.project-card summary { list-style: none; cursor: pointer; }
-  details.project-card summary::-webkit-details-marker { display: none; }
-  details.project-card[open] { grid-row: span 2; }
-  .hydrino-expand { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--divider); font-size: 0.84rem; color: var(--ink-mid); line-height: 1.7; }
-  .hydrino-expand p { margin-bottom: 0.75rem; }
-  .hydrino-expand .future-note { font-size: 0.76rem; color: var(--ink-light); font-style: italic; margin-top: 0.85rem; }
-
-  /* ——— EDUCATION ——— */
-  .education-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin-top: 2.5rem; }
-  .edu-card { background: #fff; border: 1px solid var(--divider); border-radius: 12px; padding: 1.5rem 1.75rem; }
-  .edu-date { font-size: 0.73rem; font-weight: 600; color: var(--accent); letter-spacing: 0.05em; margin-bottom: 0.5rem; }
-  .edu-degree { font-family: var(--serif); font-size: 1.08rem; font-weight: 600; margin-bottom: 0.3rem; line-height: 1.3; color: var(--ink); }
-  .edu-school { font-size: 0.86rem; color: var(--ink-mid); }
-
-  /* ——— CONTACT — dark floating panel ——— */
-  .contact-section {
-    max-width: 900px;
-    margin: 0 auto 1.75rem;
-    border-radius: var(--panel-radius);
-    padding: 4.5rem 3.5rem 3rem;
-    background: var(--ink);
-    color: #F8F5EF;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    z-index: 2;
-    box-shadow: var(--panel-shadow);
-  }
-  .contact-section::before {
-    content: ''; position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%); width: 600px; height: 600px;
-    border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .contact-inner { max-width: 620px; margin: 0 auto; position: relative; }
-  .contact-eyebrow { font-size: 0.63rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #AFCBFF; margin-bottom: 0.75rem; }
-  .contact-title { font-family: var(--serif); font-size: clamp(2rem, 4vw, 2.7rem); font-weight: 400; line-height: 1.2; margin-bottom: 1rem; color: #F8F5EF; }
-  .contact-title em { font-style: italic; color: rgba(248,245,239,0.5); }
-  .contact-body { font-size: 0.95rem; color: rgba(248,245,239,0.7); line-height: 1.75; margin-bottom: 2.25rem; max-width: 500px; margin-left: auto; margin-right: auto; }
-  .contact-cta { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 3rem; }
-  .contact-section .btn-primary { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #F8F5EF; }
-  .contact-section .btn-primary:hover { background: rgba(255,255,255,0.22); color: #F8F5EF; transform: translateY(-1px); }
-  .contact-section .btn-ghost { color: rgba(248,245,239,0.7); border-color: rgba(248,245,239,0.25); background: transparent; }
-  .contact-section .btn-ghost:hover { background: rgba(255,255,255,0.08); color: #F8F5EF; border-color: rgba(248,245,239,0.5); }
-  .contact-links { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; padding-top: 2rem; border-top: 1px solid var(--ink-border); margin-top: 2rem; }
-  .contact-links a { font-size: 0.84rem; color: rgba(248,245,239,0.7); display: inline-flex; align-items: center; gap: 8px; transition: color 0.2s; }
-  .contact-links a:hover { color: #F8F5EF; }
-  .contact-links svg { width: 16px; height: 16px; }
-  .footer-bottom { text-align: center; font-size: 0.73rem; color: rgba(248,245,239,0.32); margin-top: 2.5rem; letter-spacing: 0.04em; }
-
-  /* ——— SCROLL REVEAL ——— */
-  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s cubic-bezier(.16,1,.3,1), transform 0.7s cubic-bezier(.16,1,.3,1); will-change: opacity, transform; }
-  .reveal.in-view { opacity: 1; transform: none; }
-  .reveal[data-delay="1"] { transition-delay: 0.07s; }
-  .reveal[data-delay="2"] { transition-delay: 0.14s; }
-  .reveal[data-delay="3"] { transition-delay: 0.21s; }
-  .reveal[data-delay="4"] { transition-delay: 0.28s; }
-  .reveal[data-delay="5"] { transition-delay: 0.35s; }
-
-  /* ——— PANEL ENTRANCE ANIMATIONS ——— */
-  @keyframes panelSpin360 {
-    0%   { opacity: 0; transform: perspective(1400px) rotateY(-360deg) scale(0.88); }
-    55%  { opacity: 1; }
-    100% { opacity: 1; transform: perspective(1400px) rotateY(0deg) scale(1); }
-  }
-  @keyframes panelRiseIn {
-    from { opacity: 0; transform: translateY(52px) scale(0.96); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
-  }
-  @keyframes panelSlideLeft {
-    from { opacity: 0; transform: translateX(-48px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-  @keyframes panelSlideRight {
-    from { opacity: 0; transform: translateX(48px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-
-  .panel-spin { opacity: 0; transform: perspective(1400px) rotateY(-360deg) scale(0.88); }
-  .panel-spin.in-view { animation: panelSpin360 1s cubic-bezier(0.34, 1.38, 0.64, 1) forwards; }
-
-  .panel-rise { opacity: 0; transform: translateY(52px) scale(0.96); }
-  .panel-rise.in-view { animation: panelRiseIn 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
-
-  /* ——— HERO FADE-IN ——— */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(18px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .hero-grid > * { animation: fadeUp 0.65s ease both; }
-  .hero-grid > *:nth-child(1) { animation-delay: 0.05s; }
-  .hero-grid > *:nth-child(2) { animation-delay: 0.15s; }
-  .hero-grid > *:nth-child(3) { animation-delay: 0.25s; }
-  .hero-grid > *:nth-child(4) { animation-delay: 0.35s; }
-
-  /* ——— CUSTOM CURSOR ——— */
-  .cursor-dot, .cursor-ring {
-    position: fixed; top: 0; left: 0; border-radius: 50%;
-    pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
-    opacity: 0; transition: opacity 0.3s ease;
-  }
-  .cursor-dot { width: 7px; height: 7px; background: var(--ink); }
-  .cursor-ring {
-    width: 32px; height: 32px; border: 1.5px solid rgba(26,24,20,0.25); background: transparent;
-    transition: opacity 0.3s ease, width 0.25s ease, height 0.25s ease, background 0.25s ease, border-color 0.25s ease;
-  }
-  .cursor-ring.hover { width: 52px; height: 52px; background: rgba(26,24,20,0.05); border-color: rgba(26,24,20,0.4); }
-  .cursor-dot.active, .cursor-ring.active { opacity: 1; }
-  @media (hover: hover) and (pointer: fine) {
-    body, a, button, summary, .btn, .skill-chip, details summary,
-    .project-card, .thread-item { cursor: none; }
-  }
-
-  /* ——— RESPONSIVE ——— */
-  @media (max-width: 640px) {
-    body { padding: 0 0.75rem; }
-    .section, .contact-section { border-radius: 18px; padding: 2rem; }
-    .hero { margin-top: 4rem; padding: 2.5rem 0 1.5rem; }
-    .hero h1 { font-size: clamp(2.4rem, 11vw, 5rem); }
-    .hero-meta-inline { display: none; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .reveal, .panel-spin, .panel-rise { opacity: 1 !important; transform: none !important; transition: none !important; animation: none !important; }
-    .cursor-dot, .cursor-ring { transition: opacity 0.3s ease; }
-    .orbit-ring, .orbit-rotor, .orbit-node-inner { animation: none !important; }
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Manrope:wght@300;400;500;600;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
 </head>
 <body>
 
-<!-- ——— SUMINAGASHI CANVAS ——— -->
-<canvas id="suminagashi-canvas" aria-hidden="true"></canvas>
+<div class="progress" aria-hidden="true"></div>
 
-<!-- ——— NAVIGATION ——— -->
 <nav class="nav" id="nav">
-  <div class="nav-inner">
-    <a href="#top" class="nav-brand">Devika Mukherjee</a>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#research">Research</a></li>
-      <li><a href="#publications">Publications</a></li>
-      <li><a href="#work">Work</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li class="nav-cv-li"><a href="assets/resume.pdf" download="Devika_Mukherjee_CV.pdf" class="nav-cv">Download CV</a></li>
-    </ul>
-  </div>
+  <a href="#top" class="nav-brand">Devika Mukherjee<small>HCI · Haptics · XR</small></a>
+  <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#publication">Publication</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="assets/resume.pdf" download="Devika_Mukherjee_CV.pdf" class="nav-cv">CV</a></li>
+  </ul>
 </nav>
 
-<!-- ——— HERO ——— -->
+<!-- ============ HERO — the only place the ink lives ============ -->
 <header class="hero" id="top">
-  <div class="hero-grid">
-    <h1>Devika Mukherjee</h1>
-    <p class="hero-role">Human-Computer Interaction Researcher · <em style="font-style: italic; color: var(--ink-light);">VR · Haptics · Human-AI Interaction</em></p>
-    <div class="hero-info-row">
-      <span class="chi-chip">CHI 2026 · Barcelona · First-author publication</span>
-      <div class="hero-cta-row">
-        <a href="https://dl.acm.org/doi/10.1145/3772318.3793143" target="_blank" rel="noopener" class="btn btn-primary">Read the CHI paper →</a>
-        <a href="assets/resume.pdf" download="Devika_Mukherjee_CV.pdf" class="btn btn-ghost">Download CV</a>
-      </div>
-      <span class="hero-meta-inline">Research Associate, University of Birmingham &nbsp;·&nbsp; Birmingham, UK &nbsp;·&nbsp; <a href="mailto:mukherjee.devika07@gmail.com">mukherjee.devika07@gmail.com</a> &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/devika-mukherjee-3bb5b020a" target="_blank" rel="noopener">LinkedIn</a></span>
+  <canvas id="ink" class="hero-ink" aria-hidden="true"></canvas>
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Human-Computer Interaction Researcher</p>
+    <h1 class="hero-name" aria-label="Devika Mukherjee"><span class="word">Devika</span><span class="word">Mukherjee</span></h1>
+    <p class="hero-tag">Wearable haptics, immersive systems and human-AI interaction — building the prototypes, running the studies, and publishing what they show.</p>
+    <div class="hero-ctas">
+      <a href="#publication" class="btn btn-fill">First-author paper at CHI 2026</a>
+      <a href="#projects" class="btn btn-line">Play with the work</a>
+    </div>
+    <div class="hero-foot">
+      <span>Research Associate, University of Birmingham</span>
+      <span>Birmingham, UK</span>
+      <a href="mailto:mukherjee.devika07@gmail.com">mukherjee.devika07@gmail.com</a>
+      <a href="https://www.linkedin.com/in/devika-mukherjee-3bb5b020a" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/devikamukherjee" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
+  <div class="hero-scroll"><span></span>Scroll</div>
+  <div class="hero-hint">Move the cursor — suminagashi ink</div>
 </header>
 
-<!-- ——— ABOUT ——— -->
-<section class="section" id="about">
-  <div class="container-narrow">
-    <div class="section-label">About</div>
-    <h2 class="section-title">Hello, I'm Devika.</h2>
-    <p class="about-body">A <strong>Research Associate at the University of Birmingham</strong> working at the intersection of HCI, <em>VR, wearable haptics, fabrication, and Human-AI Interaction</em>. My research investigates how multisensory feedback can make immersive experiences safer, more embodied, and more inclusive — work that recently produced a first-author publication at CHI 2026. My work spans <strong>immersive technologies, embodied feedback, and human-centred AI</strong> — always anchored in safety, accessibility, and real user experience.</p>
-    <div class="about-skills">
-      <span class="skill-chip">Unity</span>
-      <span class="skill-chip">Python</span>
-      <span class="skill-chip">Data Visualisation</span>
-      <span class="skill-chip">User Studies</span>
-      <span class="skill-chip">Arduino / IoT</span>
-      <span class="skill-chip">C++</span>
-      <span class="skill-chip">Statistics</span>
-      <span class="skill-chip">Haptics</span>
-      <span class="skill-chip">Figma</span>
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Wearable haptics</span><span>VR / XR</span><span>Agentic XR</span><span>Human-AI interaction</span><span>Fabrication</span><span>User studies</span><span>Accessibility</span><span>UX research</span>
+    <span>Wearable haptics</span><span>VR / XR</span><span>Agentic XR</span><span>Human-AI interaction</span><span>Fabrication</span><span>User studies</span><span>Accessibility</span><span>UX research</span>
+  </div>
+</div>
+
+<!-- ============ ABOUT ============ -->
+<section class="sec" id="about">
+  <div class="sec-head">
+    <div class="sec-num reveal">01</div>
+    <div><div class="sec-label reveal">About</div><h2 class="sec-title reveal">Hello, I'm Devika.</h2></div>
+  </div>
+  <div class="about-grid">
+    <div>
+      <p class="about-lead reveal">I'm a <strong>Research Associate at the University of Birmingham</strong> working on <span class="hl">wearable haptics</span>, <span class="hl t">VR and agentic XR</span>, and <span class="hl l">human-AI interaction</span> — studying how feedback people can feel, and systems that propose before they act, make immersive technology safer and more trustworthy.</p>
+      <p class="about-body reveal">I own the whole research cycle: designing and building the prototype, running the controlled study, analysing behavioural and self-report data in Python, and turning it into evidence-based design recommendations. That work led to a first-author paper at CHI 2026, a 16-participant study of real-time VR world generation, and a CHI 2027 submission on laser-printed graphene interfaces.</p>
+      <div class="skills reveal">
+        <span class="chip">Unity</span><span class="chip">Python</span><span class="chip">User studies</span><span class="chip">Haptics</span><span class="chip">Statistics</span><span class="chip">Data visualisation</span><span class="chip">Arduino / IoT</span><span class="chip">C++</span><span class="chip">Streamlit</span><span class="chip">LLM evaluation</span><span class="chip">Figma</span><span class="chip">Fabrication</span>
+      </div>
+    </div>
+    <div class="stats reveal">
+      <div class="stat"><div class="stat-n"><span data-count="35">0</span><sup>+</sup></div><div class="stat-l">Participants across the haptic-belt VR studies</div></div>
+      <div class="stat"><div class="stat-n"><span data-count="16">0</span></div><div class="stat-l">Participants in the real-time world-generation study</div></div>
+      <div class="stat"><div class="stat-n"><span data-count="73.4">0</span></div><div class="stat-l">System Usability Scale score for DreamcodeVR's continuous world generation</div></div>
+      <div class="stat"><div class="stat-n">CHI</div><div class="stat-l">First author 2026 · co-author submission 2027</div></div>
     </div>
   </div>
 </section>
 
-<!-- ——— RESEARCH INTERESTS ——— -->
-<section class="section" id="research">
-  <div class="container-narrow">
-    <div class="section-label">Research interests</div>
-    <div class="research-layout">
-      <div class="research-text">
-        <h2 class="section-title">Five threads that run through my work</h2>
-        <p class="section-body">My research sits at the meeting point of immersive technologies, embodied feedback, and human-centred AI — anchored throughout in a concern for safety, accessibility, and lived user experience.</p>
-        <ul class="thread-list">
-          <li class="thread-item">
-            <div class="thread-title">VR / XR</div>
-            <div class="thread-body">Designing experimental VR environments to study embodiment, perception, and behaviour in mixed reality.</div>
-          </li>
-          <li class="thread-item">
-            <div class="thread-title">Wearable Haptics</div>
-            <div class="thread-body">Investigating how on-body feedback shapes user performance, safety, and presence — including the lower-body collision system at CHI 2026.</div>
-          </li>
-          <li class="thread-item">
-            <div class="thread-title">Human-AI Interaction</div>
-            <div class="thread-body">Studying how people understand, calibrate trust in, and remain in control of intelligent interactive systems.</div>
-          </li>
-          <li class="thread-item">
-            <div class="thread-title">Wearable Technologies</div>
-            <div class="thread-body">From prototype to user study — designing wearable systems that integrate into daily life without disrupting it.</div>
-          </li>
-          <li class="thread-item">
-            <div class="thread-title">Healthcare HCI</div>
-            <div class="thread-body">Designing for vulnerable users — usability of medical devices, inclusive health technology, and behaviour-change interventions.</div>
-          </li>
-        </ul>
-      </div>
-      <div class="research-orbit" aria-hidden="true">
-        <div class="orbit-wrap">
-          <div class="orbit-ring"></div>
-          <div class="orbit-core"><span>Human-<br>Centred<br>Research</span></div>
-          <div class="orbit-rotor">
-            <div class="orbit-node" style="left:50%;top:12%;">
-              <div class="orbit-node-inner"><span class="orbit-dot"></span><span class="orbit-label">VR / XR</span></div>
-            </div>
-            <div class="orbit-node" style="left:86.1%;top:38.3%;">
-              <div class="orbit-node-inner"><span class="orbit-dot"></span><span class="orbit-label">Wearable Haptics</span></div>
-            </div>
-            <div class="orbit-node" style="left:72.3%;top:80.7%;">
-              <div class="orbit-node-inner"><span class="orbit-dot"></span><span class="orbit-label">Human-AI Interaction</span></div>
-            </div>
-            <div class="orbit-node" style="left:27.7%;top:80.7%;">
-              <div class="orbit-node-inner"><span class="orbit-dot"></span><span class="orbit-label">Wearable Technologies</span></div>
-            </div>
-            <div class="orbit-node" style="left:13.9%;top:38.3%;">
-              <div class="orbit-node-inner"><span class="orbit-dot"></span><span class="orbit-label">Healthcare HCI</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
+<!-- ============ RESEARCH THREADS ============ -->
+<section class="sec tint" id="research">
+  <div class="sec-head">
+    <div class="sec-num reveal">02</div>
+    <div><div class="sec-label reveal">Research threads</div><h2 class="sec-title reveal">Five threads, <em>one question</em>: how should a system talk to a body?</h2>
+    <p class="sec-intro reveal">Hover or tap a strip to open it.</p></div>
+  </div>
+  <div class="threads reveal">
+    <div class="thread active" tabindex="0" style="--c: var(--rose)">
+      <div class="thread-n">01</div>
+      <div class="thread-art"><svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="28" cy="28" r="8"/><circle cx="28" cy="28" r="16" stroke-dasharray="3 3"/><circle cx="28" cy="28" r="24" stroke-dasharray="2 5"/></svg></div>
+      <div class="thread-t">Wearable haptics</div>
+      <div class="thread-b">On-body, non-verbal feedback as a hands-free channel. How vibrotactile cues around the waist communicate spatial and safety information below the field of view, and what that does to immersion, perception and task performance.</div>
+    </div>
+    <div class="thread" tabindex="0" style="--c: var(--teal)">
+      <div class="thread-n">02</div>
+      <div class="thread-art"><svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="8" y="16" width="40" height="22" rx="6"/><circle cx="20" cy="27" r="5"/><circle cx="36" cy="27" r="5"/></svg></div>
+      <div class="thread-t">VR / XR</div>
+      <div class="thread-b">Experimental immersive environments built in Unity to study embodiment, perception and behaviour — from lower-body collision awareness in mixed reality to worlds generated live from natural language.</div>
+    </div>
+    <div class="thread" tabindex="0" style="--c: var(--lav)">
+      <div class="thread-n">03</div>
+      <div class="thread-art"><svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 40 L28 12 L46 40 Z"/><path d="M20 40 L28 26 L36 40"/><circle cx="28" cy="44" r="3"/></svg></div>
+      <div class="thread-t">Agentic XR &amp; human-AI interaction</div>
+      <div class="thread-b">Keeping people in control of AI-driven adaptation. A Verification Space where proposals are previewed, confirmed, repaired or rolled back before they touch the live scene — and audits of whether AI explanations can be trusted at all.</div>
+    </div>
+    <div class="thread" tabindex="0" style="--c: var(--honey)">
+      <div class="thread-n">04</div>
+      <div class="thread-art"><svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 36 Q28 10 48 36"/><path d="M14 42 Q28 24 42 42"/><path d="M28 8 v12"/></svg></div>
+      <div class="thread-t">Fabrication</div>
+      <div class="thread-b">Laser-induced forward transfer printing of graphene onto tattoo paper, PDMS, PET, TPU-coated nylon and bamboo, and the touch, pressure and inflatable-joystick devices it makes possible for motor-disability accessibility.</div>
+    </div>
+    <div class="thread" tabindex="0" style="--c: var(--mint)">
+      <div class="thread-n">05</div>
+      <div class="thread-art"><svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M28 48 C10 36 6 26 12 18 C17 12 24 14 28 20 C32 14 39 12 44 18 C50 26 46 36 28 48 Z"/></svg></div>
+      <div class="thread-t">Healthcare &amp; UX research</div>
+      <div class="thread-b">Designing for people under pressure: a nurse triaging two hundred heart-failure patients, a voter trusting an algorithm, a shopper posting about a refund. Mixed-methods studies that treat attention and trust as the scarce resource.</div>
     </div>
   </div>
 </section>
 
-<!-- ——— PUBLICATIONS ——— -->
-<section class="section" id="publications">
-  <div class="container-narrow">
-    <div class="section-label">Publications</div>
-    <h2 class="section-title">First-author at <em>CHI 2026</em></h2>
-    <p class="section-body">Peer-reviewed publication at the ACM CHI Conference on Human Factors in Computing Systems — the flagship venue for HCI research — to be presented in Barcelona in 2026.</p>
-    <div class="pub-feature">
-      <div class="pub-feature-inner">
-        <div class="pub-badge-row">
-          <span class="pub-badge">CHI 2026 · Barcelona</span>
-          <span class="pub-badge first-author">First author</span>
-          <span class="pub-badge outline">ACM Digital Library</span>
-        </div>
-        <h3>Belt and Whistles: Adding Lower Body Collision Awareness for MR Experiences</h3>
-        <div class="pub-authors"><strong>Mukherjee, D.</strong>, Abdlkarim, D., Giunchi, D., Di Luca, M., Ofek, E. (2026)</div>
-        <div class="pub-venue">Proceedings of the ACM CHI Conference on Human Factors in Computing Systems (CHI 2026), Barcelona, Spain.</div>
-        <p class="pub-abstract">A wearable haptic belt that extends mixed-reality collision awareness below the user's field of view — addressing a known safety gap in immersive experiences where lower-body obstacles fall outside visual attention. Controlled user studies (n=35+) compared multisensory feedback strategies for embodiment, task performance, and perceived safety.</p>
-        <div class="pub-cta">
-          <a href="https://dl.acm.org/doi/10.1145/3772318.3793143" target="_blank" rel="noopener" class="btn btn-primary">Read on ACM DL →</a>
-          <a href="https://doi.org/10.1145/3772318.3793143" target="_blank" rel="noopener" class="btn btn-ghost">DOI: 10.1145/3772318.3793143</a>
-        </div>
-        <details class="bibtex">
-          <summary>Show BibTeX</summary>
+<!-- ============ PUBLICATION + BELT DEMO ============ -->
+<section class="sec dark" id="publication">
+  <div class="sec-head">
+    <div class="sec-num reveal">03</div>
+    <div><div class="sec-label reveal">Publication</div><h2 class="sec-title reveal">First author at <em>CHI 2026</em>, Barcelona.</h2></div>
+  </div>
+  <div class="pub-grid">
+    <div>
+      <div class="badges reveal"><span class="badge">CHI 2026 · Barcelona</span><span class="badge b">First author</span><span class="badge c">ACM Digital Library</span></div>
+      <h3 class="pub-title reveal">Belt and Whistles: Adding Lower Body Collision Awareness for MR Experiences</h3>
+      <p class="pub-authors reveal"><strong>Mukherjee, D.</strong>, Abdlkarim, D., Giunchi, D., Di Luca, M., Ofek, E. (2026)</p>
+      <p class="pub-venue reveal">Proceedings of the ACM CHI Conference on Human Factors in Computing Systems (CHI '26) · University of Birmingham · Microsoft Research</p>
+      <p class="pub-abstract reveal">A wearable haptic belt that extends mixed-reality collision awareness below the user's field of view, where lower-body obstacles fall outside visual attention. Controlled studies with 35+ participants compared multisensory feedback strategies for embodiment, task performance and perceived safety, and produced a non-auditory, hands-free channel for spatial and safety information.</p>
+      <div class="pub-ctas reveal">
+        <a href="https://dl.acm.org/doi/10.1145/3772318.3793143" target="_blank" rel="noopener" class="btn btn-fill on-dark">Read on ACM DL</a>
+        <a href="https://doi.org/10.1145/3772318.3793143" target="_blank" rel="noopener" class="btn btn-line on-dark">doi 10.1145/3772318.3793143</a>
+      </div>
+      <details class="bib reveal">
+        <summary>BibTeX</summary>
 <pre>@inproceedings{mukherjee2026belt,
   author    = {Mukherjee, Devika and Abdlkarim, Diar and Giunchi, Daniele and Di Luca, Massimiliano and Ofek, Eyal},
   title     = {Belt and Whistles: Adding Lower Body Collision Awareness for MR Experiences},
@@ -801,433 +148,290 @@
   year      = {2026},
   location  = {Barcelona, Spain},
   publisher = {ACM},
-  doi       = {10.1145/3772318.3793143},
-  url       = {https://dl.acm.org/doi/10.1145/3772318.3793143}
+  doi       = {10.1145/3772318.3793143}
 }</pre>
-        </details>
-        <div class="pub-affiliation">University of Birmingham · Microsoft Research</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ——— WORK ——— -->
-<section class="section" id="work">
-  <div class="container-narrow">
-    <div class="section-label">Research experience</div>
-    <h2 class="section-title">Where the work has happened</h2>
-    <p class="section-body">A trajectory from biotechnology and laboratory data analysis into immersive technology research — culminating in a first-author CHI publication.</p>
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-date">Dec 2025 — May 2026</div>
-        <div class="timeline-content">
-          <div class="timeline-role">Research Associate — Grant Writing & Industry Collaboration for Haptics</div>
-          <div class="timeline-org">ATOUCH</div>
-          <ul class="timeline-bullets">
-            <li>Contributed to large-scale research funding acquisition through grant writing, industry partnership development (letters of support), and project coordination.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="timeline-item highlight">
-        <div class="timeline-date">Jun 2025 — Dec 2025</div>
-        <div class="timeline-content">
-          <div class="timeline-role">Research Associate (Haptic Belt for VR)</div>
-          <div class="timeline-org">VR Lab, University of Birmingham</div>
-          <div class="timeline-supervisors">In collaboration with Prof. Eyal Ofek · Prof. Massimiliano Di Luca · Prof. Daniele Guinchi · Dr. Diar Abdlkarim</div>
-          <ul class="timeline-bullets">
-            <li>Designed and conducted controlled VR experiments investigating embodiment, multisensory feedback, and user performance (n = 35+).</li>
-            <li>Developed immersive experimental environments in Unity for behavioural studies in human–environment interaction.</li>
-            <li>Collected and analysed behavioural, performance, and self-report data using Python.</li>
-            <li>Evaluated the impact of wearable haptic feedback on perception, task performance, and user experience.</li>
-          </ul>
-          <a href="#publications" class="timeline-callout">Led to first-author publication at <a href="#publications">CHI 2026</a></a>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">Dec 2025</div>
-        <div class="timeline-content">
-          <div class="timeline-role">Unity Developer · Human–Robot Interaction</div>
-          <div class="timeline-org">Extreme Robotics Lab, University of Birmingham</div>
-          <ul class="timeline-bullets">
-            <li>Designed and developed a high-quality simulation for battery dissemination by a KUKA KR-16 robot.</li>
-            <li>The simulation is to be integrated with an ML algorithm controlling a real KUKA KR-16 in a physical demonstration.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">Sep 2025 — ongoing</div>
-        <div class="timeline-content">
-          <div class="timeline-role">Associate Event Coordinator (volunteer)</div>
-          <div class="timeline-org">BhamXR</div>
-          <ul class="timeline-bullets">
-            <li>Coordinated and promoted immersive tech showcases featuring XR, Robotics, and Haptics across various human-centred technology domains.</li>
-            <li>Collaborated with entrepreneurs, educators, and researchers to organise learning sessions and community feedback events, strengthening user-focused evaluation of emerging technologies.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">Jan 2024 — Apr 2024</div>
-        <div class="timeline-content">
-          <div class="timeline-role">Cytogenetics Laboratory & Data Analysis Intern</div>
-          <div class="timeline-org">MedGenome Labs</div>
-          <ul class="timeline-bullets">
-            <li>Reduced laboratory labour by 15%. Analysed cytogenetics data from laboratories for accurate diagnosis and aided in reporting documentation.</li>
-            <li>Analysed Down's syndrome case data to identify key trends, enabling a 30% reduction in time-to-diagnosis.</li>
-            <li>Published peer-reviewed paper (solo author).</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ——— PROJECTS ——— -->
-<section class="section" id="projects">
-  <div class="container">
-    <div class="section-label">Projects</div>
-    <h2 class="section-title">Selected research and design projects</h2>
-    <p class="section-body">Case studies spanning behaviour-change research, healthcare HCI, IoT product design, AI ethics, and quantitative UX analysis.</p>
-    <div class="projects-grid">
-      <a href="projects/better-diet.html" target="_blank" rel="noopener" class="project-card">
-        <div class="project-tag">UX Research · Mixed methods</div>
-        <div class="project-title">Better Diet — AI Nutrition Tracking</div>
-        <div class="project-desc">A multi-phase research programme (survey n=50+, interviews, two prototype rounds) translating five research insights into an AI-powered nutrition app and smart tableware.</div>
-        <div class="project-tech">
-          <span class="tech-chip">Surveys</span><span class="tech-chip">Interviews</span>
-          <span class="tech-chip">Figma</span><span class="tech-chip">Prototyping</span>
-        </div>
-        <span class="project-cta">View case study</span>
-      </a>
-      <a href="projects/glucometer.html" target="_blank" rel="noopener" class="project-card">
-        <div class="project-tag">Systematic Literature Review · Healthcare HCI</div>
-        <div class="project-title">Usability of Glucometers in T2DM Self-Management</div>
-        <div class="project-desc">Synthesis of 15 peer-reviewed studies into a three-tier usability framework, comparing five devices and deriving evidence-based design recommendations.</div>
-        <div class="project-tech">
-          <span class="tech-chip">SLR</span><span class="tech-chip">Healthcare</span>
-          <span class="tech-chip">mHealth</span><span class="tech-chip">Inclusive design</span>
-        </div>
-        <span class="project-cta">View case study</span>
-      </a>
-      <details class="project-card">
-        <summary>
-          <div class="project-tag">IoT · Machine Learning · Product design</div>
-          <div class="project-title">Hydrino — IoT Hydration Tracking</div>
-          <div class="project-desc">An IoT hydration-tracking product pairing an Arduino Nano sensing unit with a Flutter app and an ML pipeline that learns water-bottle usage patterns to nudge healthier habits.</div>
-          <div class="project-tech">
-            <span class="tech-chip">Arduino</span><span class="tech-chip">Flutter</span>
-            <span class="tech-chip">Machine Learning</span><span class="tech-chip">IoT</span>
-          </div>
-          <span class="project-cta">Expand details</span>
-        </summary>
-        <div class="hydrino-expand">
-          <p><strong>The problem.</strong> Daily hydration is one of the lowest-friction health behaviours to track in principle — and one of the easiest to forget in practice. Existing trackers depend on manual logging that doesn't survive a busy day.</p>
-          <p><strong>The approach.</strong> An Arduino Nano embedded in a water-bottle base senses use events (lifts, pours) and streams them to a companion Flutter application. A lightweight ML model learns each user's baseline pattern over the first week, then surfaces nudges only when behaviour deviates — avoiding notification fatigue.</p>
-          <p><strong>What I led.</strong> End-to-end product design, from sensor selection through Flutter UI and the ML feature pipeline. Early user feedback shaped the move from explicit goal-setting to learned baselines.</p>
-          <div class="future-note">Photos and a demo video will be added here in the near future.</div>
-        </div>
       </details>
-      <a href="projects/ai-bias.html" target="_blank" rel="noopener" class="project-card">
-        <div class="project-tag">Critical AI · Systematic review</div>
-        <div class="project-title">AI Bias in News Recommendation Systems</div>
-        <div class="project-desc">Systematic review and critical analysis of algorithmic bias in AI-driven news platforms — proposing design guidelines for transparency, fairness auditing, and user-centred mitigation.</div>
-        <div class="project-tech">
-          <span class="tech-chip">Critical analysis</span><span class="tech-chip">AI ethics</span>
-          <span class="tech-chip">Design guidelines</span>
-        </div>
-        <span class="project-cta">View case study</span>
-      </a>
-      <a href="https://github.com/devikamukherjee/Game-data-visualisation-using-R" target="_blank" rel="noopener" class="project-card">
-        <div class="project-tag">Quantitative analysis · R</div>
-        <div class="project-title">Data Visualisation & Quantitative UX Analysis</div>
-        <div class="project-desc">Statistical analysis (Spearman, Wilcoxon) of player performance vs. UX ratings in "The Robot Game", with visualisations that informed interface recommendations.</div>
-        <div class="project-tech">
-          <span class="tech-chip">R</span><span class="tech-chip">Statistics</span><span class="tech-chip">Visualisation</span>
-        </div>
-        <span class="project-cta">View on GitHub</span>
-      </a>
     </div>
-  </div>
-</section>
-
-<!-- ——— EDUCATION ——— -->
-<section class="section" id="education">
-  <div class="container-narrow">
-    <div class="section-label">Education</div>
-    <h2 class="section-title">Academic background</h2>
-    <div class="education-grid">
-      <div class="edu-card">
-        <div class="edu-date">Sep 2024 — Sep 2025</div>
-        <div class="edu-degree">MSc Human-Computer Interaction</div>
-        <div class="edu-school">University of Birmingham, UK</div>
+    <div class="demo reveal">
+      <div class="demo-head">
+        <div><div class="demo-title">Try the belt</div><div class="demo-sub">Move the obstacle around the wearer. Motors facing it fire; closer means stronger.</div></div>
+        <div class="seg" id="belt-mode"><button class="on" data-mode="distance">Distance-coded</button><button data-mode="direction">Direction only</button></div>
       </div>
-      <div class="edu-card">
-        <div class="edu-date">Sep 2020 — Sep 2024</div>
-        <div class="edu-degree">Bachelor of Engineering, Biotechnology</div>
-        <div class="edu-school">Amity University, India</div>
+      <div class="belt-wrap" id="belt"></div>
+      <div class="belt-readout">
+        <div><b id="belt-motor">—</b><span>Active motor</span></div>
+        <div><b id="belt-int">0%</b><span>Intensity</span></div>
+        <div><b id="belt-dist">— m</b><span>Obstacle range</span></div>
+      </div>
+      <p class="demo-note">A simplified top-down model of the belt: eight vibrotactile motors, direction from angular proximity, intensity from range. The real study compared feedback mappings like these for safety, embodiment and performance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WORK ============ -->
+<section class="sec" id="work">
+  <div class="sec-head">
+    <div class="sec-num reveal">04</div>
+    <div><div class="sec-label reveal">Work</div><h2 class="sec-title reveal">Where the work <em>happens</em>.</h2></div>
+  </div>
+  <div class="timeline">
+    <div class="timeline-line" aria-hidden="true"><i></i></div>
+
+    <article class="job reveal">
+      <div class="job-when"><b>Jun 2025 — Present</b>Birmingham, UK</div>
+      <div>
+        <h3 class="job-role">Research Associate — The Belt Project</h3>
+        <p class="job-org">VR Lab, University of Birmingham <em>· with Prof. Eyal Ofek, Prof. Massimiliano Di Luca, Dr Daniele Giunchi, Dr Diar Abdlkarim</em></p>
+        <ul>
+          <li>Designed and built a <strong>wearable haptic belt prototype</strong> and evaluated it in controlled VR studies with 35+ participants, owning the full research cycle from study design and recruitment to analysis and reporting.</li>
+          <li>Researching cross-modal, non-verbal feedback (haptic and spatial cues) as a <strong>hands-free communication channel</strong> in immersive systems, including evaluation of AI-driven interactive systems for reliability and user trust.</li>
+          <li>Analysed behavioural, task-performance and user-experience data in <strong>Python</strong>, combining interaction metrics with self-report measures to produce evidence-based design recommendations.</li>
+          <li>Evaluated how wearable haptic feedback communicates spatial and safety information non-verbally, examining immersion, perception and task performance for a novel, non-auditory interaction channel, with applications in <strong>accessible, context-aware alerting</strong>.</li>
+          <li>Collaborated with internationally recognised HCI researchers; the work resulted in a first-author publication at CHI 2026.</li>
+        </ul>
+        <a href="#publication" class="callout">→ Belt and Whistles, CHI 2026</a>
+        <div class="job-tags"><span style="--c: var(--rose)">Haptics</span><span style="--c: var(--teal)">VR</span><span>Unity</span><span>Python</span><span>User studies</span></div>
+      </div>
+    </article>
+
+    <article class="job reveal">
+      <div class="job-when"><b>Ongoing</b>DreamcodeVR</div>
+      <div>
+        <h3 class="job-role">Human-Computer Interaction Team Member</h3>
+        <p class="job-org">DreamcodeVR</p>
+        <ul>
+          <li><strong>Continuous World Generation.</strong> HCI contributor on a system that generates immersive VR content from free-form natural-language requests in real time, including Minecraft-style biomes. Ran a 16-participant user study evaluating intent fidelity, perceived control and usability (SUS = 73.4), assessing how well the system adapted the world to what users actually asked for.</li>
+          <li><strong>Worlds That Think With Us: Toward Symbiotic AgenticXR.</strong> Leading experiment design and ongoing development for an agentic XR system in which AI proposals must pass a <strong>Verification Space</strong> (preview, confirmation, repair, rollback) before they change the live scene, so users stay in control of AI-driven adaptation.</li>
+        </ul>
+        <div class="job-tags"><span style="--c: var(--lav)">Agentic XR</span><span style="--c: var(--teal)">VR</span><span>LLMs</span><span>SUS</span><span>Experiment design</span></div>
+        <details class="try">
+          <summary><i>+</i> Try the Verification Space</summary>
+          <div class="demo">
+            <div class="demo-head"><div><div class="demo-title">Propose, then verify</div><div class="demo-sub">Ask for a world. The AI's proposal lands in a preview; nothing goes live until you say so.</div></div></div>
+            <div class="vs-input"><input id="vs-input" type="text" placeholder="e.g. a snowy forest at night, a desert, a candy beach…" aria-label="Describe a world"><button class="btn btn-fill" id="vs-propose" style="padding:.5rem 1rem;font-size:.76rem">Propose</button></div>
+            <div class="vs">
+              <div class="vs-box"><h5>Preview (AI proposal)</h5><div class="scene empty" id="vs-preview"><div class="sun"></div><i></i><i></i><i></i><div class="lbl">empty</div></div></div>
+              <div class="vs-box"><h5>Live scene</h5><div class="scene empty" id="vs-live"><div class="sun"></div><i></i><i></i><i></i><div class="lbl">empty</div></div></div>
+            </div>
+            <div class="vs-actions">
+              <button class="btn btn-fill" id="vs-confirm" disabled>Confirm</button>
+              <button class="btn btn-line" id="vs-repair" disabled>Repair</button>
+              <button class="btn btn-line" id="vs-rollback" disabled>Rollback</button>
+            </div>
+            <div class="vs-log" id="vs-log">Type a request and press Propose.</div>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="job reveal">
+      <div class="job-when"><b>2026 — Present</b>Birmingham, UK</div>
+      <div>
+        <h3 class="job-role">Research Collaborator — HCI Fabrication Techniques</h3>
+        <p class="job-org">Robotics Lab, School of Computer Science, University of Birmingham</p>
+        <ul>
+          <li>Co-authored a submission to <strong>CHI 2027</strong> systematically characterising Laser-Induced Forward Transfer (LIFT) printing of graphene ink across substrates relevant to HCI — tattoo paper, PDMS, PET, TPU-coated nylon, bamboo — including electrical and mechanical characterisation of the printed material.</li>
+          <li>Contributed to demonstrator interactive devices built with LIFT-printed graphene, including <strong>touch/pressure sensing</strong> and an <strong>inflatable joystick</strong> prototype for motor-disability accessibility.</li>
+        </ul>
+        <div class="job-tags"><span style="--c: var(--honey)">Fabrication</span><span>Graphene</span><span>LIFT</span><span>Accessibility</span></div>
+        <details class="try">
+          <summary><i>+</i> Try a printed pressure sensor</summary>
+          <div class="demo">
+            <div class="demo-head"><div><div class="demo-title">Graphene track under load</div><div class="demo-sub">Hover to touch, press and hold to load the pad. Resistance falls as contact pressure rises.</div></div></div>
+            <div class="pad" id="pad" aria-label="Pressure pad demo"></div>
+            <svg class="pad-trace" id="pad-trace" viewBox="0 0 100 48" preserveAspectRatio="none" aria-hidden="true"><polyline points=""></polyline></svg>
+            <div class="pad-readout">
+              <div><b id="pad-r">1200 Ω</b>Track resistance</div>
+              <div><b id="pad-force">0.0 N</b>Applied force</div>
+              <div><b id="pad-cell">—</b>Loaded cell</div>
+            </div>
+            <p class="demo-note">Illustrative piezoresistive response, not measured data: the real characterisation lives in the CHI 2027 submission.</p>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="job reveal">
+      <div class="job-when"><b>Dec 2025 — May 2026</b>ATOUCH</div>
+      <div>
+        <h3 class="job-role">Research Associate &amp; Associate Project Manager</h3>
+        <p class="job-org">ATOUCH</p>
+        <ul>
+          <li>Translated research objectives into <strong>funding proposals</strong> aligned with industry and business priorities, building experience in framing research value for non-research stakeholders.</li>
+          <li>Coordinated industry partnerships and stakeholder engagement across academia and business, supporting research aimed at real-world applications.</li>
+        </ul>
+        <div class="job-tags"><span>Grant writing</span><span>Project management</span><span>Industry partnerships</span></div>
+      </div>
+    </article>
+
+    <article class="job reveal">
+      <div class="job-when"><b>Dec 2025</b>Birmingham, UK</div>
+      <div>
+        <h3 class="job-role">Freelance Software Development — Human-Robot Interaction</h3>
+        <p class="job-org">Extreme Robotics Lab, University of Birmingham</p>
+        <ul>
+          <li>Built a <strong>Unity simulation of robotic battery-disassembly workflows</strong> (KUKA KR-16) supporting ML integration, and delivered demo-ready assets for stakeholder presentations.</li>
+        </ul>
+        <div class="job-tags"><span>Unity</span><span>Robotics</span><span>Simulation</span></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section class="sec tint" id="projects">
+  <div class="sec-head">
+    <div class="sec-num reveal">05</div>
+    <div><div class="sec-label reveal">Projects</div><h2 class="sec-title reveal">Recent builds you can <em>poke at</em>.</h2>
+    <p class="sec-intro reveal">Three recent projects about trust, attention and evidence, each with a working miniature of its core idea.</p></div>
+  </div>
+
+  <article class="project">
+    <div>
+      <div class="project-k reveal" data-n="01">Healthcare HCI · Clinical decision support · Streamlit</div>
+      <h3 class="project-t reveal">Signal or Noise</h3>
+      <p class="project-d reveal">A clinician triage interface for remote heart-failure monitoring under alert overload. The classic rule (more than 2 kg gained in three days) fires constantly on ordinary weight fluctuation, so a nurse watching 200 patients wades through alerts that are mostly nothing. The project treats <strong>nurse attention as the binding constraint</strong> and asks a design question: given a nurse can work through N alerts a morning, which alerting strategy finds the most patients who are actually decompensating?</p>
+      <p class="project-d reveal">Synthetic longitudinal cohort, three alerting rules swept across thresholds and compared at matched alert burden, a worklist interface built around the nurse's attention budget, and an audit of AI-written rationales for hallucinated numbers, flipped directions and unsupported claims. A pre-registered 2×2 evaluation protocol with human participants is written and waiting to run.</p>
+      <div class="project-facts reveal">
+        <div><b>100%</b><span>events caught by the composite rule at 1 alert/nurse/day, vs 42.5% for the weight rule</span></div>
+        <div><b>57.5%</b><span>of AI rationales fully faithful to their input; 15.8% invented a number</span></div>
+        <div><b>~0.8</b><span>alerts per nurse per day past which the composite rule catches nothing further</span></div>
+      </div>
+      <div class="project-links reveal">
+        <a href="https://signal-or-noise.streamlit.app" target="_blank" rel="noopener" class="btn btn-fill">Open the Streamlit app</a>
+        <a href="https://github.com/devikamukherjee/signal-or-noise" target="_blank" rel="noopener" class="btn btn-line">Code on GitHub</a>
       </div>
     </div>
+    <div class="demo reveal">
+      <div class="demo-head"><div><div class="demo-title">Set the nurse's alert budget</div><div class="demo-sub">Every rule compared at the same number of alerts per nurse per day.</div></div></div>
+      <div class="slider-row">
+        <input type="range" id="budget-range" min="0.2" max="3" step="0.1" value="1" aria-label="Alerts per nurse per day">
+        <div class="slider-val" id="budget-val">1.0<small>alerts / nurse / day</small></div>
+      </div>
+      <div class="budget-row"><div class="budget-name">A · Fixed weight rule<small>&gt;2 kg in 3 days</small></div><div class="bars"><div class="bar" data-rule="A" data-m="sens"><i style="--c: var(--rose)"></i><b></b></div><div class="bar" data-rule="A" data-m="ppv"><i style="--c: var(--peach)"></i><b></b></div></div></div>
+      <div class="budget-row"><div class="budget-name">B · Personalised baseline<small>deviation from own history</small></div><div class="bars"><div class="bar" data-rule="B" data-m="sens"><i style="--c: var(--corn)"></i><b></b></div><div class="bar" data-rule="B" data-m="ppv"><i style="--c: var(--lav)"></i><b></b></div></div></div>
+      <div class="budget-row"><div class="budget-name">C · Multivariate composite<small>weight + HR + BP + symptoms</small></div><div class="bars"><div class="bar" data-rule="C" data-m="sens"><i style="--c: var(--teal)"></i><b></b></div><div class="bar" data-rule="C" data-m="ppv"><i style="--c: var(--mint)"></i><b></b></div></div></div>
+      <div class="bar-key"><span><i style="background:var(--ink)"></i>Top bar: events caught (sensitivity)</span><span><i style="background:var(--ink-3)"></i>Bottom bar: alerts that were real (PPV)</span></div>
+      <div class="ceiling" id="ceiling" style="margin-top:1rem"></div>
+      <p class="demo-note">Curves follow the shape of the burden-matched sweep on the synthetic cohort (anchored to the README's numbers at 1 alert/day). The cohort is synthetic by design, so what transfers is the shape of the trade-off, not the absolute numbers.</p>
+    </div>
+  </article>
+
+  <article class="project">
+    <div>
+      <div class="project-k reveal" data-n="02">LLM evaluation · Reliability audit · Python</div>
+      <h3 class="project-t reveal">Can an LLM be a trustworthy voting-advice app?</h3>
+      <p class="project-d reveal">Voting Advice Applications like Germany's Wahl-O-Mat are deterministic arithmetic: encode voter and party positions as vectors, return the nearest party. This harness swaps the arithmetic for a language model and measures what breaks — and because the arithmetic answer is always computable, <strong>every case has a ground truth</strong>.</p>
+      <p class="project-d reveal">Five research questions on 2025 federal-election data (38 theses × 28 parties): accuracy, stability across repeats, order sensitivity, sycophancy to an irrelevant identity cue, and the headline — does accuracy drop when party names are anonymised and the model can no longer lean on memorised priors? A 25 × 6 × 5 factorial design, modal aggregation with explicit tie handling, bootstrap confidence intervals resampled at the profile level, content-hash caching and append-only JSONL logs. Metrics were fixed before any result was seen.</p>
+      <div class="project-facts reveal">
+        <div><b>750</b><span>API calls: 25 profiles × 6 presentation conditions × 5 repeats</span></div>
+        <div><b>19/19</b><span>unit tests passing; pipeline validated end-to-end on synthetic data</span></div>
+        <div><b>5</b><span>reliability properties scored against a known-correct answer</span></div>
+      </div>
+      <div class="project-links reveal">
+        <a href="https://github.com/devikamukherjee/vaa-audit" target="_blank" rel="noopener" class="btn btn-fill">Code on GitHub</a>
+      </div>
+    </div>
+    <div class="demo reveal">
+      <div class="demo-head"><div><div class="demo-title">A six-thesis VAA</div><div class="demo-sub">Set your positions. The nearest party by L1 distance is the ground truth. Then change only what the model would <em>see</em>.</div></div></div>
+      <div class="vaa-theses" id="vaa-theses"></div>
+      <div class="vaa-parties" id="vaa-parties"></div>
+      <div class="vaa-verdict" id="vaa-verdict"></div>
+      <div class="vaa-cond" id="vaa-cond">
+        <button class="on" data-cond="baseline">Baseline</button>
+        <button data-cond="shuffled">Shuffle party order</button>
+        <button data-cond="primed">Add "I usually vote centre-left"</button>
+        <button data-cond="anonymised">Anonymise names</button>
+      </div>
+      <pre class="vaa-prompt" id="vaa-prompt"></pre>
+      <p class="demo-note">Fictional parties and theses. The real audit uses the 2025 Wahl-O-Mat matrix via qual-o-mat-data; the point is that presentation changes and the correct answer does not.</p>
+    </div>
+  </article>
+
+  <article class="project">
+    <div>
+      <div class="project-k reveal" data-n="03">UX research · Mixed methods · Social-media analysis</div>
+      <h3 class="project-t reveal">TikTok Shop on Reddit</h3>
+      <p class="project-d reveal">TikTok Shop users don't fill in usability surveys on their own initiative, but they do post to Reddit about scams, refunds and delighted "found this on my FYP" moments. A reproducible pipeline treats that organic discussion as a <strong>low-cost complement to moderated research</strong>: collection, cleaning and anonymisation, transparent rule-based theme coding, VADER sentiment, and report-ready figures and tables.</p>
+      <p class="project-d reveal">The coding scheme is a human-readable, auditable set of keyword rules rather than a black-box classifier, with a 30-item random sample exported for manual validation. Usernames are dropped at collection, text is scrubbed of mentions and contact details, and published quotes are paraphrased to reduce re-identification risk. The pipeline is verified end to end; the live Reddit pull is pending API access.</p>
+      <div class="project-facts reveal">
+        <div><b>9</b><span>themes in the coding scheme, from scam anxiety to creator trust</span></div>
+        <div><b>5</b><span>subreddits: r/TikTokShop in full, four others by keyword</span></div>
+        <div><b>5</b><span>pipeline stages, each a standalone script and notebook cell</span></div>
+      </div>
+      <div class="project-links reveal">
+        <a href="https://github.com/devikamukherjee/tiktok-shop-reddit-uxr" target="_blank" rel="noopener" class="btn btn-fill">Code on GitHub</a>
+      </div>
+    </div>
+    <div class="demo reveal">
+      <div class="demo-head"><div><div class="demo-title">Code a post</div><div class="demo-sub">Paste or pick a post. The project's real keyword scheme assigns themes; a tiny lexicon estimates sentiment.</div></div></div>
+      <textarea class="theme-input" id="theme-input" aria-label="Reddit post text"></textarea>
+      <div class="theme-samples" id="theme-samples"></div>
+      <div class="themes" id="themes"></div>
+      <div class="theme-hl" id="theme-hl"></div>
+      <div class="sent"><span>negative</span><div class="sent-bar"><i id="sent-dot"></i></div><span>positive</span><strong id="sent-label" style="min-width:5ch">neutral</strong></div>
+      <p class="demo-note">Multi-label keyword matching from the project's config; the real pipeline uses VADER for sentiment. Sarcasm and slang will be miscoded, which is exactly why the validation sample exists.</p>
+    </div>
+  </article>
+
+  <h3 class="sub-h reveal">Earlier case studies</h3>
+  <div class="cards">
+    <a href="projects/better-diet.html" target="_blank" rel="noopener" class="card reveal" data-stagger>
+      <div class="card-k">UX research · Mixed methods</div>
+      <div class="card-t">Better Diet — AI nutrition tracking</div>
+      <div class="card-d">A multi-phase programme (survey n=50+, interviews, two prototype rounds) translating five insights into an AI-powered nutrition app and smart tableware.</div>
+      <span class="card-cta">Read the case study</span>
+    </a>
+    <a href="projects/glucometer.html" target="_blank" rel="noopener" class="card reveal" data-stagger>
+      <div class="card-k">Systematic review · Healthcare HCI</div>
+      <div class="card-t">Usability of glucometers in T2DM self-management</div>
+      <div class="card-d">Fifteen peer-reviewed studies synthesised into a three-tier usability framework, comparing five devices and deriving design recommendations.</div>
+      <span class="card-cta">Read the case study</span>
+    </a>
+    <a href="projects/ai-bias.html" target="_blank" rel="noopener" class="card reveal" data-stagger>
+      <div class="card-k">Critical AI · Systematic review</div>
+      <div class="card-t">AI bias in news recommendation systems</div>
+      <div class="card-d">A critical analysis of algorithmic bias in AI-driven news platforms, proposing guidelines for transparency, fairness auditing and user-centred mitigation.</div>
+      <span class="card-cta">Read the case study</span>
+    </a>
   </div>
 </section>
 
-<!-- ——— CONTACT ——— -->
-<section class="contact-section" id="contact">
-  <div class="contact-inner">
-    <div class="contact-eyebrow">Get in touch</div>
-    <h2 class="contact-title">Let's build something<br><em>together</em>.</h2>
-    <p class="contact-body">Whether you're a research group, lab, or team working on VR/XR, haptics, wearable technologies, or Human-AI interaction — I'd love to hear from you.</p>
-    <div class="contact-cta">
-      <a href="mailto:mukherjee.devika07@gmail.com" class="btn btn-primary">Email me →</a>
-      <a href="assets/resume.pdf" download="Devika_Mukherjee_CV.pdf" class="btn btn-ghost">Download CV</a>
-    </div>
-    <div class="contact-links">
-      <a href="mailto:mukherjee.devika07@gmail.com">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 6-10 7L2 6"></path></svg>
-        mukherjee.devika07@gmail.com
-      </a>
-      <a href="https://www.linkedin.com/in/devika-mukherjee-3bb5b020a" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-        LinkedIn
-      </a>
-      <a href="https://github.com/devikamukherjee" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-        GitHub
-      </a>
-      <a href="tel:+447469322867">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-        +44 7469 322867
-      </a>
-    </div>
-    <div class="footer-bottom">© 2026 Devika Mukherjee · Built from research</div>
+<!-- ============ EDUCATION ============ -->
+<section class="sec" id="education">
+  <div class="sec-head">
+    <div class="sec-num reveal">06</div>
+    <div><div class="sec-label reveal">Education</div><h2 class="sec-title reveal">Academic background</h2></div>
+  </div>
+  <div class="edu">
+    <div class="reveal" data-stagger><small>Sep 2024 — Sep 2025</small><b>MSc Human-Computer Interaction</b><span>University of Birmingham, UK</span></div>
+    <div class="reveal" data-stagger><small>Sep 2020 — Sep 2024</small><b>BEng Biotechnology</b><span>Amity University, India</span></div>
   </div>
 </section>
 
-<!-- ——— CUSTOM CURSOR ELEMENTS ——— -->
-<div class="cursor-dot" aria-hidden="true"></div>
-<div class="cursor-ring" aria-hidden="true"></div>
+<!-- ============ CONTACT ============ -->
+<section class="sec dark" id="contact">
+  <div class="sec-label reveal">Get in touch</div>
+  <h2 class="sec-title reveal" style="max-width:none">Working on XR, haptics, wearables or human-AI interaction? <em>Let's talk.</em></h2>
+  <p class="contact-big reveal"><a href="mailto:mukherjee.devika07@gmail.com">mukherjee.devika07@gmail.com</a></p>
+  <div class="hero-ctas reveal" style="justify-content:flex-start">
+    <a href="mailto:mukherjee.devika07@gmail.com" class="btn btn-fill on-dark">Email me</a>
+    <a href="assets/resume.pdf" download="Devika_Mukherjee_CV.pdf" class="btn btn-line on-dark">Download CV</a>
+  </div>
+  <div class="contact-links reveal">
+    <a href="https://www.linkedin.com/in/devika-mukherjee-3bb5b020a" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</a>
+    <a href="https://github.com/devikamukherjee" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>GitHub</a>
+    <a href="https://dl.acm.org/doi/10.1145/3772318.3793143" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>CHI 2026 paper</a>
+    <a href="tel:+447469322867"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>+44 7469 322867</a>
+  </div>
+  <div class="foot"><span>© <span id="year">2026</span> Devika Mukherjee</span><span>Built from research · Ink by suminagashi, interactions by hand</span></div>
+</section>
 
-<script>
-  // ——— Suminagashi canvas — organic fluid ink ———
-  (function () {
-    const canvas = document.getElementById('suminagashi-canvas');
-    const ctx = canvas.getContext('2d');
+<div class="cur-dot" aria-hidden="true"></div>
+<div class="cur-ring" aria-hidden="true"></div>
 
-    // Disable on touch / coarse-pointer devices
-    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      canvas.style.display = 'none';
-      return;
-    }
-
-    const dpr = window.devicePixelRatio || 1;
-    let W = window.innerWidth, H = window.innerHeight;
-
-    function resize() {
-      W = window.innerWidth; H = window.innerHeight;
-      canvas.width = W * dpr; canvas.height = H * dpr;
-      canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, W, H);
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    // All RGB values > 140 — ensures nothing reads as dark even after layering
-    const palette = [
-      [235, 165, 178],  // blush rose
-      [148, 212, 204],  // pale teal
-      [195, 178, 232],  // soft lavender
-      [235, 205, 148],  // warm honey
-      [240, 175, 152],  // peach coral
-      [162, 185, 232],  // cornflower blue
-      [200, 232, 175],  // soft mint
-    ];
-    let colorIdx = 0;
-    const drops = [];
-
-    // Draw one organic ring: a closed polygon with sinusoidal radial wobble
-    function drawOrganicRing(x, y, r, seed, alpha, col, lineW) {
-      if (r <= 0 || alpha <= 0.004) return;
-      const pts = 72;
-      ctx.beginPath();
-      for (let i = 0; i <= pts; i++) {
-        const a = (i / pts) * Math.PI * 2;
-        const wobble = 1
-          + Math.sin(a * 2 + seed)        * 0.06
-          + Math.sin(a * 3 + seed * 1.7)  * 0.038
-          + Math.cos(a * 5 + seed * 0.9)  * 0.022
-          + Math.sin(a * 7 + seed * 2.3)  * 0.012;
-        const px = x + Math.cos(a) * r * wobble;
-        const py = y + Math.sin(a) * r * wobble;
-        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
-      }
-      ctx.closePath();
-      ctx.strokeStyle = `rgba(${col[0]},${col[1]},${col[2]},${alpha})`;
-      ctx.lineWidth = lineW;
-      ctx.stroke();
-    }
-
-    function addDrop(x, y, colIdx, scale) {
-      const col = palette[colIdx % palette.length];
-      const seed = Math.random() * Math.PI * 2;
-      drops.push({
-        x, y, col, seed,
-        r: 2,
-        maxR: (70 + Math.random() * 120) * scale,
-        speed: (0.55 + Math.random() * 0.85) * scale,
-        alpha: 0.38 + Math.random() * 0.12,
-        ringW: 1.8 + Math.random() * 1.6,
-        frame: 0,
-      });
-    }
-
-    let lastX = -999, lastY = -999;
-    window.addEventListener('mousemove', (e) => {
-      const dx = e.clientX - lastX, dy = e.clientY - lastY;
-      if (dx * dx + dy * dy > 900) {
-        addDrop(e.clientX, e.clientY, colorIdx, 1);
-        // Secondary smaller ripple in adjacent colour — mimics real ink displacement
-        addDrop(
-          e.clientX + (Math.random() - 0.5) * 6,
-          e.clientY + (Math.random() - 0.5) * 6,
-          colorIdx + 1, 0.55
-        );
-        colorIdx++;
-        lastX = e.clientX; lastY = e.clientY;
-      }
-    }, { passive: true });
-
-    // ~6-second fade at 60fps: 360 frames × 0.003 per frame ≈ full clearing
-    const FADE_ALPHA = 0.003;
-    const FADE_START_FRAME = 300; // drop starts fading after 300 frames (~5s)
-
-    ctx.globalCompositeOperation = 'source-over';
-
-    function frame() {
-      // Slow white overlay — ink fades to white in ~6 seconds
-      ctx.fillStyle = `rgba(255,255,255,${FADE_ALPHA})`;
-      ctx.fillRect(0, 0, W, H);
-
-      for (let i = drops.length - 1; i >= 0; i--) {
-        const d = drops[i];
-        d.frame++;
-
-        // Linear alpha decay after FADE_START_FRAME
-        let alpha = d.alpha;
-        if (d.frame > FADE_START_FRAME) {
-          const decay = (d.frame - FADE_START_FRAME) / 60; // fade over 1 second
-          alpha = Math.max(0, d.alpha * (1 - decay));
-        }
-
-        const progress = d.r / d.maxR;
-
-        // Feathered edge: 4 concentric rings with decreasing alpha
-        // Outermost ring (d.r+2) is lightest → soft leading edge
-        drawOrganicRing(d.x, d.y, d.r + 2,  d.seed, alpha * 0.12 * (1 - progress), d.col, d.ringW * 0.5);
-        drawOrganicRing(d.x, d.y, d.r,       d.seed, alpha * 0.65 * (1 - progress * 0.7), d.col, d.ringW);
-        drawOrganicRing(d.x, d.y, d.r - 4,   d.seed, alpha * 0.38 * (1 - progress * 0.5), d.col, d.ringW * 0.7);
-        drawOrganicRing(d.x, d.y, d.r - 8,   d.seed, alpha * 0.18 * (1 - progress * 0.4), d.col, d.ringW * 0.45);
-
-        d.r += d.speed;
-        if (d.r >= d.maxR || alpha <= 0.004) drops.splice(i, 1);
-      }
-
-      requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
-  })();
-
-  // ——— Scroll-reveal ———
-  (function () {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const selectors = [
-      '.section-label', '.section-title', '.section-body', '.about-body',
-      '.about-skills', '.thread-item', '.pub-feature', '.timeline-item',
-      '.project-card', '.edu-card', '.contact-eyebrow', '.contact-title',
-      '.contact-body', '.contact-cta', '.contact-links'
-    ];
-    const targets = document.querySelectorAll(selectors.join(','));
-    if (prefersReduced || !('IntersectionObserver' in window)) {
-      targets.forEach(el => el.classList.add('reveal', 'in-view'));
-      return;
-    }
-    const groupCount = new Map();
-    targets.forEach(el => {
-      el.classList.add('reveal');
-      const parent = el.parentElement;
-      const n = groupCount.get(parent) || 0;
-      if (el.matches('.thread-item, .project-card, .edu-card, .timeline-item')) {
-        el.setAttribute('data-delay', String(Math.min(n + 1, 5)));
-        groupCount.set(parent, n + 1);
-      }
-    });
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } });
-    }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
-    targets.forEach(el => io.observe(el));
-  })();
-
-  // ——— Panel entrance animations ———
-  (function () {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if (!('IntersectionObserver' in window)) return;
-    const spinIds = ['about', 'publications'];
-    document.querySelectorAll('.section, .contact-section').forEach(el => {
-      if (spinIds.includes(el.id)) {
-        el.classList.add('panel-spin');
-      } else {
-        el.classList.add('panel-rise');
-      }
-    });
-    const panelIo = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('in-view');
-          panelIo.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.06, rootMargin: '0px 0px -4% 0px' });
-    document.querySelectorAll('.panel-spin, .panel-rise').forEach(el => panelIo.observe(el));
-  })();
-
-  // ——— Custom circle cursor ———
-  (function () {
-    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-    const dot = document.querySelector('.cursor-dot');
-    const ring = document.querySelector('.cursor-ring');
-    if (!dot || !ring) return;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let mx = window.innerWidth / 2, my = window.innerHeight / 2;
-    let rx = mx, ry = my, shown = false;
-
-    window.addEventListener('mousemove', (e) => {
-      mx = e.clientX; my = e.clientY;
-      dot.style.left = mx + 'px'; dot.style.top = my + 'px';
-      if (reduced) { ring.style.left = mx + 'px'; ring.style.top = my + 'px'; }
-      if (!shown) { shown = true; dot.classList.add('active'); ring.classList.add('active'); }
-    }, { passive: true });
-
-    document.addEventListener('mouseleave', () => {
-      dot.classList.remove('active'); ring.classList.remove('active'); shown = false;
-    });
-    document.addEventListener('mouseenter', () => {
-      dot.classList.add('active'); ring.classList.add('active'); shown = true;
-    });
-
-    if (!reduced) {
-      const lerp = (a, b, t) => a + (b - a) * t;
-      const tick = () => {
-        rx = lerp(rx, mx, 0.18); ry = lerp(ry, my, 0.18);
-        ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-        requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    }
-
-    const interactive = 'a, button, summary, .btn, .project-card, .thread-item, .skill-chip';
-    document.addEventListener('mouseover', (e) => { if (e.target.closest(interactive)) ring.classList.add('hover'); });
-    document.addEventListener('mouseout',  (e) => { if (e.target.closest(interactive)) ring.classList.remove('hover'); });
-  })();
-</script>
-
+<script src="assets/js/ink.js" defer></script>
+<script src="assets/js/site.js" defer></script>
+<script src="assets/js/widgets.js" defer></script>
 </body>
 </html>

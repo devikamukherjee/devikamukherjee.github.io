@@ -1,52 +1,26 @@
 # Devika Mukherjee — Portfolio
 
-Personal portfolio website hosted at **https://devikamukherjee.github.io**.
+Personal portfolio hosted at **https://devikamukherjee.github.io**. No build step, no dependencies.
 
-## Two things you still need to add
-
-Two asset files are referenced by the site but aren't bundled in this folder yet:
-
-1. **`assets/resume.pdf`** — your CV. Copy your existing `Devika Mukherjee HCI.pdf` into the `assets/` folder and rename it to `resume.pdf`. The "Download CV" buttons across the site link here.
-2. **`assets/profile.jpg`** — a photo of you for the hero section. Square or near-square crop works best (it's displayed as a circle, ~300×300 px). If the file is missing the site automatically falls back to a stylised "D" monogram, so the site still works without it.
-
-That's it — no build step, no dependencies.
-
-## Publishing to GitHub Pages
-
-1. On GitHub, create a new repository named exactly **`devikamukherjee.github.io`** (it must match your GitHub username).
-2. From this folder, in a terminal:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial portfolio site"
-   git branch -M main
-   git remote add origin https://github.com/devikamukherjee/devikamukherjee.github.io.git
-   git push -u origin main
-   ```
-3. In the repo's Settings → Pages, confirm the source is **Deploy from a branch · main · /(root)**. The site goes live at `https://devikamukherjee.github.io` within a minute or two.
-
-## File layout
+## Layout
 
 ```
-.
-├── index.html              # main portfolio
-├── projects/
-│   ├── better-diet.html    # Better Diet UX case study
-│   ├── glucometer.html     # Glucometer SLR case study
-│   └── ai-bias.html        # placeholder, awaiting full case study
-├── assets/
-│   ├── resume.pdf          # ← you add this
-│   └── profile.jpg         # ← you add this (optional)
-├── .nojekyll               # tells GitHub Pages to skip Jekyll
-└── README.md
+index.html              # single-page site: hero, about, research threads, publication, work, projects, education, contact
+assets/css/site.css     # all styling (full-bleed sections, motion, demo widgets)
+assets/js/ink.js        # suminagashi ink — hero only
+assets/js/site.js       # nav, scroll progress, reveal-on-scroll, counters, timeline, cursor
+assets/js/widgets.js    # interactive demos: haptic belt, alert budget, mini VAA, theme coder, verification space, pressure pad
+assets/resume.pdf       # CV linked from the nav and contact section
+projects/*.html         # earlier case studies (Better Diet, Glucometer SLR, AI Bias)
 ```
 
-## Updating the AI Bias page later
+## Editing
 
-When you have the full `bias.html` ready, replace the body content inside `projects/ai-bias.html` between the `<header class="hero">…</header>` and the `<footer>…</footer>` — or just overwrite the whole file, keeping the same cream/sage CSS so it matches the rest of the site.
+- Work history and project text live directly in `index.html`; each job is an `<article class="job">`, each featured project an `<article class="project">`.
+- Colours and fonts are CSS variables at the top of `assets/css/site.css`.
+- The Signal or Noise card links to the Streamlit app URL; update the `href` in `index.html` if the app moves.
+- Replace `assets/resume.pdf` to update the downloadable CV.
 
-## Editing tips
+## Publishing
 
-- All four pages share the same colour palette and font stack — change the `:root` CSS variables at the top of each file in lockstep if you want to tweak the theme.
-- The "Belt and Whistles" publication card is the visual centre of `index.html` (section `#publications`). Keep it prominent.
-- Project cards on the main page link out with `target="_blank"`, opening case studies in a new tab so visitors don't lose their place.
+Push to `main`; GitHub Pages serves the root of the branch.
